@@ -1,0 +1,31 @@
+{
+  "templates": {
+    "OrderRequest": {
+      "version": "1.2.060",
+      "requiredFields": ["orderID", "orderDate", "type", "Total", "ShipTo", "BillTo"],
+      "optionalFields": ["PaymentTerm", "Comments", "Extrinsic"],
+      "lineItemRequired": ["lineNumber", "quantity", "ItemID", "UnitPrice", "Description", "UnitOfMeasure"]
+    },
+    "ConfirmationRequest": {
+      "version": "1.2.060",
+      "requiredFields": ["confirmID", "orderReference", "type"],
+      "lineItemRequired": ["lineNumber", "quantity", "status"]
+    },
+    "ShipNoticeRequest": {
+      "version": "1.2.060",
+      "requiredFields": ["shipNoticeID", "orderReference", "shipmentDate"],
+      "lineItemRequired": ["lineNumber", "quantity", "unitOfMeasure"]
+    },
+    "InvoiceDetailRequest": {
+      "version": "1.2.060",
+      "requiredFields": ["invoiceID", "invoiceDate", "orderReference"],
+      "lineItemRequired": ["invoiceLineNumber", "quantity", "unitPrice", "subtotalAmount"]
+    }
+  },
+  "ediMappings": {
+    "850": { "name": "Purchase Order", "cxmlEquivalent": "OrderRequest", "segments": ["BEG", "DTM", "N1", "PO1", "PID", "CTT", "AMT"] },
+    "855": { "name": "Order Confirmation", "cxmlEquivalent": "ConfirmationRequest", "segments": ["BAK", "DTM", "N1", "PO1", "ACK"] },
+    "856": { "name": "ASN", "cxmlEquivalent": "ShipNoticeRequest", "segments": ["BSN", "DTM", "HL", "TD1", "TD5", "N1", "SN1"] },
+    "810": { "name": "Invoice", "cxmlEquivalent": "InvoiceDetailRequest", "segments": ["BIG", "DTM", "N1", "IT1", "TDS", "CTT"] }
+  }
+}

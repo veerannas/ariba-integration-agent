@@ -1,0 +1,282 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-04-28",
+  "description": "AIA Mapping Knowledge Base — deterministic rules for cXML↔EDI conversion",
+
+  "decisions": {
+    "priceHandling": "always_per_unit",
+    "emptyFields": "preserve",
+    "isaFormat": "strict_fixed_width",
+    "phoneFormat": "raw_digits",
+    "sapExtrinsics": "REF_ZZ",
+    "controlKeys": "N9_MSG",
+    "distributionMapping": "N9_MSG",
+    "qualityInfoMapping": "N9_MSG",
+    "scheduleLineMapping": "N9_MSG",
+    "segmentTerminator": "\n",
+    "elementSeparator": "*",
+    "componentSeparator": ">",
+    "deploymentModeToISA15": true,
+    "includeAMTBeforeCTT": true,
+    "supplierN1Qualifier": "SE",
+    "ediVersion": "004010",
+    "isaRepetitionSeparator": "U"
+  },
+
+  "uomLookup": {
+    "cxmlToX12": {
+      "EA": "EA",
+      "PCE": "EA",
+      "PC": "EA",
+      "LTR": "LT",
+      "LT": "LT",
+      "GAL": "GA",
+      "ML": "ML",
+      "KGM": "KG",
+      "KG": "KG",
+      "GRM": "GR",
+      "GM": "GR",
+      "LBS": "LB",
+      "LB": "LB",
+      "OZ": "OZ",
+      "TON": "TN",
+      "MTR": "MT",
+      "MT": "MT",
+      "FT": "FT",
+      "IN": "IN",
+      "CM": "CM",
+      "MM": "MM",
+      "YD": "YD",
+      "MI": "MI",
+      "BX": "BX",
+      "CS": "CS",
+      "PK": "PK",
+      "PA": "PA",
+      "BG": "BG",
+      "RL": "RL",
+      "DZ": "DZ",
+      "GR": "GR",
+      "CT": "CT",
+      "PR": "PR",
+      "SET": "ST",
+      "HR": "HR",
+      "DA": "DA",
+      "MO": "MO",
+      "WK": "WK",
+      "SQM": "SM",
+      "SQF": "SF",
+      "CBM": "CI",
+      "CFT": "CF",
+      "PLT": "PL",
+      "DRM": "DR",
+      "TNK": "TK",
+      "CYL": "CY",
+      "BAG": "BG",
+      "BTL": "BO",
+      "CAN": "CA",
+      "JAR": "JR"
+    },
+    "x12ToCxml": {
+      "EA": "EA",
+      "LT": "LTR",
+      "GA": "GAL",
+      "ML": "ML",
+      "KG": "KGM",
+      "GR": "GRM",
+      "LB": "LBS",
+      "OZ": "OZ",
+      "TN": "TON",
+      "MT": "MTR",
+      "FT": "FT",
+      "IN": "IN",
+      "CM": "CM",
+      "MM": "MM",
+      "YD": "YD",
+      "BX": "BX",
+      "CS": "CS",
+      "PK": "PK",
+      "PA": "PA",
+      "BG": "BAG",
+      "RL": "RL",
+      "DZ": "DZ",
+      "CT": "CT",
+      "PR": "PR",
+      "ST": "SET",
+      "HR": "HR",
+      "DA": "DA",
+      "MO": "MO",
+      "SM": "SQM",
+      "SF": "SQF",
+      "CI": "CBM",
+      "CF": "CFT",
+      "PL": "PLT",
+      "DR": "DRM",
+      "BO": "BTL",
+      "CA": "CAN",
+      "JR": "JAR"
+    }
+  },
+
+  "refQualifiers": {
+    "extrinsicToRef": {
+      "CompanyCode": { "qualifier": "CO", "description": "Company Code" },
+      "PurchaseGroup": { "qualifier": "PG", "description": "Purchasing Group" },
+      "PurchaseOrganization": { "qualifier": "8X", "description": "Purchasing Organization" },
+      "partyAdditionalID": { "qualifier": "VR", "description": "Vendor Reference/Party ID" },
+      "Requester": { "qualifier": "ZZ", "description": "Requisitioner" },
+      "Ariba.invoicingAllowed": { "qualifier": "ZZ", "description": "Invoicing Allowed Flag" },
+      "Ariba.availableAmount": { "qualifier": "ZZ", "description": "Available PO Amount" },
+      "AribaNetwork.PaymentTermsExplanation": { "qualifier": "ZZ", "description": "Payment Terms Description (use in ITD12)" }
+    },
+    "headerRefs": {
+      "payloadID": { "qualifier": "ZZ", "description": "cXML Payload Correlation ID" },
+      "SystemID": { "qualifier": "ZZ", "description": "Source ERP System ID" }
+    },
+    "lineRefs": {
+      "ERPCommodityCode": { "qualifier": "ZZ", "description": "ERP Commodity Code" },
+      "ERPCommodityCodeDescription": { "qualifier": "ZZ", "description": "ERP Commodity Description" },
+      "AccountCategory": { "qualifier": "ZZ", "description": "Account Assignment Category" },
+      "ReceivingType": { "qualifier": "ZZ", "description": "Goods Receipt Type" },
+      "extLineNumber": { "qualifier": "ZZ", "description": "External Line Number" }
+    },
+    "addressRefs": {
+      "storageLocationID": { "qualifier": "WH", "description": "Storage/Warehouse Location" },
+      "buyerLocationID": { "qualifier": "92", "description": "Buyer Location ID" },
+      "buyerID": { "qualifier": "92", "description": "Buyer Account ID" },
+      "buyerAccountID": { "qualifier": "92", "description": "Buyer Account ID (SoldTo)" }
+    }
+  },
+
+  "n9Patterns": {
+    "controlKeys": {
+      "enabled": true,
+      "segments": {
+        "OCInstruction": {
+          "n9Ref": "ZZ",
+          "n9Id": "OCInstruction",
+          "msgTemplate": [
+            "Lower: Qty Tolerance {lower.qty}%, Time Tolerance {lower.time} days",
+            "Upper: Qty Tolerance {upper.qty}%, Time Tolerance {upper.time} days"
+          ]
+        },
+        "ASNInstruction": {
+          "n9Ref": "ZZ",
+          "n9Id": "ASNInstruction",
+          "msgTemplate": [
+            "Lower: Qty Tolerance {lower.qty}%",
+            "Upper: Qty Tolerance {upper.qty}%"
+          ]
+        },
+        "InvoiceInstruction": {
+          "n9Ref": "ZZ",
+          "n9Id": "InvoiceInstruction",
+          "valueFromAttr": "value"
+        }
+      }
+    },
+    "distribution": {
+      "enabled": true,
+      "n9Ref": "ZZ",
+      "n9Id": "DistributionCharge",
+      "msgFields": ["GL Account", "WBS Element", "CostCenter", "Percentage", "Charge Amount"]
+    },
+    "scheduleLine": {
+      "enabled": true,
+      "n9Ref": "ZZ",
+      "n9Id": "ScheduleLine",
+      "msgTemplate": "Qty: {qty} {uom}, Delivery Date: {date}"
+    },
+    "qualityInfo": {
+      "enabled": true,
+      "n9Ref": "ZZ",
+      "n9Id": "QualityInfo",
+      "msgFields": ["Requires Quality Process", "Control Code", "Control Code Desc", "Requires Batch"]
+    },
+    "buyerPlannerCode": {
+      "enabled": true,
+      "n9Ref": "ZZ",
+      "n9Id": "BuyerPlannerCode",
+      "msgTemplate": "{name} (ID: {id})"
+    },
+    "legalEntity": {
+      "enabled": true,
+      "n9Ref": "L1",
+      "msgTemplate": "{description}"
+    },
+    "organizationalUnit": {
+      "enabled": true,
+      "domains": {
+        "PurchasingOrganization": { "n9Ref": "ZZ", "n9Id": "PurchasingOrganization" },
+        "PurchasingGroup": { "n9Ref": "ZZ", "n9Id": "PurchasingGroup" }
+      }
+    },
+    "priceBasisQuantity": {
+      "enabled": true,
+      "n9Ref": "ZZ",
+      "n9Id": "PriceBasisQuantity",
+      "msgTemplate": "Original price ${originalPrice} per {basisQty} {basisUom} converted to ${unitPrice} per 1 {unitUom}"
+    },
+    "plannedAcceptanceDays": {
+      "enabled": true,
+      "n9Ref": "ZZ",
+      "n9Id": "PlannedAcceptanceDays"
+    },
+    "externalDocumentType": {
+      "enabled": true,
+      "refQualifier": "CT",
+      "description": "Document type code and description combined in REF03"
+    }
+  },
+
+  "n1Qualifiers": {
+    "ShipTo": "ST",
+    "BillTo": "BT",
+    "soldTo": "SO",
+    "supplierCorporate": "SE",
+    "buyFrom": "VN",
+    "shipFrom": "SF",
+    "remitTo": "RE"
+  },
+
+  "itdMapping": {
+    "termsType": "01",
+    "termsBasis": "3",
+    "usePayInNumberOfDays": true,
+    "useDiscountPercent": true,
+    "descriptionFromExtrinsic": "AribaNetwork.PaymentTermsExplanation"
+  },
+
+  "pidConfig": {
+    "descriptionType": "F",
+    "productQualifier": "08",
+    "format": "PID*F*08***{description}"
+  },
+
+  "seCountRule": "inclusive_ST_to_SE",
+
+  "docTypeConfig": {
+    "po": {
+      "stCode": "850",
+      "gsCode": "PO",
+      "begPurpose": "00",
+      "begType": "NE"
+    },
+    "oc": {
+      "stCode": "855",
+      "gsCode": "PR",
+      "bakPurpose": "06"
+    },
+    "asn": {
+      "stCode": "856",
+      "gsCode": "SH"
+    },
+    "gr": {
+      "stCode": "861",
+      "gsCode": "RC"
+    },
+    "inv": {
+      "stCode": "810",
+      "gsCode": "IN"
+    }
+  }
+}

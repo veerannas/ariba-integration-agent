@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIA — AI Automated Integration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=Google+Sans+Text:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded" rel="stylesheet">
+<link rel="stylesheet" href="styles/sidepanel.css">
+</head>
+<body>
+
+<!-- HEADER — Chrome Minimal -->
+<header class="header">
+  <div class="header-left">
+    <svg class="header-sap-logo" width="44" height="22" viewBox="0 0 412.38 204" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="sap-grad" x1="206.19" y1="0" x2="206.19" y2="204" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#00B1EB"/><stop offset=".212" stop-color="#009AD9"/><stop offset=".519" stop-color="#007FC4"/><stop offset=".792" stop-color="#006EB8"/><stop offset="1" stop-color="#0069B4"/></linearGradient></defs>
+      <polyline points="0 204 208.413 204 412.38 0 0 0 0 204" fill="url(#sap-grad)" fill-rule="evenodd"/>
+      <path fill="#fff" fill-rule="evenodd" d="m244.727,38.359l-40.593-.025v96.518l-35.46-96.518h-35.16l-30.277,80.716c-3.224-20.352-24.277-27.38-40.84-32.649-10.937-3.512-22.541-8.678-22.434-14.387.091-4.687,6.225-9.04,18.377-8.385,8.17.433,15.373,1.092,29.71,8.006l14.102-24.557c-13.088-6.658-31.169-10.867-45.985-10.883h-.086c-17.277,0-31.677,5.598-40.602,14.824-6.221,6.443-9.572,14.626-9.712,23.679-.227,12.454,4.341,21.292,13.938,28.338,8.104,5.944,18.468,9.794,27.603,12.626,11.27,3.492,20.467,6.526,20.36,13.002-.083,2.355-.977,4.552-2.671,6.337-2.807,2.897-7.124,3.986-13.084,4.098-11.497.243-20.026-1.559-33.61-9.585l-12.536,24.903c13.546,7.705,29.586,12.223,45.952,12.223l2.106-.024c14.247-.256,25.745-4.316,34.929-11.712.527-.416,1.001-.845,1.488-1.277l-4.073,10.874h36.875l6.189-18.822c6.477,2.214,13.847,3.437,21.676,3.437,7.618,0,14.795-1.17,21.156-3.252l5.965,18.637h60.137v-38.969h13.113c31.706,0,50.456-16.147,50.456-43.202,0-30.139-18.219-43.969-57.011-43.969Zm-93.816,82.587c-4.737,0-9.177-.828-13.006-2.275l12.866-40.593h.244l12.643,40.708c-3.801,1.349-8.138,2.16-12.746,2.16Zm96.199-23.324h-8.941v-32.711h8.941c11.927,0,21.437,3.961,21.437,16.139,0,12.602-9.51,16.572-21.437,16.572"/>
+    </svg>
+    <span class="header-divider"></span>
+    <div class="header-brand">
+      <span class="header-brand-aia">AIA</span>
+      <span class="header-brand-sep">—</span>
+      <span class="header-brand-full">AI Automated Integration</span>
+      <span class="header-brand-ver">v3.2</span>
+    </div>
+  </div>
+  <div class="header-user" id="header-user" style="display:none" title="Logged in">
+    <span class="header-user-avatar" id="header-user-avatar">—</span>
+    <span class="header-user-name" id="header-user-name"></span>
+  </div>
+  <div class="header-right">
+    <button class="header-btn" id="btn-activity" title="Activity"><span class="material-symbols-rounded">schedule</span></button>
+    <button class="header-btn" id="btn-export" title="Export"><span class="material-symbols-rounded">download</span></button>
+    <span class="header-divider"></span>
+    <button class="header-btn header-btn-action" id="btn-refresh" title="Refresh Data"><span class="material-symbols-rounded">sync</span></button>
+    <button class="header-btn header-btn-action" id="btn-reload" title="Reload Extension"><span class="material-symbols-rounded">refresh</span></button>
+    <span class="header-divider"></span>
+    <button class="header-btn-fulltab" id="btn-popout" title="Open in Full Tab"><span class="material-symbols-rounded">open_in_new</span><span class="header-btn-fulltab-text">Full Tab</span></button>
+    <button class="header-btn" id="btn-settings" title="Settings"><span class="material-symbols-rounded">tune</span></button>
+  </div>
+</header>
+
+<!-- CONTEXT BAR -->
+<div class="ctx-bar">
+  <div class="ctx-left">
+    <div class="ctx-avatar" id="ctx-avatar" style="background:var(--stage-3)">
+      <span class="ctx-avatar-text">--</span>
+      <span class="ctx-avatar-ring"></span>
+    </div>
+    <div class="ctx-info">
+      <div class="ctx-name" id="ctx-name">Enterprise Account</div>
+      <div class="ctx-id" id="ctx-id">Navigate to an Ariba page</div>
+    </div>
+  </div>
+  <div class="ctx-right">
+    <div class="ctx-badge" id="ctx-badge">
+      <span class="ctx-dot" id="ctx-dot" style="background:var(--text2)"></span>
+      <span id="ctx-stage-text">--</span>
+    </div>
+  </div>
+</div>
+
+<!-- NAV — Material 3 Horizontal Tabs -->
+<nav class="nav">
+  <div class="nav-track">
+    <div class="nav-slider" id="nav-slider"></div>
+    <button class="nav-tab active" data-tab="dashboard"><span class="material-symbols-rounded">space_dashboard</span><span class="nav-text">Dashboard</span></button>
+    <button class="nav-tab" data-tab="aie" title="Augmented Integration Experience"><span class="material-symbols-rounded">rocket_launch</span><span class="nav-text">AIE</span></button>
+    <button class="nav-tab" data-tab="integration"><span class="material-symbols-rounded">sync_alt</span><span class="nav-text">Integration</span></button>
+    <button class="nav-tab" data-tab="troubleshoot"><span class="material-symbols-rounded">build</span><span class="nav-text">Troubleshoot</span></button>
+    <button class="nav-tab" data-tab="guides"><span class="material-symbols-rounded">menu_book</span><span class="nav-text">Guides</span></button>
+    <button class="nav-tab" data-tab="cig"><span class="material-symbols-rounded">settings_suggest</span><span class="nav-text">CIG</span></button>
+  </div>
+</nav>
+
+<!-- ==================== DASHBOARD ==================== -->
+<div id="tab-dashboard" class="panel active"><div class="pscroll">
+
+  <!-- Welcome Banner -->
+  <div class="dash-welcome" id="dash-welcome">
+    <div class="dash-welcome-icon"><span class="material-symbols-rounded">waving_hand</span></div>
+    <div>
+      <div class="dash-welcome-title" id="dash-welcome-title">Welcome to AIA</div>
+    </div>
+  </div>
+
+  <!-- Quick Stats Row -->
+  <div class="dash-kpi-row">
+    <div class="dash-kpi">
+      <div class="dash-kpi-icon" style="background:linear-gradient(135deg,#E8F5E9,#C8E6C9);color:#2E7D32"><span class="material-symbols-rounded">check_circle</span></div>
+      <div><div class="dash-kpi-val" style="color:#2E7D32">9</div><div class="dash-kpi-lbl">Live</div></div>
+    </div>
+    <div class="dash-kpi">
+      <div class="dash-kpi-icon" style="background:linear-gradient(135deg,#FFF3E0,#FFE0B2);color:#E65100"><span class="material-symbols-rounded">hourglass_top</span></div>
+      <div><div class="dash-kpi-val" style="color:#E65100">6</div><div class="dash-kpi-lbl">In Progress</div></div>
+    </div>
+    <div class="dash-kpi">
+      <div class="dash-kpi-icon" style="background:linear-gradient(135deg,#E3F2FD,#BBDEFB);color:#0070F2"><span class="material-symbols-rounded">schedule</span></div>
+      <div><div class="dash-kpi-val" style="color:#0070F2">2</div><div class="dash-kpi-lbl">Pending</div></div>
+    </div>
+  </div>
+
+  <!-- Buyer / Supplier Toggle -->
+  <div class="dash-toggle">
+    <button class="dash-btn active" data-mode="buyer">
+      <div class="dash-avatar" id="dash-buyer-avatar" style="background:var(--accent)">BU</div>
+      <div><div class="dash-label">Buyer View</div></div>
+      <span class="material-symbols-rounded dash-btn-arrow">chevron_right</span>
+    </button>
+    <button class="dash-btn" data-mode="supplier">
+      <div class="dash-avatar" id="dash-supplier-avatar" style="background:var(--stage-3)">AC</div>
+      <div><div class="dash-label">Supplier View</div></div>
+      <span class="material-symbols-rounded dash-btn-arrow">chevron_right</span>
+    </button>
+  </div>
+
+  <!-- Buyer View -->
+  <div id="dash-buyer" class="dash-view active">
+    <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">group</span> Active Suppliers</div>
+    <div class="sup-list">
+      <div class="sup-item"><div class="sup-avatar" style="background:var(--stage-3)">AC</div><div class="sup-info"><div class="sup-name">Acme Manufacturing Corp</div><div class="sup-anid">AN01234567890</div></div><div class="pill pill-build"><span class="pill-dot"></span>Build</div></div>
+      <div class="sup-item"><div class="sup-avatar" style="background:var(--stage-4)">GC</div><div class="sup-info"><div class="sup-name">GlobalCo Industries</div><div class="sup-anid">AN09876543210</div></div><div class="pill pill-test"><span class="pill-dot"></span>Testing</div></div>
+      <div class="sup-item"><div class="sup-avatar" style="background:var(--stage-6)">TK</div><div class="sup-info"><div class="sup-name">TechKom Solutions</div><div class="sup-anid">AN05678901234</div></div><div class="pill pill-prod"><span class="pill-dot"></span>Production</div></div>
+      <div class="sup-item"><div class="sup-avatar" style="background:var(--stage-1)">NX</div><div class="sup-info"><div class="sup-name">NexaParts GmbH</div><div class="sup-anid">AN04321098765</div></div><div class="pill pill-plan"><span class="pill-dot"></span>Plan</div></div>
+    </div>
+  </div>
+
+  <!-- Supplier View -->
+  <div id="dash-supplier" class="dash-view">
+    <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">apartment</span> Active Customers</div>
+    <div class="sup-list">
+      <div class="sup-item"><div class="sup-avatar" style="background:var(--accent)">SA</div><div class="sup-info"><div class="sup-name">SAP SE</div><div class="sup-anid">AN11000000001</div></div><div class="pill pill-prod"><span class="pill-dot"></span>Production</div></div>
+      <div class="sup-item"><div class="sup-avatar" style="background:var(--stage-4)">BM</div><div class="sup-info"><div class="sup-name">BMW Group</div><div class="sup-anid">AN11000000002</div></div><div class="pill pill-test"><span class="pill-dot"></span>Testing</div></div>
+      <div class="sup-item"><div class="sup-avatar" style="background:var(--stage-6)">SI</div><div class="sup-info"><div class="sup-name">Siemens AG</div><div class="sup-anid">AN11000000003</div></div><div class="pill pill-prod"><span class="pill-dot"></span>Production</div></div>
+      <div class="sup-item"><div class="sup-avatar" style="background:var(--warn)">BA</div><div class="sup-info"><div class="sup-name">BASF SE</div><div class="sup-anid">AN11000000004</div></div><div class="pill pill-test"><span class="pill-dot"></span>Testing</div></div>
+    </div>
+  </div>
+
+</div></div>
+
+<!-- ==================== SETTINGS OVERLAY ==================== -->
+<div id="settings-overlay" class="overlay-panel" style="display:none">
+  <div class="overlay-header">
+    <span class="material-symbols-rounded" style="font-size:20px">settings</span>
+    <span class="overlay-title">Settings</span>
+    <button class="overlay-close" id="settings-close"><span class="material-symbols-rounded">close</span></button>
+  </div>
+  <div class="overlay-body">
+
+    <!-- LOGIN CARD -->
+    <div class="stg-card">
+      <div class="stg-card-header">
+        <div class="stg-card-icon stg-card-icon--login"><span class="material-symbols-rounded">lock_open</span></div>
+        <div>
+          <div class="stg-card-title">Login</div>
+          <div class="stg-card-sub">Authenticate with SAP credentials</div>
+        </div>
+      </div>
+      <div class="stg-card-body">
+        <div class="stg-field">
+          <label class="stg-label" for="settings-email">Email</label>
+          <div class="stg-input-wrap">
+            <span class="material-symbols-rounded stg-input-icon">mail</span>
+            <input type="email" id="settings-email" class="stg-input" placeholder="firstname.lastname@sap.com">
+          </div>
+        </div>
+        <div class="stg-field">
+          <label class="stg-label" for="settings-pass">Password</label>
+          <div class="stg-input-wrap">
+            <span class="material-symbols-rounded stg-input-icon">lock</span>
+            <input type="password" id="settings-pass" class="stg-input stg-input--pass" placeholder="Enter password">
+            <button class="stg-eye" id="settings-eye"><span class="material-symbols-rounded">visibility</span></button>
+          </div>
+        </div>
+        <div class="stg-field">
+          <label class="stg-label" for="settings-rsa">RSA SecurID</label>
+          <div class="stg-input-wrap">
+            <span class="material-symbols-rounded stg-input-icon">pin</span>
+            <input type="text" id="settings-rsa" class="stg-input stg-input--rsa" placeholder="● ● ● ● ● ●" maxlength="6">
+          </div>
+        </div>
+        <button class="stg-login-btn" id="settings-login-btn">
+          <span class="material-symbols-rounded" style="font-size:16px">login</span> Sign In
+        </button>
+        <div id="settings-login-status" style="display:none;margin-top:8px;text-align:center;font-size:11px"></div>
+      </div>
+    </div>
+
+    <!-- PREFERENCES CARD -->
+    <div class="stg-card">
+      <div class="stg-card-header">
+        <div class="stg-card-icon stg-card-icon--pref"><span class="material-symbols-rounded">palette</span></div>
+        <div>
+          <div class="stg-card-title">Preferences</div>
+          <div class="stg-card-sub">Customize your experience</div>
+        </div>
+      </div>
+      <div class="stg-card-body">
+        <div class="stg-toggle-row">
+          <div class="stg-toggle-info">
+            <span class="material-symbols-rounded stg-toggle-icon">dark_mode</span>
+            <span class="stg-toggle-label">Dark Mode</span>
+          </div>
+          <label class="toggle-switch"><input type="checkbox" id="settings-darkmode"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="stg-toggle-row">
+          <div class="stg-toggle-info">
+            <span class="material-symbols-rounded stg-toggle-icon">notifications</span>
+            <span class="stg-toggle-label">Notifications</span>
+          </div>
+          <label class="toggle-switch"><input type="checkbox" id="settings-notif" checked><span class="toggle-slider"></span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABOUT CARD -->
+    <div class="stg-card stg-card--about">
+      <div class="stg-about-brand">
+        <span class="stg-about-logo">AIA</span>
+        <span class="stg-about-ver">v3.2</span>
+      </div>
+      <div class="stg-about-name">AI Automated Integration</div>
+      <div class="stg-about-copy">&copy; 2026 SAP SE. All rights reserved.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ==================== ACTIVITY OVERLAY ==================== -->
+<div id="activity-overlay" class="overlay-panel" style="display:none">
+  <div class="overlay-header">
+    <span class="material-symbols-rounded" style="font-size:20px">history</span>
+    <span class="overlay-title">Activity Log</span>
+    <button class="overlay-close" id="activity-close"><span class="material-symbols-rounded">close</span></button>
+  </div>
+  <div class="overlay-filters">
+    <select id="activity-sev-filter" class="activity-filter-select">
+      <option value="all">All Severity</option>
+      <option value="critical">Critical</option>
+      <option value="warning">Warning</option>
+      <option value="info">Info</option>
+      <option value="success">Success</option>
+    </select>
+    <select id="activity-date-filter" class="activity-filter-select">
+      <option value="7">Last 7 days</option>
+      <option value="30">Last 30 days</option>
+      <option value="90">Last 90 days</option>
+    </select>
+  </div>
+  <div class="overlay-body" id="activity-list">
+    <!-- Populated by JS -->
+  </div>
+</div>
+
+<!-- ==================== AIE (Augmented Integration Experience) ==================== -->
+<div id="tab-aie" class="panel">
+
+  <!-- Arrow Stepper (same style as Integration tab) -->
+  <div class="stepper-arrow" id="aie-stepper">
+    <div class="arrow-step active" data-aie-stage="retrieval"><div class="arrow-inner"><span class="arrow-num">1</span><span class="arrow-label">Retrieval</span></div></div>
+    <div class="arrow-step" data-aie-stage="analyzer"><div class="arrow-inner"><span class="arrow-num">2</span><span class="arrow-label">Analyzer</span></div></div>
+    <div class="arrow-step" data-aie-stage="creator"><div class="arrow-inner"><span class="arrow-num">3</span><span class="arrow-label">Creator</span></div></div>
+    <div class="arrow-step last" data-aie-stage="tester"><div class="arrow-inner"><span class="arrow-num">4</span><span class="arrow-label">Tester</span></div></div>
+  </div>
+
+  <div class="pscroll" style="padding-top:0">
+
+    <!-- ===== RETRIEVAL ===== -->
+    <div id="aie-retrieval" class="aie-stage-view active">
+      <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">cloud_download</span> Retrieval Methods</div>
+      <div class="banner banner-info"><span class="material-symbols-rounded" style="font-size:16px">info</span><div>Select methods to retrieve <b id="aie-ret-docname">Purchase Order</b> transactions from the supplier account.</div></div>
+
+      <!-- Method 1: Manual Upload -->
+      <div class="card aie-method-card">
+        <label class="aie-method-header"><input type="checkbox" class="aie-method-check" id="aie-m-upload" checked><span class="aie-method-name">Manual Upload</span><span class="badge badge-success">Active</span></label>
+        <div class="aie-method-config" id="aie-mc-upload">
+          <div class="aie-upload-zone" id="aie-upload-zone">
+            <span class="material-symbols-rounded" style="font-size:28px;color:var(--accent)">upload_file</span>
+            <div style="font-size:11px;color:var(--text2);margin-top:4px">Drop cXML/XML files here or click to browse</div>
+            <input type="file" id="aie-file-input" multiple accept=".xml,.cxml,.txt" style="display:none">
+          </div>
+        </div>
+      </div>
+
+      <!-- Method 2: Web Scraping Export -->
+      <div class="card aie-method-card">
+        <label class="aie-method-header"><input type="checkbox" class="aie-method-check" id="aie-m-scrape" checked><span class="aie-method-name">Web Scraping Export (Supplier Portal)</span><span class="badge badge-success">Active</span></label>
+        <div class="aie-method-config" id="aie-mc-scrape">
+          <div class="aie-form-group"><label>Portal URL</label><input type="text" class="aie-input" value="https://portal.us.bn.cloud.ariba.com/dashboard/home"></div>
+          <div class="aie-form-group"><label>Supplier ANID</label><input type="text" class="aie-input" value="AN01015464739-T"></div>
+        </div>
+      </div>
+
+      <!-- Method 3: API Fetch -->
+      <div class="card aie-method-card">
+        <label class="aie-method-header"><input type="checkbox" class="aie-method-check" id="aie-m-api"><span class="aie-method-name">API Fetch (cXML Endpoint)</span><span class="badge badge-warning">Secret Pending</span></label>
+        <div class="aie-method-config" id="aie-mc-api" style="display:none">
+          <div class="aie-form-group"><label>OAuth Client ID</label><input type="text" class="aie-input" value="c5624845-9213-4fbf-94e8-cb4d283f8917"></div>
+          <div class="aie-form-group"><label>Application Key</label><input type="text" class="aie-input" value="cngd0onkX0u5EFIbhms4ajS2TjlM9lS0"></div>
+          <div class="aie-form-group"><label>OAuth Secret</label><input type="password" class="aie-input" placeholder="Pending from admin"></div>
+          <div class="aie-form-group"><label>Realm</label><input type="text" class="aie-input" value="AMS-Sandbox-T"></div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-block" id="aie-retrieve-btn" style="margin-top:12px"><span class="material-symbols-rounded" style="font-size:15px;vertical-align:-3px">sync</span> Retrieve Transactions</button>
+
+      <!-- Network Capture Indicator -->
+      <div class="card" id="aie-capture-card" style="margin-top:10px;display:none">
+        <div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px;color:var(--ok)">sensors</span> Network Capture</span><span class="badge badge-success" id="aie-capture-count">0 captured</span></div>
+        <div class="card-body" style="display:block;font-size:11px;color:var(--text2)" id="aie-capture-log">Passively monitoring for cXML traffic...</div>
+      </div>
+
+      <!-- Retrieved Transactions Table -->
+      <div class="section-title" style="margin-top:16px"><span class="material-symbols-rounded" style="font-size:16px">list_alt</span> Retrieved Transactions <span class="badge badge-dur" id="aie-txn-count" style="margin-left:6px">0</span></div>
+      <div class="card"><div class="card-body" style="display:block;padding:0">
+        <table class="aie-table" id="aie-txn-table">
+          <thead><tr><th><input type="checkbox" id="aie-txn-all"></th><th>ID</th><th>Type</th><th>Date</th><th>Status</th><th>Source</th></tr></thead>
+          <tbody id="aie-txn-tbody">
+          </tbody>
+        </table>
+        <div id="aie-txn-empty" style="padding:16px;text-align:center;color:var(--text2);font-size:12px">
+          <span class="material-symbols-rounded" style="font-size:28px;color:var(--text3);display:block;margin-bottom:6px">inbox</span>
+          No transactions retrieved yet. Click "Retrieve" or upload files.
+        </div>
+      </div></div>
+
+      <!-- Save Retrieved Transactions -->
+      <div class="aie-save-row" id="aie-save-row" style="display:none;margin-top:10px;gap:8px">
+        <button class="btn btn-primary" id="aie-save-btn" style="flex:1"><span class="material-symbols-rounded" style="font-size:15px;vertical-align:-3px">save</span> Save to Local Storage</button>
+        <button class="btn btn-outline" id="aie-clear-btn" title="Clear retrieved"><span class="material-symbols-rounded" style="font-size:15px;vertical-align:-3px">delete_sweep</span></button>
+      </div>
+
+      <!-- Saved Transactions Count -->
+      <div class="card" id="aie-stored-card" style="margin-top:10px">
+        <div class="card-hdr">
+          <span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">folder_special</span> Stored Locally</span>
+          <span style="display:flex;align-items:center;gap:6px">
+            <button class="aie-btn-sm" id="aie-stored-delete-btn" style="display:none;color:var(--error);border-color:var(--error)" title="Delete selected"><span class="material-symbols-rounded" style="font-size:12px;vertical-align:-2px">delete</span> Delete</button>
+            <span class="badge badge-dur" id="aie-stored-count">0</span>
+          </span>
+        </div>
+        <div class="card-body" style="display:block;padding:0" id="aie-stored-body">
+          <table class="aie-table" id="aie-stored-table" style="display:none">
+            <thead><tr><th style="width:28px"><input type="checkbox" id="aie-stored-all"></th><th>ID</th><th>Type</th><th>Date</th><th>Source</th><th style="width:50px">Size</th></tr></thead>
+            <tbody id="aie-stored-tbody"></tbody>
+          </table>
+          <div id="aie-stored-empty" style="padding:14px;text-align:center;color:var(--text2);font-size:11px">No transactions stored yet.</div>
+        </div>
+      </div>
+
+      <!-- Retrieval Readiness -->
+      <div class="aie-step-readiness" id="aie-retrieval-readiness" style="display:none">
+        <span class="material-symbols-rounded" style="font-size:14px;color:var(--ok)">check_circle</span>
+        <span id="aie-readiness-text">Retrieval: 0 transactions found</span>
+        <span class="badge badge-success">Complete</span>
+      </div>
+
+      <button class="btn btn-primary" id="aie-to-analyzer" style="margin-top:10px"><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">arrow_forward</span> Send Selected to Analyzer</button>
+    </div>
+
+    <!-- ===== ANALYZER ===== -->
+    <div id="aie-analyzer" class="aie-stage-view">
+      <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">science</span> Analyzer</div>
+      <div class="banner banner-info"><span class="material-symbols-rounded" style="font-size:16px">lightbulb</span><div>Apply MasterData, BusinessRules, Schema & Templates to create document versions.</div></div>
+
+      <!-- Selected Transactions -->
+      <div class="card"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">description</span> Selected Transactions</span><span class="badge badge-dur" id="aie-ana-count">2 selected</span></div>
+        <div class="card-body" style="display:block" id="aie-ana-files">
+          <div class="aie-config-row"><span class="material-symbols-rounded" style="font-size:14px;color:var(--accent)">description</span> PO 7800459912 — $48,250 (4 items) <span class="badge badge-success">cXML</span></div>
+          <div class="aie-config-row"><span class="material-symbols-rounded" style="font-size:14px;color:var(--accent)">description</span> PO 9900123401 — $7,200 <span class="badge badge-success">cXML</span></div>
+        </div>
+      </div>
+
+      <!-- Configuration Files -->
+      <div class="card"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">folder_open</span> Configuration Files</span><button class="aie-btn-sm" id="aie-fetch-config">Fetch from Buyer</button></div>
+        <div class="card-body" style="display:block">
+          <div class="aie-config-upload-row"><span class="material-symbols-rounded" style="font-size:14px;color:var(--ok)">check_circle</span><span>MasterData.json</span><span class="badge badge-dur">loaded</span><button class="aie-btn-sm" data-upload="masterdata">Replace</button></div>
+          <div class="aie-config-upload-row"><span class="material-symbols-rounded" style="font-size:14px;color:var(--ok)">check_circle</span><span>BusinessRules.json</span><span class="badge badge-dur">loaded</span><button class="aie-btn-sm" data-upload="rules">Replace</button></div>
+          <div class="aie-config-upload-row"><span class="material-symbols-rounded" style="font-size:14px;color:var(--ok)">check_circle</span><span>Schema.xml</span><span class="badge badge-dur">loaded</span><button class="aie-btn-sm" data-upload="schema">Replace</button></div>
+          <div class="aie-config-upload-row"><span class="material-symbols-rounded" style="font-size:14px;color:var(--ok)">check_circle</span><span>Templates.json</span><span class="badge badge-dur">loaded</span><button class="aie-btn-sm" data-upload="templates">Replace</button></div>
+        </div>
+      </div>
+
+      <!-- Document Scenarios -->
+      <div class="card"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">tune</span> Document Scenarios</span></div>
+        <div class="card-body" style="display:block">
+          <div class="aie-form-group"><label>Document Type</label>
+            <select class="aie-select" id="aie-scenario-doctype" style="width:100%">
+              <option value="OrderRequest">Purchase Order (OrderRequest)</option>
+              <option value="ConfirmationRequest">Order Confirmation (ConfirmationRequest)</option>
+              <option value="ShipNoticeRequest">ASN (ShipNoticeRequest)</option>
+              <option value="InvoiceDetailRequest">Invoice (InvoiceDetailRequest)</option>
+            </select>
+          </div>
+          <label class="aie-scenario-row"><input type="checkbox" checked id="aie-sc1"><div class="aie-scenario-info"><span class="aie-scenario-name">Scenario 1: Multi-Line Split</span><span class="aie-scenario-desc">Single-item PO → multiple item lines</span></div><button class="aie-btn-sm" data-params="sc1">Params</button></label>
+          <label class="aie-scenario-row"><input type="checkbox" checked id="aie-sc2"><div class="aie-scenario-info"><span class="aie-scenario-name">Scenario 2: No Supplier Part Number</span><span class="aie-scenario-desc">Handle missing SupplierPartID</span></div><button class="aie-btn-sm" data-params="sc2">Params</button></label>
+          <label class="aie-scenario-row"><input type="checkbox" checked id="aie-sc3"><div class="aie-scenario-info"><span class="aie-scenario-name">Scenario 3: Ad-hoc Ship-To</span><span class="aie-scenario-desc">ADBUYER-prefixed Ship-To address</span></div><button class="aie-btn-sm" data-params="sc3">Params</button></label>
+          <div class="aie-add-scenario"><button class="aie-btn-sm" id="aie-add-scenario">+ Add Custom Scenario</button></div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-block" id="aie-analyze-btn"><span class="material-symbols-rounded" style="font-size:15px;vertical-align:-3px">auto_awesome</span> Analyze & Create Versions</button>
+
+      <div id="aie-analyze-result" style="display:none;margin-top:12px">
+        <div class="banner banner-ok"><span class="material-symbols-rounded" style="font-size:16px;color:var(--ok)">check_circle</span><div><b>Analysis Complete</b> — <span id="aie-version-count">3</span> versions created per document.</div></div>
+      </div>
+
+      <!-- Analyzer Readiness -->
+      <div class="aie-step-readiness" id="aie-analyzer-readiness" style="display:none">
+        <span class="material-symbols-rounded" style="font-size:14px;color:var(--ok)">check_circle</span>
+        <span>Analyzer: 3 versions generated</span>
+        <span class="badge badge-success">Complete</span>
+      </div>
+
+      <button class="btn btn-primary" id="aie-to-creator" style="margin-top:10px;display:none"><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">arrow_forward</span> Go to Creator</button>
+    </div>
+
+    <!-- ===== CREATOR ===== -->
+    <div id="aie-creator" class="aie-stage-view">
+      <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">note_add</span> Integration Guide Creator</div>
+      <div class="banner banner-info"><span class="material-symbols-rounded" style="font-size:16px">table_view</span><div>All versions of <b id="aie-creator-docname">Purchase Order</b> — download as Excel with each version as a tab.</div></div>
+
+      <!-- Versions Table -->
+      <div class="card"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">folder_special</span> Generated Versions</span></div>
+        <div class="card-body" style="display:block;padding:0">
+          <table class="aie-table" id="aie-versions-table">
+            <thead><tr><th>#</th><th>Version</th><th>Description</th><th>Items</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td><b>Multi-Line Split</b></td><td>Single-item expanded to 3 split lines</td><td>3</td><td><span class="badge badge-success">Ready</span></td></tr>
+              <tr><td>2</td><td><b>No Supplier Part</b></td><td>SupplierPartID removed, BuyerPartID only</td><td>4</td><td><span class="badge badge-success">Ready</span></td></tr>
+              <tr><td>3</td><td><b>Ad-hoc Ship-To</b></td><td>ADBUYER-prefixed temporary address</td><td>4</td><td><span class="badge badge-success">Ready</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Download -->
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="btn btn-primary" id="aie-download-excel"><span class="material-symbols-rounded" style="font-size:15px;vertical-align:-3px">table_view</span> Download Excel Guide</button>
+        <button class="btn btn-secondary" id="aie-download-cxml-zip"><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">folder_zip</span> Download cXMLs</button>
+      </div>
+
+      <!-- Creator Readiness -->
+      <div class="aie-step-readiness" id="aie-creator-readiness" style="display:none">
+        <span class="material-symbols-rounded" style="font-size:14px;color:var(--ok)">check_circle</span>
+        <span>Creator: Excel guide generated</span>
+        <span class="badge badge-success">Complete</span>
+      </div>
+
+      <button class="btn btn-primary" id="aie-to-tester" style="margin-top:12px"><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">arrow_forward</span> Send to Tester</button>
+    </div>
+
+    <!-- ===== TESTER ===== -->
+    <div id="aie-tester" class="aie-stage-view">
+      <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">science</span> Test Integration</div>
+
+      <!-- Readiness Score -->
+      <div class="card aie-readiness-card">
+        <div class="card-body" style="display:flex;align-items:center;gap:16px;padding:14px">
+          <div class="aie-readiness-ring" id="aie-readiness-ring"><span class="aie-readiness-value" id="aie-readiness-value">50%</span></div>
+          <div><div style="font-size:12px;font-weight:600;color:var(--text)">Integration Readiness</div><div style="font-size:10px;color:var(--text2);margin-top:2px" id="aie-readiness-detail">3 of 6 checks passed</div></div>
+        </div>
+      </div>
+
+      <!-- Readiness Checklist -->
+      <div class="card"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">checklist</span> Readiness Checklist</span></div>
+        <div class="card-body" style="display:block">
+          <div class="aie-checklist" id="aie-checklist">
+            <label class="aie-check-item"><input type="checkbox" checked disabled><span>Transactions retrieved (3 POs)</span><span class="badge badge-dur">20%</span></label>
+            <label class="aie-check-item"><input type="checkbox" checked disabled><span>Config files loaded</span><span class="badge badge-dur">15%</span></label>
+            <label class="aie-check-item"><input type="checkbox" checked disabled><span>Scenarios analyzed (3 versions)</span><span class="badge badge-dur">15%</span></label>
+            <label class="aie-check-item"><input type="checkbox" disabled><span>Excel guides generated</span><span class="badge badge-dur">20%</span></label>
+            <label class="aie-check-item"><input type="checkbox" disabled><span>Outbound doc sent via CIG</span><span class="badge badge-dur">15%</span></label>
+            <label class="aie-check-item"><input type="checkbox" disabled><span>Response received & validated</span><span class="badge badge-dur">15%</span></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- CIG Connection -->
+      <div class="card"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">cable</span> Supplier CIG Connection</span></div>
+        <div class="card-body" style="display:block">
+          <div class="aie-form-group"><label>CIG Endpoint</label><input type="text" class="aie-input" id="aie-cig-endpoint" value="https://integration.ariba.com"></div>
+          <div class="aie-form-group"><label>AS2 ID</label><input type="text" class="aie-input" id="aie-cig-as2id" value="AN01015464739-T"></div>
+          <div class="aie-form-group"><label>Connection Status</label>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+              <span class="material-symbols-rounded" style="font-size:14px;color:var(--ok)">check_circle</span>
+              <span style="font-size:11px">Connected via AS2</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Test Documents -->
+      <div class="card"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">send</span> Outbound Test Documents</span></div>
+        <div class="card-body" style="display:block;padding:0">
+          <div class="banner banner-info" style="margin:8px;border-radius:var(--r-sm)"><span class="material-symbols-rounded" style="font-size:14px">info</span><div style="font-size:10px">PO is inbound — cannot be sent. Outbound docs (OC, ASN, Invoice) can be sent via Supplier CIG.</div></div>
+          <table class="aie-table" id="aie-test-table">
+            <thead><tr><th>Document</th><th>Version</th><th>Direction</th><th>Sent</th><th>Response</th><th></th></tr></thead>
+            <tbody>
+              <tr><td>OC for PO 7800459912</td><td>Multi-Line Split</td><td><span class="badge badge-dur">Outbound</span></td><td><span class="badge badge-dur">Not sent</span></td><td>—</td><td><button class="aie-btn-sm aie-send-test">Send via CIG</button></td></tr>
+              <tr><td>OC for PO 7800459912</td><td>No Supplier Part</td><td><span class="badge badge-dur">Outbound</span></td><td><span class="badge badge-dur">Not sent</span></td><td>—</td><td><button class="aie-btn-sm aie-send-test">Send via CIG</button></td></tr>
+              <tr><td>OC for PO 7800459912</td><td>Ad-hoc Ship-To</td><td><span class="badge badge-dur">Outbound</span></td><td><span class="badge badge-dur">Not sent</span></td><td>—</td><td><button class="aie-btn-sm aie-send-test">Send via CIG</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Response Monitor -->
+      <div class="section-title" style="margin-top:12px"><span class="material-symbols-rounded" style="font-size:16px">monitoring</span> Response Monitor</div>
+      <div class="card"><div class="card-body" style="display:block;text-align:center;padding:20px">
+        <span class="material-symbols-rounded" style="font-size:32px;color:var(--text2)">hourglass_empty</span>
+        <div style="font-size:11px;color:var(--text2);margin-top:8px">No responses received yet. Send outbound documents via CIG to start monitoring.</div>
+      </div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ==================== INTEGRATION ==================== -->
+<div id="tab-integration" class="panel">
+  <div class="int-toggle">
+    <button class="int-btn active" data-mode="supplier"><div class="int-avatar" id="int-supplier-avatar" style="background:var(--stage-3)">AC</div>Supplier</button>
+    <button class="int-btn" data-mode="buyer"><div class="int-avatar" id="int-buyer-avatar" style="background:var(--accent)">BU</div>Buyer</button>
+  </div>
+  <!-- Supplier Content -->
+  <div id="int-supplier" class="int-content active">
+    <div class="stepper-arrow">
+      <div class="arrow-step done" data-stage="s1"><div class="arrow-inner"><span class="arrow-icon material-symbols-rounded">check_circle</span><span class="arrow-label">Plan</span></div></div>
+      <div class="arrow-step done" data-stage="s2"><div class="arrow-inner"><span class="arrow-icon material-symbols-rounded">check_circle</span><span class="arrow-label">Design</span></div></div>
+      <div class="arrow-step active" data-stage="s3"><div class="arrow-inner"><span class="arrow-num">3</span><span class="arrow-label">Build</span></div></div>
+      <div class="arrow-step" data-stage="s4"><div class="arrow-inner"><span class="arrow-num">4</span><span class="arrow-label">Test</span></div></div>
+      <div class="arrow-step" data-stage="s5"><div class="arrow-inner"><span class="arrow-num">5</span><span class="arrow-label">Deploy</span></div></div>
+      <div class="arrow-step last" data-stage="s6"><div class="arrow-inner"><span class="arrow-num">6</span><span class="arrow-label">Live</span></div></div>
+    </div>
+    <div class="pscroll" style="padding-top:0">
+      <!-- Stage 1 -->
+      <div id="stage-s1" class="stage-view">
+        <div class="banner banner-ok"><span class="material-symbols-rounded" style="font-size:18px;color:var(--ok)">check_circle</span><div>Registration & Setup completed. All 4 tasks done.</div></div>
+        <div class="card"><div class="card-hdr"><span>1. Registration & Setup</span><span class="badge badge-dur">1 week</span></div><div class="card-body">
+          <div class="task"><input type="checkbox" checked disabled><span class="task-text done">Supplier AN account registration</span><span class="badge badge-role">Supplier</span></div>
+          <div class="task"><input type="checkbox" checked disabled><span class="task-text done">B2B standard selection (EDI X12)</span><span class="badge badge-role">Tech Lead</span></div>
+          <div class="task"><input type="checkbox" checked disabled><span class="task-text done">ERP type & capability assessment</span><span class="badge badge-role">SI</span><span class="badge badge-ai">AI</span></div>
+          <div class="task"><input type="checkbox" checked disabled><span class="task-text done">Assign project team & resources</span><span class="badge badge-role">PM</span></div>
+        </div></div>
+      </div>
+      <!-- Stage 2 -->
+      <div id="stage-s2" class="stage-view">
+        <div class="banner banner-ok"><span class="material-symbols-rounded" style="font-size:18px;color:var(--ok)">check_circle</span><div>Scope & Documents completed.</div></div>
+        <div class="card"><div class="card-hdr"><span>2. Scope & Documents</span><span class="badge badge-dur">1-2 weeks</span></div><div class="card-body">
+          <div class="task"><input type="checkbox" checked disabled><span class="task-text done">Confirm scope: doc types, locations</span><span class="badge badge-role">Business</span></div>
+          <div class="task"><input type="checkbox" checked disabled><span class="task-text done">Evaluate options (Portal/CSV/B2B)</span><span class="badge badge-role">Tech Lead</span><span class="badge badge-ai">AI</span></div>
+          <div class="task"><input type="checkbox" checked disabled><span class="task-text done">Review IGW & specifications</span><span class="badge badge-role">Tech Lead</span></div>
+          <div class="task"><input type="checkbox" checked disabled><span class="task-text done">Supplier-facing kickoff call</span><span class="badge badge-role">All</span></div>
+          <div class="task"><input type="checkbox" checked disabled><span class="task-text done">Negotiate & commit to timeline</span><span class="badge badge-role">PM</span></div>
+        </div></div>
+      </div>
+      <!-- Stage 3 (Active) -->
+      <div id="stage-s3" class="stage-view active">
+        <div class="banner banner-info"><span class="material-symbols-rounded" style="font-size:18px;color:var(--accent)">link</span><div><b>Stage 3: CIG Connectivity & Mapping</b> — 3 of 5 tasks completed.</div></div>
+        <div class="prog-wrap"><div class="prog-outer"><div class="prog-fill" style="width:60%;background:var(--stage-3)"></div></div><div class="prog-label"><span>Progress</span><span>3/5 (60%)</span></div></div>
+        <div class="card"><div class="card-hdr"><span>3. CIG Connectivity & Mapping</span><span class="badge badge-dur">1-2 weeks</span></div><div class="card-body">
+          <div class="task"><input type="checkbox" checked><span class="task-text done">Setup AN & Managed Gateway (CIG)</span><span class="badge badge-role">Tech Lead</span><span class="badge badge-ai">AI</span></div>
+          <div class="task"><input type="checkbox" checked><span class="task-text done">Establish connectivity (AS2)</span><span class="badge badge-role">Tech Lead</span></div>
+          <div class="task"><input type="checkbox" checked><span class="task-text done">Complete EDI/cXML mapping to ERP</span><span class="badge badge-role">ERP Tech</span><span class="badge badge-ai">AI</span></div>
+          <div class="task"><input type="checkbox"><span class="task-text">Validate mapping against IGW specs</span><span class="badge badge-role">SI</span><span class="badge badge-ai">AI</span></div>
+          <div class="task"><input type="checkbox"><span class="task-text">Configure CIG adapter templates</span><span class="badge badge-role">SI</span></div>
+        </div></div>
+      </div>
+      <!-- Stage 4 -->
+      <div id="stage-s4" class="stage-view">
+        <div class="banner banner-warn"><span class="material-symbols-rounded" style="font-size:18px;color:var(--warn)">hourglass_empty</span><div><b>Stage 4: Integration Testing</b> — Waiting for Build.</div></div>
+        <div class="card"><div class="card-hdr"><span>4. Integration Testing</span><span class="badge badge-dur">1-2 weeks</span></div><div class="card-body">
+          <div class="task"><input type="checkbox"><span class="task-text">Unit testing of B2B messages</span><span class="badge badge-role">Tech Lead</span><span class="badge badge-ai">AI</span></div>
+          <div class="task"><input type="checkbox"><span class="task-text">End-to-end UAT with buyer</span><span class="badge badge-role">Testing</span></div>
+          <div class="task"><input type="checkbox"><span class="task-text">Validate documents in supplier ERP</span><span class="badge badge-role">ERP Tech</span></div>
+          <div class="task"><input type="checkbox"><span class="task-text">Troubleshoot mapping errors</span><span class="badge badge-role">Tech Lead</span></div>
+          <div class="task"><input type="checkbox"><span class="task-text">Formal testing sign-off</span><span class="badge badge-role">Business</span></div>
+        </div></div>
+      </div>
+      <!-- Stage 5 -->
+      <div id="stage-s5" class="stage-view">
+        <div class="banner banner-warn"><span class="material-symbols-rounded" style="font-size:18px;color:var(--warn)">hourglass_empty</span><div><b>Stage 5: Deploy</b> — Pending.</div></div>
+        <div class="card"><div class="card-hdr"><span>5. Go-Live & Monitoring</span><span class="badge badge-dur">1-2 weeks</span></div><div class="card-body">
+          <div class="task"><input type="checkbox"><span class="task-text">Migrate mappings to production</span><span class="badge badge-role">Tech Lead</span></div>
+          <div class="task"><input type="checkbox"><span class="task-text">Configure production AN & CIG</span><span class="badge badge-role">SI</span></div>
+          <div class="task"><input type="checkbox"><span class="task-text">Smoke-test production transactions</span><span class="badge badge-role">Testing</span></div>
+        </div></div>
+      </div>
+      <!-- Stage 6 -->
+      <div id="stage-s6" class="stage-view">
+        <div class="banner banner-warn"><span class="material-symbols-rounded" style="font-size:18px;color:var(--warn)">hourglass_empty</span><div><b>Stage 6: Live</b> — Pending.</div></div>
+        <div class="card"><div class="card-hdr"><span>6. Steady-State & Hypercare</span><span class="badge badge-dur">2-4 weeks</span></div><div class="card-body">
+          <div class="task"><input type="checkbox"><span class="task-text">Hypercare monitoring</span><span class="badge badge-role">SI</span></div>
+          <div class="task"><input type="checkbox"><span class="task-text">TRR acceptance</span><span class="badge badge-role">All</span></div>
+          <div class="task"><input type="checkbox"><span class="task-text">Transition to steady-state</span><span class="badge badge-role">PM</span></div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+  <!-- Buyer Content -->
+  <div id="int-buyer" class="int-content">
+    <div class="stepper-arrow">
+      <div class="arrow-step active" data-stage="b1"><div class="arrow-inner"><span class="arrow-num">1</span><span class="arrow-label">Plan</span></div></div>
+      <div class="arrow-step" data-stage="b2"><div class="arrow-inner"><span class="arrow-num">2</span><span class="arrow-label">Design</span></div></div>
+      <div class="arrow-step" data-stage="b3"><div class="arrow-inner"><span class="arrow-num">3</span><span class="arrow-label">Build</span></div></div>
+      <div class="arrow-step" data-stage="b4"><div class="arrow-inner"><span class="arrow-num">4</span><span class="arrow-label">Test</span></div></div>
+      <div class="arrow-step" data-stage="b5"><div class="arrow-inner"><span class="arrow-num">5</span><span class="arrow-label">Deploy</span></div></div>
+      <div class="arrow-step last" data-stage="b6"><div class="arrow-inner"><span class="arrow-num">6</span><span class="arrow-label">Live</span></div></div>
+    </div>
+    <div class="pscroll" style="padding-top:0">
+      <div id="stage-b1" class="stage-view active">
+        <div class="banner banner-info"><span class="material-symbols-rounded" style="font-size:18px;color:var(--accent)">assignment</span><div><b>Buyer Stage 1</b> — 2 of 5 tasks done.</div></div>
+        <div class="prog-wrap"><div class="prog-outer"><div class="prog-fill" style="width:40%;background:var(--stage-1)"></div></div><div class="prog-label"><span>Progress</span><span>2/5 (40%)</span></div></div>
+        <div class="card"><div class="card-hdr"><span>1. Registration & Setup</span><span class="badge badge-dur">2-4 weeks</span></div><div class="card-body">
+          <div class="task"><input type="checkbox" checked><span class="task-text done">Executive alignment & project charter</span><span class="badge badge-role">PM</span></div>
+          <div class="task"><input type="checkbox" checked><span class="task-text done">Supplier portfolio assessment</span><span class="badge badge-role">NEL</span><span class="badge badge-ai">AI</span></div>
+          <div class="task"><input type="checkbox"><span class="task-text">AN buyer account configuration</span><span class="badge badge-role">SI</span></div>
+          <div class="task"><input type="checkbox"><span class="task-text">Validation rules & tolerance setup</span><span class="badge badge-role">Business</span></div>
+          <div class="task"><input type="checkbox"><span class="task-text">Internal team training & RACI</span><span class="badge badge-role">PM</span></div>
+        </div></div>
+      </div>
+      <div id="stage-b2" class="stage-view"><div class="banner banner-warn"><span class="material-symbols-rounded" style="font-size:18px;color:var(--warn)">hourglass_empty</span><div><b>Stage 2: Scope & Documents</b> — Pending.</div></div></div>
+      <div id="stage-b3" class="stage-view"><div class="banner banner-warn"><span class="material-symbols-rounded" style="font-size:18px;color:var(--warn)">hourglass_empty</span><div><b>Stage 3: CIG Connectivity</b> — Pending.</div></div></div>
+      <div id="stage-b4" class="stage-view"><div class="banner banner-warn"><span class="material-symbols-rounded" style="font-size:18px;color:var(--warn)">hourglass_empty</span><div><b>Stage 4: Integration Testing</b> — Pending.</div></div></div>
+      <div id="stage-b5" class="stage-view"><div class="banner banner-warn"><span class="material-symbols-rounded" style="font-size:18px;color:var(--warn)">hourglass_empty</span><div><b>Stage 5: Go-Live</b> — Pending.</div></div></div>
+      <div id="stage-b6" class="stage-view"><div class="banner banner-warn"><span class="material-symbols-rounded" style="font-size:18px;color:var(--warn)">hourglass_empty</span><div><b>Stage 6: Steady-State</b> — Pending.</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== TROUBLESHOOT ==================== -->
+<div id="tab-troubleshoot" class="panel"><div class="pscroll">
+  <div class="ts-scan">
+    <span class="material-symbols-rounded" style="font-size:28px;color:var(--accent)">search</span>
+    <div style="flex:1"><div class="ts-scan-title">Auto-Detect Errors</div><div class="ts-scan-desc">Scan current Ariba page for known issues</div></div>
+    <button class="btn btn-primary btn-sm" id="ts-scan-btn">Scan</button>
+  </div>
+  <div id="ts-scan-results"></div>
+  <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">support_agent</span> 3-Level Support Flow</div>
+  <div class="ts-levels">
+    <!-- Level 1 -->
+    <div class="ts-level">
+      <div class="ts-level-hdr"><div class="ts-level-num" style="background:var(--accent)">1</div><div><div style="font-weight:600;font-size:12px">Self-Service Scan & Diagnose</div><div style="font-size:10px;color:var(--text2)">Auto-scan, manual diagnose, draft email</div></div></div>
+      <div class="ts-level-body" style="display:block">
+        <div class="form-group"><label class="form-label">Category</label><select class="form-select" id="ts-category"><option value="">— Select —</option><option value="connectivity">Connectivity</option><option value="mapping">Mapping</option><option value="document">Document Processing</option><option value="account">Account / ANID</option><option value="certificate">Certificate</option><option value="cig">CIG</option><option value="testing">Testing</option><option value="production">Production</option></select></div>
+        <div class="form-group"><label class="form-label">Error description</label><textarea class="form-input" id="ts-error-text" rows="3" placeholder="Paste error message..."></textarea></div>
+        <button class="btn btn-primary btn-block btn-sm" id="ts-diagnose-btn"><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">troubleshoot</span> Diagnose</button>
+        <div id="ts-resolution" style="display:none;margin-top:10px"><div id="ts-resolution-content"></div></div>
+      </div>
+    </div>
+    <!-- Level 2 -->
+    <div class="ts-level">
+      <div class="ts-level-hdr"><div class="ts-level-num" style="background:var(--warn)">2</div><div><div style="font-weight:600;font-size:12px">Validate with Integration Guides</div><div style="font-size:10px;color:var(--text2)">Check buyer guide & business rules</div></div></div>
+      <div class="ts-level-body">
+        <div class="banner banner-info"><span class="material-symbols-rounded" style="font-size:16px">menu_book</span><div>Compare error against buyer's <b>Integration Guide</b> and <b>Business Rule Spec</b>.</div></div>
+        <div class="guide-card" style="border-left:3px solid var(--accent)"><div class="guide-title"><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">description</span> SAP SE — Buyer Integration Guide</div><div class="guide-desc">EDI/cXML mapping specs</div></div>
+        <div class="guide-card" style="border-left:3px solid var(--accent)"><div class="guide-title"><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">checklist</span> SAP SE — Business Rule Spec</div><div class="guide-desc">Price tolerance, qty limits, 3-way match</div></div>
+      </div>
+    </div>
+    <!-- Level 3 -->
+    <div class="ts-level">
+      <div class="ts-level-hdr"><div class="ts-level-num" style="background:var(--err)">3</div><div><div style="font-weight:600;font-size:12px">Contact SI Advisor</div><div style="font-size:10px;color:var(--text2)">Escalate after Level 1 & 2</div></div></div>
+      <div class="ts-level-body">
+        <div class="banner banner-warn"><span class="material-symbols-rounded" style="font-size:16px">warning</span><div>Only after Level 1 and 2 attempted.</div></div>
+        <div class="si-card">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <div style="width:36px;height:36px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0">RK</div>
+            <div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--text)">Rajesh Kumar</div><div style="font-size:10px;color:var(--text2)">SI Advisor · SAP Ariba Integration</div></div>
+          </div>
+          <div class="si-card-email"><span class="material-symbols-rounded" style="font-size:13px;vertical-align:-2px;color:var(--muted)">mail</span> rajesh.kumar@sap.com</div>
+          <div class="si-actions">
+            <a class="si-btn si-btn-outlook" href="https://outlook.office.com/mail/deeplink/compose?to=rajesh.kumar@sap.com&subject=[AIA] SI Escalation" target="_blank"><span class="material-symbols-rounded" style="font-size:15px">mail</span> Outlook Email</a>
+            <a class="si-btn si-btn-teams" href="https://teams.microsoft.com/l/chat/0/0?users=rajesh.kumar@sap.com" target="_blank"><span class="material-symbols-rounded" style="font-size:15px">chat</span> Teams Chat</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">link</span> Portal Quick Links</div>
+  <div class="ts-links">
+    <a class="ts-link" href="https://service.ariba.com" target="_blank"><span class="material-symbols-rounded" style="font-size:18px;color:var(--accent)">home</span><div><div style="font-weight:600">Ariba Network</div><div style="font-size:9px;color:var(--text2)">service.ariba.com</div></div><span class="material-symbols-rounded" style="font-size:14px;color:var(--muted)">arrow_forward</span></a>
+    <a class="ts-link" href="https://integration.ariba.com" target="_blank"><span class="material-symbols-rounded" style="font-size:18px;color:var(--accent)">hub</span><div><div style="font-weight:600">CIG Portal</div><div style="font-size:9px;color:var(--text2)">integration.ariba.com</div></div><span class="material-symbols-rounded" style="font-size:14px;color:var(--muted)">arrow_forward</span></a>
+    <a class="ts-link" href="https://support.ariba.com" target="_blank"><span class="material-symbols-rounded" style="font-size:18px;color:var(--accent)">support</span><div><div style="font-weight:600">Ariba Support</div><div style="font-size:9px;color:var(--text2)">support.ariba.com</div></div><span class="material-symbols-rounded" style="font-size:14px;color:var(--muted)">arrow_forward</span></a>
+  </div>
+</div></div>
+
+<!-- ==================== CIG ==================== -->
+<div id="tab-cig" class="panel">
+  <div class="sub-tabs"><button class="sub-tab active" data-view="cig-conn">Connection</button><button class="sub-tab" data-view="cig-map">Mapping</button></div>
+  <div class="pscroll">
+    <div id="cig-conn" class="sub-view active">
+      <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">cable</span> Connectivity Status</div>
+      <div class="card"><div class="card-body" style="display:block">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span style="font-size:13px;font-weight:600">AS2 Connection</span><span class="badge badge-success"><span class="material-symbols-rounded" style="font-size:12px;vertical-align:-2px">check_circle</span> Connected</span></div>
+        <div style="font-size:10px;color:var(--text2);margin-bottom:10px">Cert expires in 87 days</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:10px">
+          <div style="background:var(--bg2);padding:8px;border-radius:var(--r-sm)"><span style="color:var(--text2)">AS2 ID</span><br><b>ACME-PROD-01</b></div>
+          <div style="background:var(--bg2);padding:8px;border-radius:var(--r-sm)"><span style="color:var(--text2)">Endpoint</span><br><b>as2.acme.com:443</b></div>
+          <div style="background:var(--bg2);padding:8px;border-radius:var(--r-sm)"><span style="color:var(--text2)">Protocol</span><br><b>AS2 over HTTPS</b></div>
+          <div style="background:var(--bg2);padding:8px;border-radius:var(--r-sm)"><span style="color:var(--text2)">MDN</span><br><b>Sync MDN</b></div>
+        </div>
+      </div></div>
+      <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">verified_user</span> Certificates</div>
+      <div class="card"><div class="card-body" style="display:block;font-size:11px">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border2)"><div><b>AS2 Public Key</b><br><span style="font-size:9px;color:var(--text2)">SHA-256 · 2048-bit RSA</span></div><span class="badge badge-success">Valid</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border2)"><div><b>SSL Certificate</b><br><span style="font-size:9px;color:var(--text2)">DigiCert · Expires Jul 12, 2026</span></div><span class="badge badge-warning">87 days</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0"><div><b>Signing Certificate</b><br><span style="font-size:9px;color:var(--text2)">SHA-256 · Ariba CA</span></div><span class="badge badge-success">Valid</span></div>
+      </div></div>
+    </div>
+    <div id="cig-map" class="sub-view">
+      <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">swap_horiz</span> Document Mapping Configuration</div>
+      <div class="banner banner-info"><span class="material-symbols-rounded" style="font-size:16px">auto_awesome</span><div>Select document types to map. AI will auto-configure EDI/cXML mappings based on buyer specs and supplier ERP format.</div></div>
+      <div class="card"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">checklist</span> Select Documents to Map</span></div>
+        <div class="card-body" style="display:block">
+          <div style="display:flex;flex-direction:column;gap:6px" id="cig-doc-list">
+            <label class="cig-doc-row"><input type="checkbox" id="cig-d-po" checked style="accent-color:var(--accent);width:16px;height:16px"><div class="cig-doc-info"><span class="cig-doc-name">Purchase Order</span><span class="cig-doc-desc">OrderRequest · Buyer → Supplier</span></div><span class="badge badge-dur">850</span></label>
+            <label class="cig-doc-row"><input type="checkbox" id="cig-d-oc" checked style="accent-color:var(--accent);width:16px;height:16px"><div class="cig-doc-info"><span class="cig-doc-name">Order Confirmation</span><span class="cig-doc-desc">ConfirmationRequest · Supplier → Buyer</span></div><span class="badge badge-dur">855</span></label>
+            <label class="cig-doc-row"><input type="checkbox" id="cig-d-asn" checked style="accent-color:var(--accent);width:16px;height:16px"><div class="cig-doc-info"><span class="cig-doc-name">ASN (Advance Ship Notice)</span><span class="cig-doc-desc">ShipNoticeRequest · Supplier → Buyer</span></div><span class="badge badge-dur">856</span></label>
+            <label class="cig-doc-row"><input type="checkbox" id="cig-d-inv" checked style="accent-color:var(--accent);width:16px;height:16px"><div class="cig-doc-info"><span class="cig-doc-name">Invoice</span><span class="cig-doc-desc">InvoiceDetailRequest · Supplier → Buyer</span></div><span class="badge badge-dur">810</span></label>
+            <label class="cig-doc-row"><input type="checkbox" id="cig-d-rem" style="accent-color:var(--accent);width:16px;height:16px"><div class="cig-doc-info"><span class="cig-doc-name">Remittance Advice</span><span class="cig-doc-desc">PaymentRemittanceRequest · Buyer → Supplier</span></div><span class="badge badge-dur">820</span></label>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-block" id="cig-configure-btn" style="margin-bottom:10px"><span class="material-symbols-rounded" style="font-size:15px;vertical-align:-3px">auto_awesome</span> Configure Mapping with AI</button>
+      <div id="cig-ai-result" style="display:none">
+        <div class="banner banner-ok"><span class="material-symbols-rounded" style="font-size:16px;color:var(--ok)">check_circle</span><div><b>AI Mapping Complete</b> — <span id="cig-ai-count">4</span> document mappings configured.</div></div>
+        <div id="cig-ai-tables"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== GUIDES ==================== -->
+<div id="tab-guides" class="panel">
+   <div class="sub-tabs"><button class="sub-tab active" data-view="g-cxml">cXML Guide Creation</button><button class="sub-tab" data-view="g-edi">EDI Guide Creation</button><button class="sub-tab" data-view="g-anon">cXML Anonymizer</button><button class="sub-tab" data-view="g-cig">CIG Guide Creation</button><button class="sub-tab" data-view="g-test">Guide Test Central</button><button class="sub-tab" data-view="g-map">Mapping Settings</button></div>
+  <div class="pscroll">
+    <div id="g-cxml" class="sub-view active">
+      <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">code</span> cXML Guide Creation</div>
+      <div class="banner banner-info"><span class="material-symbols-rounded" style="font-size:16px">auto_awesome</span><div>Upload <b>cXML or EDI X12</b> documents below. AIA will auto-detect the format, parse each document, and generate a <b>cXML Guide</b> (Excel) with element-by-element explanations — preserving <b>all data exactly</b> as it appears. If EDI input is provided, it is faithfully converted to cXML first. Output is always cXML.</div></div>
+      <div class="card"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">upload_file</span> Upload Documents (cXML or EDI)</span><span class="badge badge-dur">6 types</span></div>
+        <div class="card-body" style="display:block">
+          <div class="cxml-upload-grid">
+            <div class="cxml-upload-slot" id="slot-po">
+              <input type="file" id="file-po" accept=".xml,.cxml,.txt,.edi,.x12,.dat" style="display:none">
+              <div class="cxml-upload-drop" data-target="file-po">
+                <span class="material-symbols-rounded cxml-upload-icon">shopping_cart</span>
+                <div class="cxml-upload-label">Purchase Order</div>
+                <div class="cxml-upload-hint">cXML OrderRequest / EDI 850</div>
+                <div class="cxml-upload-status" id="status-po"><span class="material-symbols-rounded" style="font-size:14px">cloud_upload</span> Drop or click</div>
+              </div>
+            </div>
+            <div class="cxml-upload-slot" id="slot-poc">
+              <input type="file" id="file-poc" accept=".xml,.cxml,.txt,.edi,.x12,.dat" style="display:none">
+              <div class="cxml-upload-drop" data-target="file-poc">
+                <span class="material-symbols-rounded cxml-upload-icon">edit_note</span>
+                <div class="cxml-upload-label">Purchase Order Change</div>
+                <div class="cxml-upload-hint">cXML OrderRequest (update) / EDI 860</div>
+                <div class="cxml-upload-status" id="status-poc"><span class="material-symbols-rounded" style="font-size:14px">cloud_upload</span> Drop or click</div>
+              </div>
+            </div>
+            <div class="cxml-upload-slot" id="slot-oc">
+              <input type="file" id="file-oc" accept=".xml,.cxml,.txt,.edi,.x12,.dat" style="display:none">
+              <div class="cxml-upload-drop" data-target="file-oc">
+                <span class="material-symbols-rounded cxml-upload-icon">check_circle</span>
+                <div class="cxml-upload-label">Order Confirmation</div>
+                <div class="cxml-upload-hint">cXML ConfirmationRequest / EDI 855</div>
+                <div class="cxml-upload-status" id="status-oc"><span class="material-symbols-rounded" style="font-size:14px">cloud_upload</span> Drop or click</div>
+              </div>
+            </div>
+            <div class="cxml-upload-slot" id="slot-asn">
+              <input type="file" id="file-asn" accept=".xml,.cxml,.txt,.edi,.x12,.dat" style="display:none">
+              <div class="cxml-upload-drop" data-target="file-asn">
+                <span class="material-symbols-rounded cxml-upload-icon">local_shipping</span>
+                <div class="cxml-upload-label">Advance Ship Notice</div>
+                <div class="cxml-upload-hint">cXML ShipNoticeRequest / EDI 856</div>
+                <div class="cxml-upload-status" id="status-asn"><span class="material-symbols-rounded" style="font-size:14px">cloud_upload</span> Drop or click</div>
+              </div>
+            </div>
+            <div class="cxml-upload-slot" id="slot-gr">
+              <input type="file" id="file-gr" accept=".xml,.cxml,.txt,.edi,.x12,.dat" style="display:none">
+              <div class="cxml-upload-drop" data-target="file-gr">
+                <span class="material-symbols-rounded cxml-upload-icon">inventory_2</span>
+                <div class="cxml-upload-label">Goods Receipt</div>
+                <div class="cxml-upload-hint">cXML ReceiptRequest / EDI 861</div>
+                <div class="cxml-upload-status" id="status-gr"><span class="material-symbols-rounded" style="font-size:14px">cloud_upload</span> Drop or click</div>
+              </div>
+            </div>
+            <div class="cxml-upload-slot" id="slot-inv">
+              <input type="file" id="file-inv" accept=".xml,.cxml,.txt,.edi,.x12,.dat" style="display:none">
+              <div class="cxml-upload-drop" data-target="file-inv">
+                <span class="material-symbols-rounded cxml-upload-icon">receipt_long</span>
+                <div class="cxml-upload-label">Invoice</div>
+                <div class="cxml-upload-hint">cXML InvoiceDetailRequest / EDI 810</div>
+                <div class="cxml-upload-status" id="status-inv"><span class="material-symbols-rounded" style="font-size:14px">cloud_upload</span> Drop or click</div>
+              </div>
+            </div>
+          </div>
+          <div id="cxml-upload-summary" style="display:none;margin-top:10px">
+            <div class="banner banner-ok"><span class="material-symbols-rounded" style="font-size:16px;color:var(--ok)">check_circle</span><div><b id="cxml-upload-count">0</b> of 6 documents uploaded. Ready to generate guide.</div></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">
+            <button class="btn btn-primary btn-block" id="cxml-convert-btn" disabled><span class="material-symbols-rounded" style="font-size:15px;vertical-align:-3px">download</span> Download cXML Guide (Excel)</button>
+            <button class="btn btn-block" id="cxml-download-xml-btn" style="border:1px solid var(--border);background:var(--card)" disabled><span class="material-symbols-rounded" style="font-size:15px;vertical-align:-3px">file_save</span> Download cXML Files</button>
+          </div>
+          <div id="cxml-convert-progress" style="display:none;margin-top:10px">
+            <div class="prog-wrap"><div class="prog-outer"><div class="prog-fill" id="cxml-prog-fill" style="width:0%;background:var(--accent)"></div></div><div class="prog-label"><span id="cxml-prog-text">Processing...</span><span id="cxml-prog-pct">0%</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="g-edi" class="sub-view">
+      <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">terminal</span> EDI X12 Guide Creation</div>
+
+      <!-- EDI Guide — supports both cXML and EDI input -->
+      <div class="banner banner-info"><span class="material-symbols-rounded" style="font-size:16px">auto_awesome</span><div>Upload <b>cXML or EDI X12</b> documents below. AIA will auto-detect the format, parse each document, and generate an EDI Guide (Excel) with segment-by-segment explanations — preserving <b>all segments, qualifiers, and values exactly</b> as they appear in the source. Output is always EDI X12.</div></div>
+      <div class="card"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">upload_file</span> Upload Documents (cXML or EDI)</span><span class="badge badge-dur">6 types</span></div>
+        <div class="card-body" style="display:block">
+          <div class="cxml-upload-grid">
+            <div class="cxml-upload-slot" id="edi-slot-po">
+              <input type="file" id="edi-file-po" accept=".edi,.x12,.txt,.dat,.xml,.cxml" style="display:none">
+              <div class="cxml-upload-drop" data-target="edi-file-po">
+                <span class="material-symbols-rounded cxml-upload-icon">shopping_cart</span>
+                <div class="cxml-upload-label">Purchase Order</div>
+                <div class="cxml-upload-hint">EDI 850 / cXML OrderRequest</div>
+                <div class="cxml-upload-status" id="edi-status-po"><span class="material-symbols-rounded" style="font-size:14px">cloud_upload</span> Drop or click</div>
+              </div>
+            </div>
+            <div class="cxml-upload-slot" id="edi-slot-poc">
+              <input type="file" id="edi-file-poc" accept=".edi,.x12,.txt,.dat,.xml,.cxml" style="display:none">
+              <div class="cxml-upload-drop" data-target="edi-file-poc">
+                <span class="material-symbols-rounded cxml-upload-icon">edit_note</span>
+                <div class="cxml-upload-label">Purchase Order Change</div>
+                <div class="cxml-upload-hint">EDI 860 / cXML OrderRequest (update)</div>
+                <div class="cxml-upload-status" id="edi-status-poc"><span class="material-symbols-rounded" style="font-size:14px">cloud_upload</span> Drop or click</div>
+              </div>
+            </div>
+            <div class="cxml-upload-slot" id="edi-slot-oc">
+              <input type="file" id="edi-file-oc" accept=".edi,.x12,.txt,.dat,.xml,.cxml" style="display:none">
+              <div class="cxml-upload-drop" data-target="edi-file-oc">
+                <span class="material-symbols-rounded cxml-upload-icon">check_circle</span>
+                <div class="cxml-upload-label">Order Confirmation</div>
+                <div class="cxml-upload-hint">EDI 855 / cXML ConfirmationRequest</div>
+                <div class="cxml-upload-status" id="edi-status-oc"><span class="material-symbols-rounded" style="font-size:14px">cloud_upload</span> Drop or click</div>
+              </div>
+            </div>
+            <div class="cxml-upload-slot" id="edi-slot-asn">
+              <input type="file" id="edi-file-asn" accept=".edi,.x12,.txt,.dat,.xml,.cxml" style="display:none">
+              <div class="cxml-upload-drop" data-target="edi-file-asn">
+                <span class="material-symbols-rounded cxml-upload-icon">local_shipping</span>
+                <div class="cxml-upload-label">Advance Ship Notice</div>
+                <div class="cxml-upload-hint">EDI 856 / cXML ShipNoticeRequest</div>
+                <div class="cxml-upload-status" id="edi-status-asn"><span class="material-symbols-rounded" style="font-size:14px">cloud_upload</span> Drop or click</div>
+              </div>
+            </div>
+            <div class="cxml-upload-slot" id="edi-slot-gr">
+              <input type="file" id="edi-file-gr" accept=".edi,.x12,.txt,.dat,.xml,.cxml" style="display:none">
+              <div class="cxml-upload-drop" data-target="edi-file-gr">
+                <span class="material-symbols-rounded cxml-upload-icon">inventory_2</span>
+                <div class="cxml-upload-label">Goods Receipt</div>
+                <div class="cxml-upload-hint">EDI 861 / cXML ReceiptRequest</div>
+                <div class="cxml-upload-status" id="edi-status-gr"><span class="material-symbols-rounded" style="font-size:14px">cloud_upload</span> Drop or click</div>
+              </div>
+            </div>
+            <div class="cxml-upload-slot" id="edi-slot-inv">
+              <input type="file" id="edi-file-inv" accept=".edi,.x12,.txt,.dat,.xml,.cxml" style="display:none">
+              <div class="cxml-upload-drop" data-target="edi-file-inv">
+                <span class="material-symbols-rounded cxml-upload-icon">receipt_long</span>
+                <div class="cxml-upload-label">Invoice</div>
+                <div class="cxml-upload-hint">EDI 810 / cXML InvoiceDetailRequest</div>
+                <div class="cxml-upload-status" id="edi-status-inv"><span class="material-symbols-rounded" style="font-size:14px">cloud_upload</span> Drop or click</div>
+              </div>
+            </div>
+          </div>
+          <div id="edi-upload-summary" style="display:none;margin-top:10px">
+            <div class="banner banner-ok"><span class="material-symbols-rounded" style="font-size:16px;color:var(--ok)">check_circle</span><div><b id="edi-upload-count">0</b> of 6 documents uploaded. Ready to generate.</div></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">
+            <button class="btn btn-primary btn-block" id="edi-convert-btn" disabled><span class="material-symbols-rounded" style="font-size:15px;vertical-align:-3px">download</span> Download EDI Guide (Excel)</button>
+            <button class="btn btn-block" id="edi-download-files-btn" style="border:1px solid var(--border);background:var(--card)" disabled><span class="material-symbols-rounded" style="font-size:15px;vertical-align:-3px">file_save</span> Download EDI Files</button>
+          </div>
+          <div id="edi-convert-progress" style="display:none;margin-top:10px">
+            <div class="prog-wrap"><div class="prog-outer"><div class="prog-fill" id="edi-conv-prog-fill" style="width:0%;background:var(--accent)"></div></div><div class="prog-label"><span id="edi-conv-prog-text">Processing...</span><span id="edi-conv-prog-pct">0%</span></div></div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+    <!-- ===== cXML Anonymizer ===== -->
+    <div id="g-anon" class="sub-view">
+      <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">shield</span> cXML Anonymizer</div>
+      <div class="banner banner-info"><span class="material-symbols-rounded" style="font-size:16px">auto_awesome</span><div>Upload cXML documents to anonymize sensitive data (names, emails, tax IDs, addresses, references) while preserving document structure. Supports batch processing with auto region detection. All processing happens locally in your browser.</div></div>
+
+      <div class="card"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">upload_file</span> Upload cXML Documents</span><span class="badge badge-dur">Max 50 files</span></div>
+        <div class="card-body" style="display:block">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <select id="anon-region" class="select-sm" style="flex:1">
+              <option value="auto">Auto-detect Region</option>
+              <option value="AU">Australia (APAC)</option>
+              <option value="US">United States (NAMAR)</option>
+              <option value="DE">Germany (EMEA)</option>
+              <option value="JP">Japan</option>
+              <option value="BR">Brazil (LATAM)</option>
+              <option value="GB">United Kingdom (EMEA)</option>
+              <option value="IN">India (APAC)</option>
+              <option value="SG">Singapore (APAC)</option>
+              <option value="CA">Canada (NAMAR)</option>
+              <option value="FR">France (EMEA)</option>
+              <option value="NL">Netherlands (EMEA)</option>
+              <option value="CH">Switzerland (EMEA)</option>
+            </select>
+            <label class="check-sm"><input type="checkbox" id="anon-dryrun"><span>Dry Run</span></label>
+          </div>
+
+          <div class="anon-drop-zone" id="anon-drop-zone">
+            <span class="material-symbols-rounded" style="font-size:36px;color:var(--accent);opacity:0.7">cloud_upload</span>
+            <div style="font-weight:500;margin-top:4px">Drop cXML files here or click to browse</div>
+            <div style="font-size:11px;color:var(--text2);margin-top:2px">.xml, .cxml, .txt — up to 50 files, 10 MB each</div>
+            <input type="file" id="anon-file-input" accept=".xml,.cxml,.txt" multiple style="display:none">
+          </div>
+
+          <div id="anon-file-list" style="display:none;margin-top:10px;max-height:200px;overflow-y:auto"></div>
+
+          <div id="anon-summary-banner" style="display:none;margin-top:10px">
+            <div class="banner banner-ok"><span class="material-symbols-rounded" style="font-size:16px;color:var(--ok)">check_circle</span><div><b id="anon-file-count">0</b> file(s) ready to anonymize.</div></div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">
+            <button class="btn btn-primary btn-block" id="anon-process-btn" disabled><span class="material-symbols-rounded" style="font-size:15px;vertical-align:-3px">shield</span> Anonymize</button>
+            <button class="btn btn-block" id="anon-clear-btn" style="border:1px solid var(--border);background:var(--card)"><span class="material-symbols-rounded" style="font-size:15px;vertical-align:-3px">delete</span> Clear All</button>
+          </div>
+
+          <div id="anon-progress" style="display:none;margin-top:10px">
+            <div class="prog-wrap"><div class="prog-outer"><div class="prog-fill" id="anon-prog-fill" style="width:0%;background:var(--accent)"></div></div><div class="prog-label"><span id="anon-prog-text">Processing...</span><span id="anon-prog-pct">0%</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div id="anon-results" style="display:none">
+        <div class="card"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">download</span> Results</span><span class="badge badge-ok" id="anon-result-count">0 files</span></div>
+          <div class="card-body" style="display:block">
+            <div id="anon-result-list" style="max-height:300px;overflow-y:auto;margin-bottom:10px"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <button class="btn btn-primary btn-block" id="anon-download-zip"><span class="material-symbols-rounded" style="font-size:15px;vertical-align:-3px">download</span> Download Anonymized</button>
+              <button class="btn btn-block" id="anon-download-log" style="border:1px solid var(--border);background:var(--card)"><span class="material-symbols-rounded" style="font-size:15px;vertical-align:-3px">table_chart</span> Download Log (Excel)</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Source Preview (collapsible) -->
+        <div class="card anon-preview-card" id="anon-source-card" style="display:none">
+          <div class="card-hdr anon-collapse-hdr" data-target="anon-source-body">
+            <span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">code</span> Source Preview</span>
+            <span class="material-symbols-rounded anon-collapse-icon">expand_more</span>
+          </div>
+          <div class="card-body anon-collapse-body" id="anon-source-body" style="display:block">
+            <select id="anon-source-select" class="select-sm" style="width:100%;margin-bottom:8px"></select>
+            <pre class="anon-xml-preview" id="anon-source-pre"></pre>
+          </div>
+        </div>
+
+        <!-- Anonymized Preview (collapsible) -->
+        <div class="card anon-preview-card" id="anon-output-card" style="display:none">
+          <div class="card-hdr anon-collapse-hdr" data-target="anon-output-body">
+            <span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">shield</span> Anonymized Preview</span>
+            <span class="material-symbols-rounded anon-collapse-icon">expand_more</span>
+          </div>
+          <div class="card-body anon-collapse-body" id="anon-output-body" style="display:block">
+            <pre class="anon-xml-preview" id="anon-output-pre"></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CIG Guide Creation ===== -->
+    <div id="g-cig" class="sub-view">
+      <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">settings_suggest</span> CIG Guide Creation</div>
+      <div class="banner banner-info"><span class="material-symbols-rounded" style="font-size:16px">auto_awesome</span><div>Connect to CIG Portal to fetch recent transactions, download cXML/EDI payloads, and auto-generate integration guides from real production data.</div></div>
+
+      <!-- CIG Connection -->
+      <div class="card"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">cable</span> CIG Connection</span><span class="badge badge-dur" id="cig-gc-status-badge">Disconnected</span></div>
+        <div class="card-body" style="display:block">
+          <div class="form-group"><label class="form-label">CIG Portal URL</label><input class="form-input" id="cig-gc-url" placeholder="https://integration.ariba.com/cig/v2/api" value=""></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div class="form-group"><label class="form-label">Username</label><input class="form-input" id="cig-gc-user" placeholder="CIG username"></div>
+            <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="cig-gc-pass" type="password" placeholder="CIG password"></div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;margin-top:4px">
+            <button class="btn btn-primary" id="cig-gc-connect-btn" style="flex:1"><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">power</span> Connect & Fetch Transactions</button>
+            <label style="font-size:10px;display:flex;align-items:center;gap:4px;cursor:pointer"><input type="checkbox" id="cig-gc-autoconfig" style="accent-color:var(--accent);width:14px;height:14px"> Auto-detect from portal</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="card" id="cig-gc-filters" style="display:none"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">filter_list</span> Transaction Filters</span></div>
+        <div class="card-body" style="display:block">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div class="form-group"><label class="form-label">Period</label><select class="form-select" id="cig-gc-period"><option value="30" selected>Last 30 Days</option><option value="14">Last 14 Days</option><option value="7">Last 7 Days</option></select></div>
+            <div class="form-group"><label class="form-label">Status</label><select class="form-select" id="cig-gc-txn-status"><option value="success" selected>Success</option><option value="failed">Failed</option><option value="all">All</option></select></div>
+          </div>
+          <div class="form-group"><label class="form-label">Document Types</label>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px">
+              <label style="font-size:11px;display:flex;align-items:center;gap:3px;cursor:pointer"><input type="checkbox" class="cig-gc-doctype" value="po" checked style="accent-color:var(--accent)"> PO (850)</label>
+              <label style="font-size:11px;display:flex;align-items:center;gap:3px;cursor:pointer"><input type="checkbox" class="cig-gc-doctype" value="oc" checked style="accent-color:var(--accent)"> OC (855)</label>
+              <label style="font-size:11px;display:flex;align-items:center;gap:3px;cursor:pointer"><input type="checkbox" class="cig-gc-doctype" value="asn" checked style="accent-color:var(--accent)"> ASN (856)</label>
+              <label style="font-size:11px;display:flex;align-items:center;gap:3px;cursor:pointer"><input type="checkbox" class="cig-gc-doctype" value="gr" checked style="accent-color:var(--accent)"> GR (861)</label>
+              <label style="font-size:11px;display:flex;align-items:center;gap:3px;cursor:pointer"><input type="checkbox" class="cig-gc-doctype" value="inv" checked style="accent-color:var(--accent)"> INV (810)</label>
+            </div>
+          </div>
+          <!-- Format Toggle -->
+          <div class="form-group"><label class="form-label">Payload Format</label>
+            <div style="display:flex;gap:0;margin-top:4px">
+              <button class="btn cig-gc-fmt-btn active" data-fmt="cxml" style="flex:1;border-radius:6px 0 0 6px;font-size:11px;padding:6px 0">cXML</button>
+              <button class="btn cig-gc-fmt-btn" data-fmt="edi" style="flex:1;border-radius:0 6px 6px 0;font-size:11px;padding:6px 0;border-left:0">EDI X12</button>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-block" id="cig-gc-refresh-btn" style="margin-top:6px"><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">refresh</span> Refresh Transactions</button>
+        </div>
+      </div>
+
+      <!-- Transaction Table -->
+      <div class="card" id="cig-gc-results" style="display:none"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">list_alt</span> CIG Transactions</span><span class="badge badge-success" id="cig-gc-count-badge">0 found</span></div>
+        <div class="card-body" style="display:block;padding:0">
+          <div style="max-height:280px;overflow-y:auto">
+            <table style="width:100%;font-size:10px;border-collapse:collapse" id="cig-gc-table">
+              <thead><tr style="background:var(--bg2);position:sticky;top:0;z-index:1">
+                <th style="padding:6px 8px;text-align:left;font-weight:600;border-bottom:1px solid var(--border)"><input type="checkbox" id="cig-gc-select-all" style="accent-color:var(--accent)"></th>
+                <th style="padding:6px 8px;text-align:left;font-weight:600;border-bottom:1px solid var(--border)">Date</th>
+                <th style="padding:6px 8px;text-align:left;font-weight:600;border-bottom:1px solid var(--border)">Type</th>
+                <th style="padding:6px 8px;text-align:left;font-weight:600;border-bottom:1px solid var(--border)">Direction</th>
+                <th style="padding:6px 8px;text-align:left;font-weight:600;border-bottom:1px solid var(--border)">Doc ID</th>
+                <th style="padding:6px 8px;text-align:left;font-weight:600;border-bottom:1px solid var(--border)">Status</th>
+              </tr></thead>
+              <tbody id="cig-gc-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Download Actions -->
+      <div id="cig-gc-actions" style="display:none;margin-top:8px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <button class="btn btn-primary btn-block" id="cig-gc-download-btn"><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">download</span> Download Selected Payloads</button>
+          <button class="btn btn-block" id="cig-gc-guide-btn" style="border:1px solid var(--border);background:var(--card)"><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">auto_awesome</span> Generate Guide from Selected</button>
+        </div>
+        <div id="cig-gc-progress" style="display:none;margin-top:10px">
+          <div class="prog-wrap"><div class="prog-outer"><div class="prog-fill" id="cig-gc-prog-fill" style="width:0%;background:var(--accent)"></div></div><div class="prog-label"><span id="cig-gc-prog-text">Downloading...</span><span id="cig-gc-prog-pct">0%</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Guide Test Central ===== -->
+    <div id="g-test" class="sub-view">
+      <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">science</span> Guide Test Central</div>
+      <div class="banner banner-info"><span class="material-symbols-rounded" style="font-size:16px">auto_awesome</span><div>Upload cXML or EDI documents and POST them to test supplier account readiness on Ariba Network. Scan for transaction status after submission.</div></div>
+
+      <!-- Target Configuration -->
+      <div class="card"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">settings</span> Target Configuration</span></div>
+        <div class="card-body" style="display:block">
+          <div class="form-group"><label class="form-label">POST Endpoint</label><input class="form-input" id="gtc-endpoint" placeholder="https://service.ariba.com/service/transaction/cxml.asp" value="https://service.ariba.com/service/transaction/cxml.asp"></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div class="form-group"><label class="form-label">Sender ANID</label><input class="form-input" id="gtc-sender" placeholder="AN01234567890"></div>
+            <div class="form-group"><label class="form-label">Receiver ANID</label><input class="form-input" id="gtc-receiver" placeholder="AN09876543210"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div class="form-group"><label class="form-label">Shared Secret</label><input class="form-input" id="gtc-secret" type="password" placeholder="SharedSecret"></div>
+            <div class="form-group"><label class="form-label">Environment</label><select class="form-select" id="gtc-env"><option value="test">Test</option><option value="production">Production</option></select></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upload Documents -->
+      <div class="card"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">upload_file</span> Upload Test Documents</span><span class="badge badge-dur">cXML or EDI</span></div>
+        <div class="card-body" style="display:block">
+          <div class="cxml-upload-grid">
+            <div class="cxml-upload-slot" id="gtc-slot-po">
+              <input type="file" id="gtc-file-po" accept=".xml,.cxml,.edi,.x12,.txt" style="display:none">
+              <div class="cxml-upload-drop" data-target="gtc-file-po">
+                <span class="material-symbols-rounded cxml-upload-icon">shopping_cart</span>
+                <div class="cxml-upload-label">Purchase Order</div>
+                <div class="cxml-upload-hint">cXML or EDI 850</div>
+                <div class="cxml-upload-status" id="gtc-status-po"><span class="material-symbols-rounded" style="font-size:14px">cloud_upload</span> Drop or click</div>
+              </div>
+            </div>
+            <div class="cxml-upload-slot" id="gtc-slot-oc">
+              <input type="file" id="gtc-file-oc" accept=".xml,.cxml,.edi,.x12,.txt" style="display:none">
+              <div class="cxml-upload-drop" data-target="gtc-file-oc">
+                <span class="material-symbols-rounded cxml-upload-icon">check_circle</span>
+                <div class="cxml-upload-label">Order Confirmation</div>
+                <div class="cxml-upload-hint">cXML or EDI 855</div>
+                <div class="cxml-upload-status" id="gtc-status-oc"><span class="material-symbols-rounded" style="font-size:14px">cloud_upload</span> Drop or click</div>
+              </div>
+            </div>
+            <div class="cxml-upload-slot" id="gtc-slot-asn">
+              <input type="file" id="gtc-file-asn" accept=".xml,.cxml,.edi,.x12,.txt" style="display:none">
+              <div class="cxml-upload-drop" data-target="gtc-file-asn">
+                <span class="material-symbols-rounded cxml-upload-icon">local_shipping</span>
+                <div class="cxml-upload-label">Advance Ship Notice</div>
+                <div class="cxml-upload-hint">cXML or EDI 856</div>
+                <div class="cxml-upload-status" id="gtc-status-asn"><span class="material-symbols-rounded" style="font-size:14px">cloud_upload</span> Drop or click</div>
+              </div>
+            </div>
+            <div class="cxml-upload-slot" id="gtc-slot-gr">
+              <input type="file" id="gtc-file-gr" accept=".xml,.cxml,.edi,.x12,.txt" style="display:none">
+              <div class="cxml-upload-drop" data-target="gtc-file-gr">
+                <span class="material-symbols-rounded cxml-upload-icon">inventory_2</span>
+                <div class="cxml-upload-label">Goods Receipt</div>
+                <div class="cxml-upload-hint">cXML or EDI 861</div>
+                <div class="cxml-upload-status" id="gtc-status-gr"><span class="material-symbols-rounded" style="font-size:14px">cloud_upload</span> Drop or click</div>
+              </div>
+            </div>
+            <div class="cxml-upload-slot" id="gtc-slot-inv">
+              <input type="file" id="gtc-file-inv" accept=".xml,.cxml,.edi,.x12,.txt" style="display:none">
+              <div class="cxml-upload-drop" data-target="gtc-file-inv">
+                <span class="material-symbols-rounded cxml-upload-icon">receipt_long</span>
+                <div class="cxml-upload-label">Invoice</div>
+                <div class="cxml-upload-hint">cXML or EDI 810</div>
+                <div class="cxml-upload-status" id="gtc-status-inv"><span class="material-symbols-rounded" style="font-size:14px">cloud_upload</span> Drop or click</div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;margin-top:8px">
+            <label style="font-size:10px;display:flex;align-items:center;gap:4px;cursor:pointer"><input type="checkbox" id="gtc-auto-convert" checked style="accent-color:var(--accent);width:14px;height:14px"> Auto-convert EDI → cXML before sending</label>
+          </div>
+          <div id="gtc-upload-summary" style="display:none;margin-top:8px">
+            <div class="banner banner-ok"><span class="material-symbols-rounded" style="font-size:16px;color:var(--ok)">check_circle</span><div><b id="gtc-upload-count">0</b> documents ready to send.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Send & Scan Actions -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+        <button class="btn btn-primary btn-block" id="gtc-send-btn" disabled><span class="material-symbols-rounded" style="font-size:15px;vertical-align:-3px">send</span> Send to Test</button>
+        <button class="btn btn-block" id="gtc-scan-btn" style="border:1px solid var(--border);background:var(--card)" disabled><span class="material-symbols-rounded" style="font-size:15px;vertical-align:-3px">radar</span> Scan Status</button>
+      </div>
+
+      <!-- Test Results -->
+      <div class="card" id="gtc-results" style="display:none;margin-top:10px"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">assessment</span> Test Results</span><span class="badge" id="gtc-result-badge">0/0 passed</span></div>
+        <div class="card-body" style="display:block;padding:0">
+          <div id="gtc-result-rows" style="font-size:11px"></div>
+        </div>
+      </div>
+
+      <!-- Scan Results -->
+      <div class="card" id="gtc-scan-results" style="display:none;margin-top:8px"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">fact_check</span> Transaction Status Scan</span></div>
+        <div class="card-body" style="display:block;padding:0">
+          <div id="gtc-scan-rows" style="font-size:11px"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Mapping Settings ===== -->
+    <div id="g-map" class="sub-view">
+      <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">tune</span> Mapping Knowledge Base Settings</div>
+      <div class="banner banner-info"><span class="material-symbols-rounded" style="font-size:16px">info</span><div>Configure the deterministic rules engine that drives cXML↔EDI conversion. Changes apply immediately to all future conversions.</div></div>
+
+      <!-- Conversion Decisions -->
+      <div class="card"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">rule</span> Conversion Decisions</span><span class="badge badge-dur">Core Rules</span></div>
+        <div class="card-body" style="display:block;padding:0">
+          <table class="mkb-table" id="mkb-decisions-table">
+            <thead><tr><th style="width:40%">Rule</th><th>Value</th></tr></thead>
+            <tbody id="mkb-decisions-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- UOM Lookup -->
+      <div class="card"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">straighten</span> UOM Mapping Table</span><span class="badge badge-dur" id="mkb-uom-count">0 pairs</span></div>
+        <div class="card-body" style="display:block">
+          <div style="display:flex;gap:6px;margin-bottom:8px">
+            <input class="form-input" id="mkb-uom-search" placeholder="Search UOM codes..." style="flex:1;font-size:11px;padding:5px 8px">
+            <button class="btn" id="mkb-uom-add-btn" style="font-size:10px;padding:4px 10px;border:1px solid var(--border);background:var(--card)"><span class="material-symbols-rounded" style="font-size:13px;vertical-align:-2px">add</span> Add</button>
+          </div>
+          <div style="max-height:200px;overflow-y:auto;border:1px solid var(--border);border-radius:6px">
+            <table class="mkb-table" id="mkb-uom-table">
+              <thead><tr><th>cXML Code</th><th>X12 Code</th><th style="width:36px"></th></tr></thead>
+              <tbody id="mkb-uom-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- REF Qualifiers -->
+      <div class="card"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">label</span> REF Qualifier Mappings</span><span class="badge badge-dur" id="mkb-ref-count">0 rules</span></div>
+        <div class="card-body" style="display:block">
+          <div style="max-height:220px;overflow-y:auto;border:1px solid var(--border);border-radius:6px">
+            <table class="mkb-table" id="mkb-ref-table">
+              <thead><tr><th style="width:35%">Extrinsic/Field</th><th style="width:20%">Qualifier</th><th>Description</th></tr></thead>
+              <tbody id="mkb-ref-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- N1 Qualifiers -->
+      <div class="card"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">people</span> N1 Party Qualifiers</span></div>
+        <div class="card-body" style="display:block;padding:0">
+          <table class="mkb-table" id="mkb-n1-table">
+            <thead><tr><th style="width:45%">Party Role</th><th>X12 Qualifier</th></tr></thead>
+            <tbody id="mkb-n1-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Doc Type Config -->
+      <div class="card"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">description</span> Document Type Configuration</span></div>
+        <div class="card-body" style="display:block;padding:0">
+          <table class="mkb-table" id="mkb-doctype-table">
+            <thead><tr><th>Type</th><th>ST Code</th><th>GS Code</th><th>Extra</th></tr></thead>
+            <tbody id="mkb-doctype-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;padding-bottom:20px">
+        <button class="btn btn-primary btn-block" id="mkb-save-btn"><span class="material-symbols-rounded" style="font-size:15px;vertical-align:-3px">save</span> Save Changes</button>
+        <button class="btn btn-block" id="mkb-reset-btn" style="border:1px solid var(--border);background:var(--card)"><span class="material-symbols-rounded" style="font-size:15px;vertical-align:-3px">restart_alt</span> Reset to Defaults</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="aia-platform.js"></script>
+<script src="lib/xlsx-js-style.min.js"></script>
+<script src="lib/jszip.min.js"></script>
+<script src="transaction-store.js"></script>
+<script src="edi-guide-engine.js"></script>
+<script src="cxml-guide-engine.js"></script>
+<script src="cxml-anonymizer.js"></script>
+<script src="sidepanel.js"></script>
+<script src="sidepanel-actions.js"></script>
+</body>
+</html>

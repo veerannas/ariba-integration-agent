@@ -1,0 +1,19 @@
+{
+  "materials": [
+    { "supplierPartId": "HW-ROUTER-900", "buyerPartId": "NET-RT-900", "description": "Enterprise Network Router - Model 900", "unspsc": "43222609", "uom": "EA", "defaultPrice": 850.00 },
+    { "supplierPartId": "HW-SWITCH-48P", "buyerPartId": "NET-SW-48P", "description": "48-Port Managed Network Switch", "unspsc": "43222608", "uom": "EA", "defaultPrice": 620.00 },
+    { "supplierPartId": "SRV-INSTALL-NET", "buyerPartId": "SRV-NET-01", "description": "On-site Network Installation Services (per hour)", "unspsc": "81111701", "uom": "HUR", "defaultPrice": 150.00 },
+    { "supplierPartId": "SUPPORT-PREM-YR", "buyerPartId": "SUP-PREM-12", "description": "Premium Support Subscription - 12 Months", "unspsc": "81112200", "uom": "EA", "defaultPrice": 3500.00 },
+    { "supplierPartId": "HW-FIREWALL-X1", "buyerPartId": "SEC-FW-X1", "description": "Next-Gen Firewall Appliance X1", "unspsc": "43222640", "uom": "EA", "defaultPrice": 2200.00 }
+  ],
+  "plants": [
+    { "plantId": "WH_NY_01", "name": "New York Warehouse", "street": "500 Industry Road", "city": "Newark", "state": "NJ", "postalCode": "07114", "country": "US" },
+    { "plantId": "HQ_US_01", "name": "Acme Manufacturing Corp", "street": "200 Main Street", "city": "Chicago", "state": "IL", "postalCode": "60601", "country": "US" },
+    { "plantId": "DC_TX_01", "name": "Texas Distribution Center", "street": "800 Logistics Way", "city": "Dallas", "state": "TX", "postalCode": "75201", "country": "US" }
+  ],
+  "paymentTerms": [
+    { "code": "NET30", "days": 30 },
+    { "code": "NET45", "days": 45 },
+    { "code": "NET60", "days": 60 }
+  ]
+}

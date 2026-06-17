@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1aa0ff"/>
+      <stop offset="100%" stop-color="#0057d9"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+
+  <path d="M650 0 L1024 0 L1024 374 Z" fill="#ffffff"/>
+  <path d="M512 1024 L1024 512 L1024 1024 Z" fill="#ffffff"/>
+
+  <text x="66" y="688"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="610"
+        font-weight="900"
+        fill="#ffffff">AIA</text>
+</svg>

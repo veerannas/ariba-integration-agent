@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<cXML payloadID="PO-1234567892@buyer.com" timestamp="2026-05-07T13:35:00-03:00" version="1.2.060"><Header>
+    <From>
+      <Credential domain="NetworkID">
+        <Identity>AN01395188653-T</Identity>
+      </Credential>
+    </From>
+
+    <To>
+      <Credential domain="NetworkID">
+        <Identity>AN01015464739-T</Identity>
+      </Credential>
+    </To>
+
+    <Sender>
+      <Credential domain="AribaNetworkUserId">
+        <Identity>sysadmin@ariba.com</Identity>
+        
+      </Credential>
+      <UserAgent>Custom-PO-Integration/1.0</UserAgent>
+    </Sender>
+  </Header>
+<Request deploymentMode="test"><OrderRequest><OrderRequestHeader orderDate="2026-05-06" orderID="7800459912" orderType="regular" orderVersion="1" type="new">
+
+        <Total>
+          <Money currency="USD">48250.00</Money>
+        </Total>
+
+        <ShipTo>
+          <Address addressID="WH_NY_01">
+            <Name xml:lang="en">New York Warehouse</Name>
+            <PostalAddress>
+              <Street>500 Industry Road</Street>
+              <City>Newark</City>
+              <State>NJ</State>
+              <PostalCode>07114</PostalCode>
+              <Country isoCountryCode="US">United States</Country>
+            </PostalAddress>
+          </Address>
+        </ShipTo>
+
+        <BillTo>
+          <Address addressID="HQ_US_01">
+            <Name xml:lang="en">Acme Manufacturing Corp</Name>
+            <PostalAddress>
+              <Street>200 Main Street</Street>
+              <City>Chicago</City>
+              <State>IL</State>
+              <PostalCode>60601</PostalCode>
+              <Country isoCountryCode="US">United States</Country>
+            </PostalAddress>
+          </Address>
+        </BillTo>
+
+        <PaymentTerm payInNumberOfDays="45"/>
+
+      </OrderRequestHeader>
+<ItemOut lineNumber="1" quantity="25">
+        <ItemID>
+          <BuyerPartID>NET-RT-900</BuyerPartID>
+        </ItemID>
+        <ItemDetail>
+          <UnitPrice>
+            <Money currency="USD">850.00</Money>
+          </UnitPrice>
+          <Description xml:lang="en">
+            Enterprise Network Router – Model 900
+          </Description>
+          <UnitOfMeasure>EA</UnitOfMeasure>
+          <Classification domain="UNSPSC">43222609</Classification>
+        </ItemDetail>
+      </ItemOut>
+
+      
+      <ItemOut lineNumber="2" quantity="40">
+        <ItemID>
+          <BuyerPartID>BUYER-ITEM-2</BuyerPartID></ItemID>
+        <ItemDetail>
+          <UnitPrice>
+            <Money currency="USD">620.00</Money>
+          </UnitPrice>
+          <Description xml:lang="en">
+            48-Port Managed Network Switch
+          </Description>
+          <UnitOfMeasure>EA</UnitOfMeasure>
+          <Classification domain="UNSPSC">43222608</Classification>
+        </ItemDetail>
+      </ItemOut>
+
+      
+      <ItemOut lineNumber="3" quantity="120">
+        <ItemID>
+          <BuyerPartID>BUYER-ITEM-3</BuyerPartID></ItemID>
+        <ItemDetail>
+          <UnitPrice>
+            <Money currency="USD">150.00</Money>
+          </UnitPrice>
+          <Description xml:lang="en">
+            On‑site Network Installation Services (per hour)
+          </Description>
+          <UnitOfMeasure>HUR</UnitOfMeasure>
+          <Classification domain="UNSPSC">81111701</Classification>
+        </ItemDetail>
+      </ItemOut>
+
+      
+      <ItemOut lineNumber="4" quantity="3">
+        <ItemID>
+          <BuyerPartID>BUYER-ITEM-4</BuyerPartID></ItemID>
+        <ItemDetail>
+          <UnitPrice>
+            <Money currency="USD">3500.00</Money>
+          </UnitPrice>
+          <Description xml:lang="en">
+            Premium Support Subscription – 12 Months
+          </Description>
+          <UnitOfMeasure>EA</UnitOfMeasure>
+          <Classification domain="UNSPSC">81112200</Classification>
+        </ItemDetail>
+      </ItemOut>
+
+    </OrderRequest>
+  </Request>
+</cXML>

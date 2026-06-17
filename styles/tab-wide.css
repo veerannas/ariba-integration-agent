@@ -1,0 +1,511 @@
+/* ===================================================================
+   AIA v3.2 — Wide Mode (Full Tab / Standalone Web App)
+   Overrides sidepanel.css when body.mode-tab is present.
+   Designed for viewports ≥900px; gracefully degrades to sidepanel look.
+   =================================================================== */
+
+/* ===== BODY LAYOUT ===== */
+body.mode-tab {
+  background: var(--bg2);
+  overflow-y: auto;
+}
+
+/* ===== HEADER — Wide: brand + actions only ===== */
+body.mode-tab .header.header-wide {
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  height: 52px;
+  background: linear-gradient(135deg, #0070F2 0%, #0054B4 60%, #003E8A 100%);
+  border-bottom: none;
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  gap: 0;
+  box-shadow: 0 2px 12px rgba(0,70,150,0.3);
+}
+
+body.mode-tab .header-left {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-shrink: 0;
+}
+
+body.mode-tab .header-right {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+body.mode-tab .header-user {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 8px;
+}
+
+/* ===== NAV — Below header as its own bar ===== */
+body.mode-tab .nav.nav-inline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: sticky;
+  top: 52px;
+  z-index: 899;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 24px;
+  margin: 0;
+}
+
+body.mode-tab .nav.nav-inline .nav-track {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+  background: var(--bg2);
+  border-radius: var(--r-full);
+  padding: 4px 6px;
+  border: none;
+  width: auto;
+}
+
+body.mode-tab .nav.nav-inline .nav-tab {
+  flex: 0 0 auto;
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 18px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text2);
+  border: none;
+  background: transparent;
+  border-radius: var(--r-full);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  position: relative;
+  z-index: 2;
+}
+
+body.mode-tab .nav.nav-inline .nav-tab .material-symbols-rounded {
+  font-size: 18px;
+}
+
+body.mode-tab .nav.nav-inline .nav-tab .nav-text {
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+body.mode-tab .nav.nav-inline .nav-tab:hover {
+  color: var(--text);
+  background: var(--bg3);
+}
+
+body.mode-tab .nav.nav-inline .nav-tab.active {
+  color: #fff;
+  background: linear-gradient(135deg, #0070F2 0%, #0054B4 100%);
+  box-shadow: 0 2px 8px rgba(0,70,150,0.25);
+  font-weight: 600;
+}
+
+body.mode-tab .nav.nav-inline .nav-tab.active .material-symbols-rounded {
+  color: #fff;
+  font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+}
+
+body.mode-tab .nav.nav-inline .nav-slider {
+  display: none;
+}
+
+/* Hide the bottom nav bar from sidepanel.css in wide mode */
+body.mode-tab .nav:not(.nav-inline) {
+  display: none !important;
+}
+
+/* ===== CONTEXT BAR ===== */
+body.mode-tab .ctx-bar {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 10px 24px;
+  border-bottom: 1px solid var(--border2);
+  background: var(--bg);
+  position: sticky;
+  top: 100px; /* 52px header + 48px nav bar */
+  z-index: 898;
+}
+
+body.mode-tab .ctx-edit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--bg);
+  cursor: pointer;
+  margin-left: 8px;
+  transition: var(--transition);
+}
+
+body.mode-tab .ctx-edit-btn:hover {
+  background: var(--bg2);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ===== HEADER "Switch to Side Panel" BUTTON ===== */
+body.mode-tab .header-btn-sidepanel {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: var(--r-full);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  letter-spacing: 0.3px;
+}
+
+body.mode-tab .header-btn-sidepanel .material-symbols-rounded {
+  font-size: 16px;
+  color: #fff;
+}
+
+body.mode-tab .header-btn-sidepanel:hover {
+  background: rgba(255,255,255,0.25);
+  border-color: rgba(255,255,255,0.5);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+body.mode-tab .header-btn-sidepanel:active {
+  background: rgba(255,255,255,0.35);
+  transform: scale(0.97);
+}
+
+/* ===== MAIN CONTENT WRAPPER ===== */
+body.mode-tab .main-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px 24px 40px;
+}
+
+/* ===== PANELS ===== */
+body.mode-tab .panel {
+  background: transparent;
+}
+
+body.mode-tab .panel > .pscroll {
+  padding: 0;
+  max-height: none;
+  overflow: visible;
+}
+
+/* ===== DASHBOARD — Multi-Column Cards ===== */
+body.mode-tab #tab-dashboard .dash-kpi-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+body.mode-tab .dash-kpi {
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: var(--r);
+  padding: 16px 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+body.mode-tab .dash-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+body.mode-tab .dash-btn {
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: var(--r);
+  box-shadow: var(--shadow-sm);
+}
+
+body.mode-tab .dash-view {
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: var(--r);
+  padding: 16px 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+body.mode-tab .dash-welcome {
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: var(--r);
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ===== UPLOAD GRID — 5 Columns in Wide Mode ===== */
+body.mode-tab .cxml-upload-grid {
+  display: grid !important;
+  grid-template-columns: repeat(5, 1fr) !important;
+  gap: 12px;
+}
+
+body.mode-tab .cxml-upload-slot {
+  min-width: 0;
+}
+
+body.mode-tab .cxml-upload-drop {
+  padding: 16px 10px;
+}
+
+/* ===== CARDS in Wide Mode ===== */
+body.mode-tab .card {
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: var(--r);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 16px;
+}
+
+body.mode-tab .stg-card {
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ===== INTEGRATION — Stepper stays horizontal, cards get more space ===== */
+body.mode-tab .stepper-arrow {
+  margin: 16px 0;
+}
+
+body.mode-tab .int-content > .pscroll {
+  max-height: none;
+  overflow: visible;
+}
+
+body.mode-tab .int-toggle {
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: var(--r);
+  padding: 8px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 16px;
+}
+
+/* ===== GUIDES — Sub-tabs stay the same, content area wider ===== */
+body.mode-tab .sub-tabs {
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: var(--r-full);
+  padding: 3px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+body.mode-tab #tab-guides > .pscroll {
+  max-height: none;
+  overflow: visible;
+}
+
+/* ===== CIG ===== */
+body.mode-tab #tab-cig > .pscroll {
+  max-height: none;
+  overflow: visible;
+}
+
+/* ===== TROUBLESHOOT ===== */
+body.mode-tab #tab-troubleshoot > .pscroll {
+  max-height: none;
+  overflow: visible;
+}
+
+body.mode-tab .ts-scan {
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: var(--r);
+  padding: 16px 20px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 16px;
+}
+
+body.mode-tab .ts-levels {
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: var(--r);
+  padding: 16px 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ===== OVERLAY PANELS in Wide Mode ===== */
+body.mode-tab .overlay-panel {
+  max-width: 640px;
+  margin: 0 auto;
+  border-radius: var(--r);
+  box-shadow: 0 8px 32px rgba(0,0,0,.15);
+  border: 1px solid var(--border2);
+  max-height: calc(100vh - 120px);
+  position: fixed;
+  top: 72px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+}
+
+/* ===== HEADER BUTTONS (on blue gradient) ===== */
+body.mode-tab .header-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: none;
+  background: transparent;
+  border-radius: var(--r-full);
+  cursor: pointer;
+  color: rgba(255,255,255,0.75);
+  transition: all 0.2s ease;
+}
+
+body.mode-tab .header-btn:hover {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+}
+
+body.mode-tab .header-btn .material-symbols-rounded {
+  font-size: 19px;
+}
+
+body.mode-tab .header-divider {
+  width: 1px;
+  height: 26px;
+  background: rgba(255,255,255,0.2);
+  margin: 0 6px;
+}
+
+body.mode-tab .header-btn-action {
+  color: rgba(255,255,255,0.95);
+}
+
+body.mode-tab .header-btn-action:hover {
+  background: rgba(255,255,255,0.22);
+  color: #fff;
+}
+
+/* ===== RESPONSIVE: Below 900px, degrade gracefully ===== */
+@media (max-width: 900px) {
+  body.mode-tab .nav.nav-inline .nav-tab .nav-text {
+    display: none;
+  }
+  body.mode-tab .nav.nav-inline .nav-tab {
+    padding: 8px 12px;
+  }
+  body.mode-tab .nav.nav-inline {
+    margin: 0 12px;
+  }
+  body.mode-tab .cxml-upload-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  body.mode-tab .main-content {
+    padding: 12px 12px 30px;
+  }
+  body.mode-tab .dash-toggle {
+    grid-template-columns: 1fr;
+  }
+  body.mode-tab .header-brand-full,
+  body.mode-tab .header-brand-sep {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  body.mode-tab .nav.nav-inline .nav-track {
+    gap: 0;
+    padding: 2px;
+  }
+  body.mode-tab .nav.nav-inline .nav-tab {
+    padding: 6px 8px;
+  }
+  body.mode-tab .cxml-upload-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  body.mode-tab .dash-kpi-row {
+    grid-template-columns: 1fr;
+  }
+  body.mode-tab .overlay-panel {
+    max-width: 95vw;
+    top: 60px;
+  }
+}
+
+/* ===== WEB APP MODE — Always show context edit button ===== */
+body.mode-webapp .ctx-edit-btn {
+  display: inline-flex !important;
+}
+
+body.mode-webapp #btn-collapse {
+  display: none !important;
+}
+
+/* ===== DARK MODE (when toggled) ===== */
+body.mode-tab.dark {
+  --bg: #1e1e1e;
+  --bg2: #2d2d2d;
+  --bg3: #383838;
+  --text: #e8eaed;
+  --text2: #9aa0a6;
+  --muted: #80868b;
+  --border: #3c4043;
+  --border2: #3c4043;
+  --accent: #8ab4f8;
+  --accent-h: #669df6;
+  --accent-bg: rgba(138,180,248,.12);
+  --accent-text: #8ab4f8;
+  --ok: #81c995;
+  --ok-bg: rgba(129,201,149,.12);
+  --ok-light: #1b3626;
+  --err: #f28b82;
+  --err-bg: rgba(242,139,130,.12);
+  --err-light: #3b1f1e;
+  --warn: #fdd663;
+  --warn-bg: rgba(253,214,99,.12);
+  --warn-light: #3b3419;
+  --shadow: 0 1px 3px rgba(0,0,0,.5);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.3);
+}
+
+body.mode-tab.dark .header.header-wide {
+  background: linear-gradient(135deg, #1a3a5c 0%, #0d2440 60%, #091a30 100%);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.5);
+}
+
+body.mode-tab.dark .nav.nav-inline .nav-track {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.08);
+}
+
+body.mode-tab.dark .nav.nav-inline .nav-tab.active {
+  background: #1e1e1e;
+  color: #8ab4f8;
+}
+
+body.mode-tab.dark .nav.nav-inline .nav-tab.active .material-symbols-rounded {
+  color: #8ab4f8;
+}
