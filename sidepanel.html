@@ -24,7 +24,7 @@
       <span class="header-brand-aia">AIA</span>
       <span class="header-brand-sep">—</span>
       <span class="header-brand-full">AI Automated Integration</span>
-      <span class="header-brand-ver">v3.2</span>
+      <span class="header-brand-ver">v4.1.1</span>
     </div>
   </div>
   <div class="header-user" id="header-user" style="display:none" title="Logged in">
@@ -38,7 +38,7 @@
     <button class="header-btn header-btn-action" id="btn-refresh" title="Refresh Data"><span class="material-symbols-rounded">sync</span></button>
     <button class="header-btn header-btn-action" id="btn-reload" title="Reload Extension"><span class="material-symbols-rounded">refresh</span></button>
     <span class="header-divider"></span>
-    <button class="header-btn-fulltab" id="btn-popout" title="Open in Full Tab"><span class="material-symbols-rounded">open_in_new</span><span class="header-btn-fulltab-text">Full Tab</span></button>
+    <button class="header-btn-fulltab" id="btn-popout" title="Open in Full Panel"><span class="material-symbols-rounded">open_in_new</span><span class="header-btn-fulltab-text">Full Panel</span></button>
     <button class="header-btn" id="btn-settings" title="Settings"><span class="material-symbols-rounded">tune</span></button>
   </div>
 </header>
@@ -68,11 +68,12 @@
   <div class="nav-track">
     <div class="nav-slider" id="nav-slider"></div>
     <button class="nav-tab active" data-tab="dashboard"><span class="material-symbols-rounded">space_dashboard</span><span class="nav-text">Dashboard</span></button>
-    <button class="nav-tab" data-tab="aie" title="Augmented Integration Experience"><span class="material-symbols-rounded">rocket_launch</span><span class="nav-text">AIE</span></button>
+    <button class="nav-tab" data-tab="aie" title="Test Central"><span class="material-symbols-rounded">rocket_launch</span><span class="nav-text">Test Central</span></button>
     <button class="nav-tab" data-tab="integration"><span class="material-symbols-rounded">sync_alt</span><span class="nav-text">Integration</span></button>
     <button class="nav-tab" data-tab="troubleshoot"><span class="material-symbols-rounded">build</span><span class="nav-text">Troubleshoot</span></button>
     <button class="nav-tab" data-tab="guides"><span class="material-symbols-rounded">menu_book</span><span class="nav-text">Guides</span></button>
     <button class="nav-tab" data-tab="cig"><span class="material-symbols-rounded">settings_suggest</span><span class="nav-text">CIG</span></button>
+    <button class="nav-tab" data-tab="atlas"><span class="material-symbols-rounded">cloud_sync</span><span class="nav-text">Atlas</span></button>
   </div>
 </nav>
 
@@ -91,51 +92,35 @@
   <div class="dash-kpi-row">
     <div class="dash-kpi">
       <div class="dash-kpi-icon" style="background:linear-gradient(135deg,#E8F5E9,#C8E6C9);color:#2E7D32"><span class="material-symbols-rounded">check_circle</span></div>
-      <div><div class="dash-kpi-val" style="color:#2E7D32">9</div><div class="dash-kpi-lbl">Live</div></div>
+      <div><div class="dash-kpi-val" style="color:#2E7D32" id="kpi-live-val">9</div><div class="dash-kpi-lbl">Live</div></div>
     </div>
     <div class="dash-kpi">
       <div class="dash-kpi-icon" style="background:linear-gradient(135deg,#FFF3E0,#FFE0B2);color:#E65100"><span class="material-symbols-rounded">hourglass_top</span></div>
-      <div><div class="dash-kpi-val" style="color:#E65100">6</div><div class="dash-kpi-lbl">In Progress</div></div>
-    </div>
-    <div class="dash-kpi">
-      <div class="dash-kpi-icon" style="background:linear-gradient(135deg,#E3F2FD,#BBDEFB);color:#0070F2"><span class="material-symbols-rounded">schedule</span></div>
-      <div><div class="dash-kpi-val" style="color:#0070F2">2</div><div class="dash-kpi-lbl">Pending</div></div>
+      <div><div class="dash-kpi-val" style="color:#E65100" id="kpi-inprogress-val">6</div><div class="dash-kpi-lbl">In Progress</div></div>
     </div>
   </div>
 
   <!-- Buyer / Supplier Toggle -->
-  <div class="dash-toggle">
-    <button class="dash-btn active" data-mode="buyer">
-      <div class="dash-avatar" id="dash-buyer-avatar" style="background:var(--accent)">BU</div>
-      <div><div class="dash-label">Buyer View</div></div>
-      <span class="material-symbols-rounded dash-btn-arrow">chevron_right</span>
-    </button>
-    <button class="dash-btn" data-mode="supplier">
-      <div class="dash-avatar" id="dash-supplier-avatar" style="background:var(--stage-3)">AC</div>
-      <div><div class="dash-label">Supplier View</div></div>
-      <span class="material-symbols-rounded dash-btn-arrow">chevron_right</span>
-    </button>
-  </div>
 
-  <!-- Buyer View -->
-  <div id="dash-buyer" class="dash-view active">
-    <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">group</span> Active Suppliers</div>
-    <div class="sup-list">
-      <div class="sup-item"><div class="sup-avatar" style="background:var(--stage-3)">AC</div><div class="sup-info"><div class="sup-name">Acme Manufacturing Corp</div><div class="sup-anid">AN01234567890</div></div><div class="pill pill-build"><span class="pill-dot"></span>Build</div></div>
-      <div class="sup-item"><div class="sup-avatar" style="background:var(--stage-4)">GC</div><div class="sup-info"><div class="sup-name">GlobalCo Industries</div><div class="sup-anid">AN09876543210</div></div><div class="pill pill-test"><span class="pill-dot"></span>Testing</div></div>
-      <div class="sup-item"><div class="sup-avatar" style="background:var(--stage-6)">TK</div><div class="sup-info"><div class="sup-name">TechKom Solutions</div><div class="sup-anid">AN05678901234</div></div><div class="pill pill-prod"><span class="pill-dot"></span>Production</div></div>
-      <div class="sup-item"><div class="sup-avatar" style="background:var(--stage-1)">NX</div><div class="sup-info"><div class="sup-name">NexaParts GmbH</div><div class="sup-anid">AN04321098765</div></div><div class="pill pill-plan"><span class="pill-dot"></span>Plan</div></div>
+  <!-- Supplier Integrations (SI) -->
+  <div style="margin-top:10px">
+    <div class="section-title" style="margin-bottom:6px;display:flex;align-items:center;justify-content:space-between"><span style="display:flex;align-items:center;gap:5px"><span class="material-symbols-rounded" style="font-size:16px">group</span> Supplier Integrations</span><button class="aie-btn-sm" id="add-si-btn" data-rec-type="si"><span class="material-symbols-rounded" style="font-size:13px;vertical-align:-2px">add</span> Add</button></div>
+    <div class="sup-list" id="dash-si-list">
+      <div class="sup-item"><div class="sup-avatar" style="background:var(--stage-3)">AC</div><div class="sup-info"><div class="sup-name">Acme Manufacturing Corp</div><div class="sup-anid">AN01234567890</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px"><span style="font-size:10px;color:var(--accent);font-weight:600;font-family:monospace">SI-000012345</span><div class="pill pill-build"><span class="pill-dot"></span>Build</div></div></div>
+      <div class="sup-item"><div class="sup-avatar" style="background:var(--stage-4)">GC</div><div class="sup-info"><div class="sup-name">GlobalCo Industries</div><div class="sup-anid">AN09876543210</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px"><span style="font-size:10px;color:var(--accent);font-weight:600;font-family:monospace">SI-000023456</span><div class="pill pill-test"><span class="pill-dot"></span>Testing</div></div></div>
+      <div class="sup-item"><div class="sup-avatar" style="background:var(--stage-6)">TK</div><div class="sup-info"><div class="sup-name">TechKom Solutions</div><div class="sup-anid">AN05678901234</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px"><span style="font-size:10px;color:var(--accent);font-weight:600;font-family:monospace">SI-000034567</span><div class="pill pill-prod"><span class="pill-dot"></span>Production</div></div></div>
+      <div class="sup-item"><div class="sup-avatar" style="background:var(--stage-1)">NX</div><div class="sup-info"><div class="sup-name">NexaParts GmbH</div><div class="sup-anid">AN04321098765</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px"><span style="font-size:10px;color:var(--accent);font-weight:600;font-family:monospace">SI-000045678</span><div class="pill pill-plan"><span class="pill-dot"></span>Plan</div></div></div>
     </div>
   </div>
 
-  <!-- Supplier View -->
-  <div id="dash-supplier" class="dash-view">
-    <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">apartment</span> Active Customers</div>
-    <div class="sup-list">
-      <div class="sup-item"><div class="sup-avatar" style="background:var(--accent)">SA</div><div class="sup-info"><div class="sup-name">SAP SE</div><div class="sup-anid">AN11000000001</div></div><div class="pill pill-prod"><span class="pill-dot"></span>Production</div></div>
-      <div class="sup-item"><div class="sup-avatar" style="background:var(--stage-4)">BM</div><div class="sup-info"><div class="sup-name">BMW Group</div><div class="sup-anid">AN11000000002</div></div><div class="pill pill-test"><span class="pill-dot"></span>Testing</div></div>
-      <div class="sup-item"><div class="sup-avatar" style="background:var(--stage-6)">SI</div><div class="sup-info"><div class="sup-name">Siemens AG</div><div class="sup-anid">AN11000000003</div></div><div class="pill pill-prod"><span class="pill-dot"></span>Production</div></div>
-      <div class="sup-item"><div class="sup-avatar" style="background:var(--warn)">BA</div><div class="sup-info"><div class="sup-name">BASF SE</div><div class="sup-anid">AN11000000004</div></div><div class="pill pill-test"><span class="pill-dot"></span>Testing</div></div>
+  <!-- Buyer Playbooks (BRP) -->
+  <div style="margin-top:14px">
+    <div class="section-title" style="margin-bottom:6px;display:flex;align-items:center;justify-content:space-between"><span style="display:flex;align-items:center;gap:5px"><span class="material-symbols-rounded" style="font-size:16px">apartment</span> Buyer Regional Playbooks</span><button class="aie-btn-sm" id="add-brp-btn" data-rec-type="brp"><span class="material-symbols-rounded" style="font-size:13px;vertical-align:-2px">add</span> Add</button></div>
+    <div class="sup-list" id="dash-brp-list">
+      <div class="sup-item"><div class="sup-avatar" id="dash-buyer-avatar" style="background:var(--accent)">SA</div><div class="sup-info"><div class="sup-name">SAP SE</div><div class="sup-anid">AN11000000001</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px"><span style="font-size:10px;color:var(--stage-5);font-weight:600;font-family:monospace">BRP-000001001</span><div class="pill pill-prod"><span class="pill-dot"></span>Production</div></div></div>
+      <div class="sup-item"><div class="sup-avatar" id="dash-supplier-avatar" style="background:var(--stage-4)">BM</div><div class="sup-info"><div class="sup-name">BMW Group</div><div class="sup-anid">AN11000000002</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px"><span style="font-size:10px;color:var(--stage-5);font-weight:600;font-family:monospace">BRP-000002002</span><div class="pill pill-test"><span class="pill-dot"></span>Testing</div></div></div>
+      <div class="sup-item"><div class="sup-avatar" style="background:var(--stage-6)">SI</div><div class="sup-info"><div class="sup-name">Siemens AG</div><div class="sup-anid">AN11000000003</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px"><span style="font-size:10px;color:var(--stage-5);font-weight:600;font-family:monospace">BRP-000003003</span><div class="pill pill-prod"><span class="pill-dot"></span>Production</div></div></div>
+      <div class="sup-item"><div class="sup-avatar" style="background:var(--warn)">BA</div><div class="sup-info"><div class="sup-name">BASF SE</div><div class="sup-anid">AN11000000004</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px"><span style="font-size:10px;color:var(--stage-5);font-weight:600;font-family:monospace">BRP-000004004</span><div class="pill pill-test"><span class="pill-dot"></span>Testing</div></div></div>
     </div>
   </div>
 
@@ -220,7 +205,7 @@
     <div class="stg-card stg-card--about">
       <div class="stg-about-brand">
         <span class="stg-about-logo">AIA</span>
-        <span class="stg-about-ver">v3.2</span>
+        <span class="stg-about-ver">v4.1.1</span>
       </div>
       <div class="stg-about-name">AI Automated Integration</div>
       <div class="stg-about-copy">&copy; 2026 SAP SE. All rights reserved.</div>
@@ -255,267 +240,230 @@
   </div>
 </div>
 
-<!-- ==================== AIE (Augmented Integration Experience) ==================== -->
+<!-- ==================== AIE (Test Central) ==================== -->
 <div id="tab-aie" class="panel">
 
-  <!-- Arrow Stepper (same style as Integration tab) -->
+  <!-- 5-step stepper -->
   <div class="stepper-arrow" id="aie-stepper">
-    <div class="arrow-step active" data-aie-stage="retrieval"><div class="arrow-inner"><span class="arrow-num">1</span><span class="arrow-label">Retrieval</span></div></div>
-    <div class="arrow-step" data-aie-stage="analyzer"><div class="arrow-inner"><span class="arrow-num">2</span><span class="arrow-label">Analyzer</span></div></div>
-    <div class="arrow-step" data-aie-stage="creator"><div class="arrow-inner"><span class="arrow-num">3</span><span class="arrow-label">Creator</span></div></div>
-    <div class="arrow-step last" data-aie-stage="tester"><div class="arrow-inner"><span class="arrow-num">4</span><span class="arrow-label">Tester</span></div></div>
+    <div class="arrow-step active" data-aie-stage="retrieval"><div class="arrow-inner"><span class="arrow-num">1</span><span class="arrow-label">PO SAMPLE</span></div></div>
+    <div class="arrow-step" data-aie-stage="analyzer"><div class="arrow-inner"><span class="arrow-num">2</span><span class="arrow-label">Test Case</span></div></div>
+    <div class="arrow-step" data-aie-stage="creator"><div class="arrow-inner"><span class="arrow-num">3</span><span class="arrow-label">Uploader</span></div></div>
+    <div class="arrow-step last" data-aie-stage="tester"><div class="arrow-inner"><span class="arrow-num">4</span><span class="arrow-label">Tracker</span></div></div>
   </div>
 
   <div class="pscroll" style="padding-top:0">
 
-    <!-- ===== RETRIEVAL ===== -->
+    <!-- ===== STAGE 1: PO SAMPLES ===== -->
     <div id="aie-retrieval" class="aie-stage-view active">
-      <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">cloud_download</span> Retrieval Methods</div>
-      <div class="banner banner-info"><span class="material-symbols-rounded" style="font-size:16px">info</span><div>Select methods to retrieve <b id="aie-ret-docname">Purchase Order</b> transactions from the supplier account.</div></div>
+      <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">upload_file</span> PO Sample Input</div>
+      <div class="banner banner-info"><span class="material-symbols-rounded" style="font-size:16px">info</span><div>Upload or paste a buyer's cXML Purchase Order. Metadata is extracted automatically.</div></div>
 
-      <!-- Method 1: Manual Upload -->
-      <div class="card aie-method-card">
-        <label class="aie-method-header"><input type="checkbox" class="aie-method-check" id="aie-m-upload" checked><span class="aie-method-name">Manual Upload</span><span class="badge badge-success">Active</span></label>
-        <div class="aie-method-config" id="aie-mc-upload">
+      <div class="card">
+        <div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">content_paste</span> Paste cXML</span><button class="aie-btn-sm" id="aie-parse-btn">Parse</button></div>
+        <div class="card-body" style="display:block;padding:8px">
+          <textarea id="aie-cxml-paste" rows="6" placeholder="Paste cXML OrderRequest here…" style="width:100%;box-sizing:border-box;font-family:monospace;font-size:10px;padding:8px;border:1px solid var(--border);border-radius:4px;background:var(--bg2);color:var(--text);resize:vertical;line-height:1.4"></textarea>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:8px">
+        <div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">cloud_upload</span> Upload File</span></div>
+        <div class="card-body" style="display:block;padding:8px">
           <div class="aie-upload-zone" id="aie-upload-zone">
             <span class="material-symbols-rounded" style="font-size:28px;color:var(--accent)">upload_file</span>
-            <div style="font-size:11px;color:var(--text2);margin-top:4px">Drop cXML/XML files here or click to browse</div>
+            <div style="font-size:11px;color:var(--text2);margin-top:4px">Drop .xml / .cxml files or click to browse</div>
             <input type="file" id="aie-file-input" multiple accept=".xml,.cxml,.txt" style="display:none">
           </div>
         </div>
       </div>
 
-      <!-- Method 2: Web Scraping Export -->
-      <div class="card aie-method-card">
-        <label class="aie-method-header"><input type="checkbox" class="aie-method-check" id="aie-m-scrape" checked><span class="aie-method-name">Web Scraping Export (Supplier Portal)</span><span class="badge badge-success">Active</span></label>
-        <div class="aie-method-config" id="aie-mc-scrape">
-          <div class="aie-form-group"><label>Portal URL</label><input type="text" class="aie-input" value="https://portal.us.bn.cloud.ariba.com/dashboard/home"></div>
-          <div class="aie-form-group"><label>Supplier ANID</label><input type="text" class="aie-input" value="AN01015464739-T"></div>
-        </div>
+      <div id="aie-parse-error" class="banner banner-warn" style="display:none;margin-top:8px">
+        <span class="material-symbols-rounded" style="font-size:16px">warning</span>
+        <div id="aie-parse-error-text">Parse error</div>
       </div>
 
-      <!-- Method 3: API Fetch -->
-      <div class="card aie-method-card">
-        <label class="aie-method-header"><input type="checkbox" class="aie-method-check" id="aie-m-api"><span class="aie-method-name">API Fetch (cXML Endpoint)</span><span class="badge badge-warning">Secret Pending</span></label>
-        <div class="aie-method-config" id="aie-mc-api" style="display:none">
-          <div class="aie-form-group"><label>OAuth Client ID</label><input type="text" class="aie-input" value="c5624845-9213-4fbf-94e8-cb4d283f8917"></div>
-          <div class="aie-form-group"><label>Application Key</label><input type="text" class="aie-input" value="cngd0onkX0u5EFIbhms4ajS2TjlM9lS0"></div>
-          <div class="aie-form-group"><label>OAuth Secret</label><input type="password" class="aie-input" placeholder="Pending from admin"></div>
-          <div class="aie-form-group"><label>Realm</label><input type="text" class="aie-input" value="AMS-Sandbox-T"></div>
-        </div>
-      </div>
-
-      <button class="btn btn-primary btn-block" id="aie-retrieve-btn" style="margin-top:12px"><span class="material-symbols-rounded" style="font-size:15px;vertical-align:-3px">sync</span> Retrieve Transactions</button>
-
-      <!-- Network Capture Indicator -->
-      <div class="card" id="aie-capture-card" style="margin-top:10px;display:none">
-        <div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px;color:var(--ok)">sensors</span> Network Capture</span><span class="badge badge-success" id="aie-capture-count">0 captured</span></div>
-        <div class="card-body" style="display:block;font-size:11px;color:var(--text2)" id="aie-capture-log">Passively monitoring for cXML traffic...</div>
-      </div>
-
-      <!-- Retrieved Transactions Table -->
-      <div class="section-title" style="margin-top:16px"><span class="material-symbols-rounded" style="font-size:16px">list_alt</span> Retrieved Transactions <span class="badge badge-dur" id="aie-txn-count" style="margin-left:6px">0</span></div>
-      <div class="card"><div class="card-body" style="display:block;padding:0">
-        <table class="aie-table" id="aie-txn-table">
-          <thead><tr><th><input type="checkbox" id="aie-txn-all"></th><th>ID</th><th>Type</th><th>Date</th><th>Status</th><th>Source</th></tr></thead>
-          <tbody id="aie-txn-tbody">
-          </tbody>
-        </table>
-        <div id="aie-txn-empty" style="padding:16px;text-align:center;color:var(--text2);font-size:12px">
-          <span class="material-symbols-rounded" style="font-size:28px;color:var(--text3);display:block;margin-bottom:6px">inbox</span>
-          No transactions retrieved yet. Click "Retrieve" or upload files.
-        </div>
-      </div></div>
-
-      <!-- Save Retrieved Transactions -->
-      <div class="aie-save-row" id="aie-save-row" style="display:none;margin-top:10px;gap:8px">
-        <button class="btn btn-primary" id="aie-save-btn" style="flex:1"><span class="material-symbols-rounded" style="font-size:15px;vertical-align:-3px">save</span> Save to Local Storage</button>
-        <button class="btn btn-outline" id="aie-clear-btn" title="Clear retrieved"><span class="material-symbols-rounded" style="font-size:15px;vertical-align:-3px">delete_sweep</span></button>
-      </div>
-
-      <!-- Saved Transactions Count -->
-      <div class="card" id="aie-stored-card" style="margin-top:10px">
-        <div class="card-hdr">
-          <span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">folder_special</span> Stored Locally</span>
-          <span style="display:flex;align-items:center;gap:6px">
-            <button class="aie-btn-sm" id="aie-stored-delete-btn" style="display:none;color:var(--error);border-color:var(--error)" title="Delete selected"><span class="material-symbols-rounded" style="font-size:12px;vertical-align:-2px">delete</span> Delete</button>
-            <span class="badge badge-dur" id="aie-stored-count">0</span>
-          </span>
-        </div>
-        <div class="card-body" style="display:block;padding:0" id="aie-stored-body">
-          <table class="aie-table" id="aie-stored-table" style="display:none">
-            <thead><tr><th style="width:28px"><input type="checkbox" id="aie-stored-all"></th><th>ID</th><th>Type</th><th>Date</th><th>Source</th><th style="width:50px">Size</th></tr></thead>
-            <tbody id="aie-stored-tbody"></tbody>
+      <div id="aie-parse-result" style="display:none;margin-top:10px">
+        <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">list_alt</span> Parsed POs <span class="badge badge-dur" id="aie-po-count" style="margin-left:6px">0</span></div>
+        <div class="card"><div class="card-body" style="display:block;padding:0">
+          <table class="aie-table" id="aie-po-table">
+            <thead><tr><th style="width:28px"></th><th>Order ID</th><th>Date</th><th>Buyer ANID</th><th>Lines</th><th>Total</th></tr></thead>
+            <tbody id="aie-po-tbody"></tbody>
           </table>
-          <div id="aie-stored-empty" style="padding:14px;text-align:center;color:var(--text2);font-size:11px">No transactions stored yet.</div>
-        </div>
+        </div></div>
       </div>
 
-      <!-- Retrieval Readiness -->
-      <div class="aie-step-readiness" id="aie-retrieval-readiness" style="display:none">
-        <span class="material-symbols-rounded" style="font-size:14px;color:var(--ok)">check_circle</span>
-        <span id="aie-readiness-text">Retrieval: 0 transactions found</span>
-        <span class="badge badge-success">Complete</span>
-      </div>
-
-      <button class="btn btn-primary" id="aie-to-analyzer" style="margin-top:10px"><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">arrow_forward</span> Send Selected to Analyzer</button>
+      <button class="btn btn-primary" id="aie-to-analyzer" style="margin-top:12px"><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">arrow_forward</span> Go to Test Case</button>
     </div>
 
-    <!-- ===== ANALYZER ===== -->
+    <!-- ===== STAGE 2: TEST CASE ===== -->
     <div id="aie-analyzer" class="aie-stage-view">
-      <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">science</span> Analyzer</div>
-      <div class="banner banner-info"><span class="material-symbols-rounded" style="font-size:16px">lightbulb</span><div>Apply MasterData, BusinessRules, Schema & Templates to create document versions.</div></div>
+      <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">science</span> Test Case</div>
+      <div class="banner banner-info"><span class="material-symbols-rounded" style="font-size:16px">lightbulb</span><div>Review the sanitized PO below, then click <b>Build Test Case</b> to generate the cXML test document.</div></div>
 
-      <!-- Selected Transactions -->
-      <div class="card"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">description</span> Selected Transactions</span><span class="badge badge-dur" id="aie-ana-count">2 selected</span></div>
-        <div class="card-body" style="display:block" id="aie-ana-files">
-          <div class="aie-config-row"><span class="material-symbols-rounded" style="font-size:14px;color:var(--accent)">description</span> PO 7800459912 — $48,250 (4 items) <span class="badge badge-success">cXML</span></div>
-          <div class="aie-config-row"><span class="material-symbols-rounded" style="font-size:14px;color:var(--accent)">description</span> PO 9900123401 — $7,200 <span class="badge badge-success">cXML</span></div>
+      <div class="card" id="aie-base-po-card">
+        <div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">description</span> Base PO</span><span class="badge badge-success" id="aie-base-po-badge">—</span></div>
+        <div class="card-body" style="display:block;font-size:11px;color:var(--text2)" id="aie-base-po-info">—</div>
+      </div>
+
+      <!-- Sanitization applied summary (auto-populated on upload) -->
+      <div class="card" id="aie-sanitize-card" style="margin-top:8px;display:none">
+        <div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">shield</span> Sanitization Applied</span><span class="badge badge-success" id="aie-sanitize-count">0 changes</span></div>
+        <div class="card-body" style="display:block;padding:8px 10px">
+          <div id="aie-sanitize-rules" style="display:flex;flex-direction:column;gap:3px"></div>
         </div>
       </div>
 
-      <!-- Configuration Files -->
-      <div class="card"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">folder_open</span> Configuration Files</span><button class="aie-btn-sm" id="aie-fetch-config">Fetch from Buyer</button></div>
+      <div class="card" style="margin-top:8px" id="aie-sc-optional-card">
+        <div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">checklist</span> Optional Scenarios</span><span style="font-size:10px;color:var(--text2)" id="aie-sc-count-lbl">0 selected</span></div>
         <div class="card-body" style="display:block">
-          <div class="aie-config-upload-row"><span class="material-symbols-rounded" style="font-size:14px;color:var(--ok)">check_circle</span><span>MasterData.json</span><span class="badge badge-dur">loaded</span><button class="aie-btn-sm" data-upload="masterdata">Replace</button></div>
-          <div class="aie-config-upload-row"><span class="material-symbols-rounded" style="font-size:14px;color:var(--ok)">check_circle</span><span>BusinessRules.json</span><span class="badge badge-dur">loaded</span><button class="aie-btn-sm" data-upload="rules">Replace</button></div>
-          <div class="aie-config-upload-row"><span class="material-symbols-rounded" style="font-size:14px;color:var(--ok)">check_circle</span><span>Schema.xml</span><span class="badge badge-dur">loaded</span><button class="aie-btn-sm" data-upload="schema">Replace</button></div>
-          <div class="aie-config-upload-row"><span class="material-symbols-rounded" style="font-size:14px;color:var(--ok)">check_circle</span><span>Templates.json</span><span class="badge badge-dur">loaded</span><button class="aie-btn-sm" data-upload="templates">Replace</button></div>
+          <div style="font-size:10px;color:var(--text2);margin-bottom:6px">Check any to generate additional cXML variants alongside the base test case.</div>
+          <label class="aie-scenario-row"><input type="checkbox" id="aie-sc1"><div class="aie-scenario-info"><span class="aie-scenario-name">1. Multi-Line Split</span><span class="aie-scenario-desc">Single-item PO expanded to 3 equal lines</span></div></label>
+          <label class="aie-scenario-row"><input type="checkbox" id="aie-sc2"><div class="aie-scenario-info"><span class="aie-scenario-name">2. No SupplierPartID</span><span class="aie-scenario-desc">All SupplierPartID elements removed</span></div></label>
+          <label class="aie-scenario-row"><input type="checkbox" id="aie-sc3"><div class="aie-scenario-info"><span class="aie-scenario-name">3. Ad-hoc Ship-To</span><span class="aie-scenario-desc">ADBUYER- prefixed non-standard delivery address</span></div></label>
         </div>
       </div>
 
-      <!-- Document Scenarios -->
-      <div class="card"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">tune</span> Document Scenarios</span></div>
-        <div class="card-body" style="display:block">
-          <div class="aie-form-group"><label>Document Type</label>
-            <select class="aie-select" id="aie-scenario-doctype" style="width:100%">
-              <option value="OrderRequest">Purchase Order (OrderRequest)</option>
-              <option value="ConfirmationRequest">Order Confirmation (ConfirmationRequest)</option>
-              <option value="ShipNoticeRequest">ASN (ShipNoticeRequest)</option>
-              <option value="InvoiceDetailRequest">Invoice (InvoiceDetailRequest)</option>
-            </select>
-          </div>
-          <label class="aie-scenario-row"><input type="checkbox" checked id="aie-sc1"><div class="aie-scenario-info"><span class="aie-scenario-name">Scenario 1: Multi-Line Split</span><span class="aie-scenario-desc">Single-item PO → multiple item lines</span></div><button class="aie-btn-sm" data-params="sc1">Params</button></label>
-          <label class="aie-scenario-row"><input type="checkbox" checked id="aie-sc2"><div class="aie-scenario-info"><span class="aie-scenario-name">Scenario 2: No Supplier Part Number</span><span class="aie-scenario-desc">Handle missing SupplierPartID</span></div><button class="aie-btn-sm" data-params="sc2">Params</button></label>
-          <label class="aie-scenario-row"><input type="checkbox" checked id="aie-sc3"><div class="aie-scenario-info"><span class="aie-scenario-name">Scenario 3: Ad-hoc Ship-To</span><span class="aie-scenario-desc">ADBUYER-prefixed Ship-To address</span></div><button class="aie-btn-sm" data-params="sc3">Params</button></label>
-          <div class="aie-add-scenario"><button class="aie-btn-sm" id="aie-add-scenario">+ Add Custom Scenario</button></div>
-        </div>
-      </div>
+      <button class="btn btn-primary btn-block" id="aie-build-scenarios-btn" style="margin-top:10px"><span class="material-symbols-rounded" style="font-size:15px;vertical-align:-3px">science</span> Build Test Case</button>
 
-      <button class="btn btn-primary btn-block" id="aie-analyze-btn"><span class="material-symbols-rounded" style="font-size:15px;vertical-align:-3px">auto_awesome</span> Analyze & Create Versions</button>
-
-      <div id="aie-analyze-result" style="display:none;margin-top:12px">
-        <div class="banner banner-ok"><span class="material-symbols-rounded" style="font-size:16px;color:var(--ok)">check_circle</span><div><b>Analysis Complete</b> — <span id="aie-version-count">3</span> versions created per document.</div></div>
-      </div>
-
-      <!-- Analyzer Readiness -->
-      <div class="aie-step-readiness" id="aie-analyzer-readiness" style="display:none">
-        <span class="material-symbols-rounded" style="font-size:14px;color:var(--ok)">check_circle</span>
-        <span>Analyzer: 3 versions generated</span>
-        <span class="badge badge-success">Complete</span>
-      </div>
-
-      <button class="btn btn-primary" id="aie-to-creator" style="margin-top:10px;display:none"><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">arrow_forward</span> Go to Creator</button>
-    </div>
-
-    <!-- ===== CREATOR ===== -->
-    <div id="aie-creator" class="aie-stage-view">
-      <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">note_add</span> Integration Guide Creator</div>
-      <div class="banner banner-info"><span class="material-symbols-rounded" style="font-size:16px">table_view</span><div>All versions of <b id="aie-creator-docname">Purchase Order</b> — download as Excel with each version as a tab.</div></div>
-
-      <!-- Versions Table -->
-      <div class="card"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">folder_special</span> Generated Versions</span></div>
-        <div class="card-body" style="display:block;padding:0">
-          <table class="aie-table" id="aie-versions-table">
-            <thead><tr><th>#</th><th>Version</th><th>Description</th><th>Items</th><th>Status</th></tr></thead>
-            <tbody>
-              <tr><td>1</td><td><b>Multi-Line Split</b></td><td>Single-item expanded to 3 split lines</td><td>3</td><td><span class="badge badge-success">Ready</span></td></tr>
-              <tr><td>2</td><td><b>No Supplier Part</b></td><td>SupplierPartID removed, BuyerPartID only</td><td>4</td><td><span class="badge badge-success">Ready</span></td></tr>
-              <tr><td>3</td><td><b>Ad-hoc Ship-To</b></td><td>ADBUYER-prefixed temporary address</td><td>4</td><td><span class="badge badge-success">Ready</span></td></tr>
-            </tbody>
+      <div id="aie-scenarios-result" style="display:none;margin-top:12px">
+        <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">check_circle</span> Test Case Ready <span class="badge badge-success" id="aie-gen-count" style="margin-left:6px">0</span></div>
+        <div class="card"><div class="card-body" style="display:block;padding:0">
+          <table class="aie-table" id="aie-scenarios-table">
+            <thead><tr><th>#</th><th>Name</th><th>Status</th><th></th></tr></thead>
+            <tbody id="aie-scenarios-tbody"></tbody>
           </table>
-        </div>
+        </div></div>
       </div>
-
-      <!-- Download -->
-      <div style="display:flex;gap:8px;margin-top:12px">
-        <button class="btn btn-primary" id="aie-download-excel"><span class="material-symbols-rounded" style="font-size:15px;vertical-align:-3px">table_view</span> Download Excel Guide</button>
-        <button class="btn btn-secondary" id="aie-download-cxml-zip"><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">folder_zip</span> Download cXMLs</button>
-      </div>
-
-      <!-- Creator Readiness -->
-      <div class="aie-step-readiness" id="aie-creator-readiness" style="display:none">
-        <span class="material-symbols-rounded" style="font-size:14px;color:var(--ok)">check_circle</span>
-        <span>Creator: Excel guide generated</span>
-        <span class="badge badge-success">Complete</span>
-      </div>
-
-      <button class="btn btn-primary" id="aie-to-tester" style="margin-top:12px"><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">arrow_forward</span> Send to Tester</button>
+      <button class="btn btn-primary" id="aie-to-creator" style="margin-top:10px"><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">arrow_forward</span> Go to Uploader</button>
     </div>
 
-    <!-- ===== TESTER ===== -->
-    <div id="aie-tester" class="aie-stage-view">
-      <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">science</span> Test Integration</div>
+    <!-- ===== STAGE 3: UPLOADER ===== -->
+    <div id="aie-creator" class="aie-stage-view">
+      <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">upload</span> Uploader</div>
+      <div class="banner banner-info"><span class="material-symbols-rounded" style="font-size:16px">table_view</span><div>Upload the sanitized cXML test case to CIG Test Central, or compose outreach emails.</div></div>
 
-      <!-- Readiness Score -->
-      <div class="card aie-readiness-card">
-        <div class="card-body" style="display:flex;align-items:center;gap:16px;padding:14px">
-          <div class="aie-readiness-ring" id="aie-readiness-ring"><span class="aie-readiness-value" id="aie-readiness-value">50%</span></div>
-          <div><div style="font-size:12px;font-weight:600;color:var(--text)">Integration Readiness</div><div style="font-size:10px;color:var(--text2);margin-top:2px" id="aie-readiness-detail">3 of 6 checks passed</div></div>
+      <div class="card" style="margin-top:8px">
+        <div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">upload</span> Upload to CIG Test Central</span></div>
+        <div class="card-body" style="display:block">
+          <div class="form-group" style="margin-bottom:6px">
+            <label class="form-label">POST Endpoint</label>
+            <input class="form-input" id="aie-cig-endpoint" value="https://service.ariba.com/service/transaction/cxml.asp">
+          </div>
+          <div class="form-group" style="margin-bottom:6px">
+            <label class="form-label">Shared Secret / Auth Token <span style="color:var(--text2);font-weight:400">(optional)</span></label>
+            <input class="form-input" id="aie-cig-secret" type="password" placeholder="Leave blank if not required">
+          </div>
+          <button class="btn btn-secondary btn-block" id="aie-upload-cig-btn"><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">cloud_upload</span> Upload to CIG</button>
+          <div id="aie-cig-status" style="display:none;margin-top:8px"></div>
         </div>
       </div>
 
-      <!-- Readiness Checklist -->
-      <div class="card"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">checklist</span> Readiness Checklist</span></div>
-        <div class="card-body" style="display:block">
-          <div class="aie-checklist" id="aie-checklist">
-            <label class="aie-check-item"><input type="checkbox" checked disabled><span>Transactions retrieved (3 POs)</span><span class="badge badge-dur">20%</span></label>
-            <label class="aie-check-item"><input type="checkbox" checked disabled><span>Config files loaded</span><span class="badge badge-dur">15%</span></label>
-            <label class="aie-check-item"><input type="checkbox" checked disabled><span>Scenarios analyzed (3 versions)</span><span class="badge badge-dur">15%</span></label>
-            <label class="aie-check-item"><input type="checkbox" disabled><span>Excel guides generated</span><span class="badge badge-dur">20%</span></label>
-            <label class="aie-check-item"><input type="checkbox" disabled><span>Outbound doc sent via CIG</span><span class="badge badge-dur">15%</span></label>
-            <label class="aie-check-item"><input type="checkbox" disabled><span>Response received & validated</span><span class="badge badge-dur">15%</span></label>
+      <div class="section-title" style="margin-top:12px"><span class="material-symbols-rounded" style="font-size:16px">mail</span> Email Composer</div>
+
+      <div style="display:flex;gap:4px;margin-bottom:8px">
+        <button class="aie-btn-sm aie-email-tab active" data-tpl="value-prop">Value Prop</button>
+        <button class="aie-btn-sm aie-email-tab" data-tpl="update">Progress Update</button>
+      </div>
+
+      <div id="aie-tpl-value-prop" class="aie-email-tpl">
+        <div class="card">
+          <div class="card-hdr"><span style="font-size:11px;font-weight:600">Value Prop — Introducing Test Central</span><button class="aie-btn-sm aie-copy-email" data-tpl="value-prop"><span class="material-symbols-rounded" style="font-size:12px;vertical-align:-2px">content_copy</span> Copy</button></div>
+          <div class="card-body" style="display:block;padding:0">
+            <div class="aie-email-subject" id="aie-subj-value-prop">Subject: Introducing SAP Business Network Test Central for Your Integration Testing</div>
+            <div class="aie-email-body" id="aie-body-value-prop">Hi [Buyer/Supplier Name],
+
+I wanted to introduce a powerful tool available on SAP Business Network called Test Central (SAP Managed Gateway). It's a free, self-service testing environment that lets you and your trading partners validate electronic integration before going live — with no buyer involvement required for most testing cycles.
+
+Key benefits:
+• 85%+ of testing completed without buyer involvement
+• Generates real cXML test scenarios (PO variants, edge cases)
+• Validates OC, ASN, Invoice, and Credit Memo documents
+• Unlimited test cycles — zero cost to you
+
+For your reference, we've prepared test scenarios based on your PO configurations. I'd love to walk you through the setup — it typically takes less than a week to configure.
+
+Would you like to schedule a brief call to get started?
+
+Best regards,
+[Your Name]
+SAP Integration Services</div>
           </div>
         </div>
       </div>
 
-      <!-- CIG Connection -->
-      <div class="card"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">cable</span> Supplier CIG Connection</span></div>
-        <div class="card-body" style="display:block">
-          <div class="aie-form-group"><label>CIG Endpoint</label><input type="text" class="aie-input" id="aie-cig-endpoint" value="https://integration.ariba.com"></div>
-          <div class="aie-form-group"><label>AS2 ID</label><input type="text" class="aie-input" id="aie-cig-as2id" value="AN01015464739-T"></div>
-          <div class="aie-form-group"><label>Connection Status</label>
-            <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
-              <span class="material-symbols-rounded" style="font-size:14px;color:var(--ok)">check_circle</span>
-              <span style="font-size:11px">Connected via AS2</span>
+      <div id="aie-tpl-update" class="aie-email-tpl" style="display:none">
+        <div class="card">
+          <div class="card-hdr"><span style="font-size:11px;font-weight:600">Progress Update — Testing in Flight</span><button class="aie-btn-sm aie-copy-email" data-tpl="update"><span class="material-symbols-rounded" style="font-size:12px;vertical-align:-2px">content_copy</span> Copy</button></div>
+          <div class="card-body" style="display:block;padding:0">
+            <div class="aie-email-subject" id="aie-subj-update">Subject: Test Central Integration Progress Update — [Record Number]</div>
+            <div class="aie-email-body" id="aie-body-update">Hi [Buyer/Supplier Name],
+
+Here's a quick status update on your SAP Business Network Test Central integration testing for [Record Number]:
+
+Testing Progress:
+• Scenarios completed: [X of Y]
+• Documents validated: OC ✓ / ASN ✓ / INV — Pending / Credit Memo — N/A
+• Current blockers: [None / describe any issues]
+
+Next Steps:
+1. [Supplier] to submit Invoice test documents via CIG endpoint
+2. SAP to validate response handling
+3. Schedule go-live readiness review
+
+Estimated completion: [Date]
+
+Please reach out if you encounter any issues or need the test PO samples resent.
+
+Best regards,
+[Your Name]
+SAP Integration Services</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" id="aie-to-tester" style="margin-top:12px"><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">arrow_forward</span> Go to Tracker</button>
+    </div>
+
+    <!-- ===== STAGE 4: TRACKER ===== -->
+    <div id="aie-tester" class="aie-stage-view">
+      <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">monitoring</span> Tracker</div>
+      <div class="banner banner-info"><span class="material-symbols-rounded" style="font-size:16px">info</span><div>Track test status per scenario and document type. Update manually as testing progresses.</div></div>
+
+      <div class="card" style="margin-bottom:10px">
+        <div class="card-body" style="display:flex;align-items:center;gap:12px;padding:12px">
+          <div style="flex:1">
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+              <span style="font-size:11px;font-weight:600">Overall Progress</span>
+              <span class="badge badge-dur" id="aie-progress-pct">0%</span>
+            </div>
+            <div style="height:6px;background:var(--bg3);border-radius:3px;overflow:hidden">
+              <div id="aie-progress-bar" style="height:100%;background:var(--accent);width:0%;transition:width .3s;border-radius:3px"></div>
             </div>
           </div>
+          <button class="aie-btn-sm" id="aie-reset-progress" title="Reset all to Pending"><span class="material-symbols-rounded" style="font-size:12px;vertical-align:-2px">refresh</span></button>
         </div>
       </div>
 
-      <!-- Test Documents -->
-      <div class="card"><div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">send</span> Outbound Test Documents</span></div>
-        <div class="card-body" style="display:block;padding:0">
-          <div class="banner banner-info" style="margin:8px;border-radius:var(--r-sm)"><span class="material-symbols-rounded" style="font-size:14px">info</span><div style="font-size:10px">PO is inbound — cannot be sent. Outbound docs (OC, ASN, Invoice) can be sent via Supplier CIG.</div></div>
-          <table class="aie-table" id="aie-test-table">
-            <thead><tr><th>Document</th><th>Version</th><th>Direction</th><th>Sent</th><th>Response</th><th></th></tr></thead>
-            <tbody>
-              <tr><td>OC for PO 7800459912</td><td>Multi-Line Split</td><td><span class="badge badge-dur">Outbound</span></td><td><span class="badge badge-dur">Not sent</span></td><td>—</td><td><button class="aie-btn-sm aie-send-test">Send via CIG</button></td></tr>
-              <tr><td>OC for PO 7800459912</td><td>No Supplier Part</td><td><span class="badge badge-dur">Outbound</span></td><td><span class="badge badge-dur">Not sent</span></td><td>—</td><td><button class="aie-btn-sm aie-send-test">Send via CIG</button></td></tr>
-              <tr><td>OC for PO 7800459912</td><td>Ad-hoc Ship-To</td><td><span class="badge badge-dur">Outbound</span></td><td><span class="badge badge-dur">Not sent</span></td><td>—</td><td><button class="aie-btn-sm aie-send-test">Send via CIG</button></td></tr>
-            </tbody>
+      <div id="aie-progress-empty" style="text-align:center;padding:24px;color:var(--text2);font-size:12px">
+        <span class="material-symbols-rounded" style="font-size:32px;display:block;margin-bottom:8px;color:var(--text3)">table_chart</span>
+        Build scenarios first — go back to step 2.
+      </div>
+
+      <div class="card" id="aie-progress-matrix" style="display:none">
+        <div class="card-body" style="display:block;padding:0;overflow-x:auto">
+          <table class="aie-table" id="aie-tracker-table">
+            <thead><tr><th style="min-width:150px">Scenario</th><th>OC</th><th>ASN</th><th>INV</th><th>Credit Memo</th></tr></thead>
+            <tbody id="aie-tracker-tbody"></tbody>
           </table>
         </div>
       </div>
 
-      <!-- Response Monitor -->
-      <div class="section-title" style="margin-top:12px"><span class="material-symbols-rounded" style="font-size:16px">monitoring</span> Response Monitor</div>
-      <div class="card"><div class="card-body" style="display:block;text-align:center;padding:20px">
-        <span class="material-symbols-rounded" style="font-size:32px;color:var(--text2)">hourglass_empty</span>
-        <div style="font-size:11px;color:var(--text2);margin-top:8px">No responses received yet. Send outbound documents via CIG to start monitoring.</div>
-      </div></div>
-    </div>
+      <div class="section-title" style="margin-top:16px"><span class="material-symbols-rounded" style="font-size:16px">folder_open</span> Resources</div>
 
+      <div class="aie-res-group" style="margin-top:8px">
+        <div class="aie-res-card"><span class="material-symbols-rounded aie-res-icon" style="color:#0070f3">shopping_bag</span><div class="aie-res-info"><div class="aie-res-title">Buyer Test Central — Managed Gateway</div><div class="aie-res-sub">SAP Business Network · Buyer Portal</div></div><div class="aie-res-actions"><button class="aie-btn-sm aie-res-open" data-url="https://service.ariba.com/Buyer.aw/">Open</button><button class="aie-btn-sm aie-res-copy" data-url="https://service.ariba.com/Buyer.aw/" title="Copy link"><span class="material-symbols-rounded" style="font-size:12px;vertical-align:-2px">link</span></button></div></div>
+        <div class="aie-res-card"><span class="material-symbols-rounded aie-res-icon" style="color:#e65100">factory</span><div class="aie-res-info"><div class="aie-res-title">Supplier Test Central — Managed Gateway</div><div class="aie-res-sub">SAP Business Network · Supplier Portal</div></div><div class="aie-res-actions"><button class="aie-btn-sm aie-res-open" data-url="https://service.ariba.com/Supplier.aw/">Open</button><button class="aie-btn-sm aie-res-copy" data-url="https://service.ariba.com/Supplier.aw/" title="Copy link"><span class="material-symbols-rounded" style="font-size:12px;vertical-align:-2px">link</span></button></div></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1228,6 +1176,107 @@
   </div>
 </div>
 
+<!-- ==================== ATLAS ==================== -->
+<div id="tab-atlas" class="panel">
+  <div class="pscroll">
+
+    <div class="section-title"><span class="material-symbols-rounded" style="font-size:18px;color:var(--accent)">cloud_sync</span>Atlas Records</div>
+
+    <!-- Input mode toggle -->
+    <div class="sub-tab-bar" style="display:flex;gap:4px;background:var(--bg2);border-radius:8px;padding:3px;margin-top:12px">
+      <button class="atlas-mode-btn active" data-atlas-mode="single" style="flex:1;padding:6px 10px;border:none;border-radius:6px;background:var(--bg);box-shadow:0 1px 4px rgba(0,0,0,.12);cursor:pointer;font-size:12px;font-weight:600;color:var(--accent);font-family:inherit;display:flex;align-items:center;justify-content:center;gap:5px"><span class="material-symbols-rounded" style="font-size:15px">pin</span> Assigned Records</button>
+      <button class="atlas-mode-btn" data-atlas-mode="excel" style="flex:1;padding:6px 10px;border:none;border-radius:6px;background:none;cursor:pointer;font-size:12px;font-weight:500;color:var(--text2);font-family:inherit;display:flex;align-items:center;justify-content:center;gap:5px"><span class="material-symbols-rounded" style="font-size:15px">table</span> Excel Upload</button>
+    </div>
+
+    <!-- Assigned Records mode -->
+    <div id="atlas-mode-single" class="atlas-mode-view" style="margin-top:10px">
+      <label style="font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:5px">Assign Records</label>
+      <textarea id="atlas-si-input" rows="4" placeholder="SI-XXXXXXXXX&#10;BRP-XXXXXXXXX" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:inherit;outline:none;resize:vertical;line-height:1.6;color:var(--text);background:var(--bg)"></textarea>
+      <div style="font-size:11px;color:var(--text2);margin-top:4px">One Record Per Line</div>
+    </div>
+
+    <!-- Excel Upload mode -->
+    <div id="atlas-mode-excel" class="atlas-mode-view" style="margin-top:10px;display:none">
+      <div id="atlas-drop-zone" style="border:2px dashed var(--border);border-radius:8px;padding:20px;text-align:center;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px">
+        <span class="material-symbols-rounded" style="font-size:28px;color:var(--text2)">upload_file</span>
+        <div style="font-size:12px;color:var(--text2)">Drop .xlsx here or click to browse</div>
+        <div style="font-size:11px;color:var(--text2);opacity:.7">Columns: Assign Records · Test Central In-Scope · Test Central Enabled · Notes</div>
+      </div>
+      <input type="file" id="atlas-file-input" accept=".xlsx,.xls" style="display:none" />
+      <div id="atlas-parsed-info" style="display:none;margin-top:8px;padding:6px 10px;background:var(--accent-bg);border-radius:6px;font-size:12px;color:var(--accent-text);font-weight:500;display:flex;align-items:center;gap:6px">
+        <span class="material-symbols-rounded" style="font-size:15px">check_circle</span>
+        <span id="atlas-parsed-count">0 records loaded</span>
+      </div>
+      <button id="atlas-download-template" style="margin-top:8px;display:flex;align-items:center;gap:5px;padding:6px 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg);cursor:pointer;font-size:12px;font-family:inherit;color:var(--accent);font-weight:500">
+        <span class="material-symbols-rounded" style="font-size:15px">download</span> Download Template
+      </button>
+    </div>
+
+    <!-- Field Updater sub-heading -->
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);margin-top:14px;margin-bottom:8px;padding-top:12px;border-top:1px solid var(--border2)">Field Updater</div>
+
+    <!-- SI fields -->
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);margin-bottom:6px;opacity:.7">SI Records</div>
+    <div id="atlas-tcis-row" style="margin-bottom:10px">
+      <label style="font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:5px">TC In-Scope</label>
+      <select id="atlas-tcis-value" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:inherit;background:var(--bg);cursor:pointer">
+        <option value="">— select —</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+      <div id="atlas-excel-tcis-hint" style="display:none;font-size:11px;color:var(--text2);margin-top:4px">Leave blank to use per-row values from Excel.</div>
+    </div>
+
+    <!-- BRP fields -->
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);margin-top:4px;margin-bottom:6px;padding-top:8px;border-top:1px solid var(--border2);opacity:.7">BRP Records</div>
+    <div id="atlas-tce-row" style="margin-bottom:10px">
+      <label style="font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:5px">Order Type in Test Central</label>
+      <select id="atlas-tce-value" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:inherit;background:var(--bg);cursor:pointer">
+        <option value="">— select —</option>
+        <option value="Material PO">Material PO</option>
+        <option value="Service PO">Service PO</option>
+        <option value="Blanket PO">Blanket PO</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+
+    <!-- Test Central Enabled Yes/No (BRP only) -->
+    <div id="atlas-tce-enabled-row" style="margin-bottom:10px">
+      <label style="font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:5px">Test Central Enabled</label>
+      <select id="atlas-tce-enabled-value" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:inherit;background:var(--bg);cursor:pointer">
+        <option value="">— select —</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+    </div>
+
+    <!-- Run -->
+    <button id="atlas-run-btn" disabled style="width:100%;margin-top:4px;padding:10px;border:none;border-radius:8px;background:var(--bg3);color:var(--text2);font-size:13px;font-weight:600;font-family:inherit;cursor:not-allowed;display:flex;align-items:center;justify-content:center;gap:6px">
+      <span class="material-symbols-rounded" style="font-size:17px">play_arrow</span> Run Update
+    </button>
+
+    <!-- Progress bar -->
+    <div id="atlas-progress-wrap" style="display:none;margin-top:8px">
+      <div style="font-size:11px;color:var(--text2);margin-bottom:4px" id="atlas-progress-label">Updating…</div>
+      <div style="height:4px;background:var(--bg3);border-radius:2px;overflow:hidden">
+        <div id="atlas-progress-bar" style="height:100%;background:var(--accent);width:0%;transition:width .2s"></div>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div id="atlas-results-wrap" style="display:none;margin-top:12px">
+      <div class="card" style="padding:0;overflow:hidden">
+        <div id="atlas-results-header" style="padding:7px 12px;background:var(--bg2);border-bottom:1px solid var(--border2);font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.4px">Results</div>
+        <table class="aie-table" style="margin:0">
+          <thead><tr><th>Record</th><th>Status</th><th>HTTP</th><th>TC In-Scope</th><th>Order Type</th><th>TC Enabled</th></tr></thead>
+          <tbody id="atlas-results-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <script src="aia-platform.js"></script>
 <script src="lib/xlsx-js-style.min.js"></script>
 <script src="lib/jszip.min.js"></script>
@@ -1235,7 +1284,36 @@
 <script src="edi-guide-engine.js"></script>
 <script src="cxml-guide-engine.js"></script>
 <script src="cxml-anonymizer.js"></script>
+<script src="cxml-parser.js"></script>
+<script src="tc-scenario-engine.js"></script>
+<script src="tc-test-plan.js"></script>
 <script src="sidepanel.js"></script>
 <script src="sidepanel-actions.js"></script>
+
+<!-- ADD RECORD MODAL -->
+<div id="add-record-modal" class="overlay-panel" style="display:none;z-index:9999">
+  <div class="overlay-header">
+    <span class="material-symbols-rounded" style="font-size:20px" id="add-modal-icon">add_circle</span>
+    <span class="overlay-title" id="add-modal-title">Add Record</span>
+    <button class="overlay-close" id="add-modal-close"><span class="material-symbols-rounded">close</span></button>
+  </div>
+  <div class="overlay-body" style="padding:16px;display:flex;flex-direction:column;gap:10px">
+    <div class="aie-form-group"><label>Name</label><input type="text" class="aie-input" id="add-rec-name" placeholder="Company Name" autocomplete="off"></div>
+    <div class="aie-form-group"><label>ANID</label><input type="text" class="aie-input" id="add-rec-anid" placeholder="AN01234567890" autocomplete="off"></div>
+    <div class="aie-form-group"><label id="add-rec-num-lbl">Record Number</label><input type="text" class="aie-input" id="add-rec-num" placeholder="SI-000012345" autocomplete="off"></div>
+    <div class="aie-form-group"><label>Status</label>
+      <select class="aie-select" id="add-rec-status" style="width:100%">
+        <option value="Plan">Plan</option>
+        <option value="Build">Build</option>
+        <option value="Testing">Testing</option>
+        <option value="Production">Production</option>
+      </select>
+    </div>
+    <input type="hidden" id="add-rec-type">
+    <button class="btn btn-primary" id="add-modal-save" style="width:100%;margin-top:4px">Save Record</button>
+    <div id="add-modal-err" style="display:none;color:var(--error);font-size:11px;text-align:center"></div>
+  </div>
+</div>
+
 </body>
 </html>

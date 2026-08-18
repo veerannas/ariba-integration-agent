@@ -3,6 +3,8 @@
  * Handles lifecycle, context menus, message routing, and AI knowledge base.
  */
 
+importScripts('atlas-updater.js');
+
 // ===== Installation =====
 chrome.runtime.onInstalled.addListener((details) => {
   if (details.reason === 'install') {
@@ -426,4 +428,19 @@ function generateDocTypeHelp() {
   return `**Document Types in Scope**\n\n| Code | Name | Direction | EDI | cXML |\n|---|---|---|---|---|\n| PO | Purchase Order | Buyer→Supplier | 850 | OrderRequest |\n| POC | PO Confirmation | Supplier→Buyer | 855 | ConfirmationRequest |\n| ASN | Advance Ship Notice | Supplier→Buyer | 856 | ShipNoticeRequest |\n| INV | Invoice | Supplier→Buyer | 810 | InvoiceDetailRequest |\n| SES | Service Entry Sheet | Supplier→Buyer | — | ServiceEntryRequest |\n| REM | Remittance Advice | Buyer→Supplier | 820 | PaymentRemittanceRequest |\n| FA | Functional Ack | Bidirectional | 997 | — |\n| FCST | Forecast | Buyer→Supplier | 830/862 | — |\n\nMost integrations start with PO + ASN + Invoice as minimum scope.`;
 }
 
-console.log('[Ariba Integration Agent v2] Background service worker loaded.');
+console.log('[Ariba Integration Agent v' + chrome.runtime.getManifest().version + '] Background service worker loaded.');
+
+// ===== Atlas bulk field updater =====
+chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
+  if (msg.type !== 'ATLAS_UPDATE') return false;
+  var list   = msg.siList   || [];
+  var fields = { tcis: msg.tcisValue || '', tce: msg.tceValue || '', tceEnabled: msg.tceEnabledValue || '' };
+  AtlasUpdater.bulkUpdate(list, fields, function(progress) {
+    chrome.runtime.sendMessage({ type: 'ATLAS_PROGRESS', done: progress.done, total: progress.total, result: progress.result });
+  }).then(function(results) {
+    sendResponse({ ok: true, results: results });
+  }).catch(function(err) {
+    sendResponse({ ok: false, error: String(err) });
+  });
+  return true; // async
+});

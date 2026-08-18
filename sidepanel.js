@@ -1,4 +1,4 @@
-/* AIA v3.2.0 — Side Panel Controller (Chrome Theme, MV3 CSP safe)
+/* AIA v4.1.1 — Side Panel Controller (Chrome Theme, MV3 CSP safe)
    All event listeners — no inline handlers. */
 
 /* ===== NAV SLIDER ===== */
@@ -14,10 +14,12 @@ function updateNavSlider() {
 }
 
 /* ===== TAB NAVIGATION ===== */
+/* Clear any stale inline display styles that override CSS active rules */
+document.querySelectorAll('.panel').forEach(function(p) { p.style.display = ''; });
 document.querySelectorAll('.nav-tab').forEach(function(tab) {
   tab.addEventListener('click', function() {
     document.querySelectorAll('.nav-tab').forEach(function(t) { t.classList.remove('active'); });
-    document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
+    document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); p.style.display = ''; });
     tab.classList.add('active');
     var panel = document.getElementById('tab-' + tab.dataset.tab);
     if (panel) panel.classList.add('active');
@@ -28,16 +30,7 @@ document.querySelectorAll('.nav-tab').forEach(function(tab) {
 setTimeout(updateNavSlider, 50);
 window.addEventListener('resize', updateNavSlider);
 
-/* ===== DASHBOARD TOGGLE (Buyer / Supplier) ===== */
-document.querySelectorAll('.dash-btn').forEach(function(btn) {
-  btn.addEventListener('click', function() {
-    var mode = btn.dataset.mode;
-    document.querySelectorAll('.dash-btn').forEach(function(b) { b.classList.remove('active'); });
-    btn.classList.add('active');
-    document.getElementById('dash-buyer').classList.toggle('active', mode === 'buyer');
-    document.getElementById('dash-supplier').classList.toggle('active', mode === 'supplier');
-  });
-});
+/* ===== DASHBOARD TOGGLE (removed) ===== */
 
 /* ===== INTEGRATION TOGGLE (Supplier / Buyer) ===== */
 document.querySelectorAll('.int-btn').forEach(function(btn) {
@@ -124,6 +117,15 @@ document.querySelectorAll('.task input[type=checkbox]:not([disabled])').forEach(
 });
 
 /* ===== HEADER BUTTONS ===== */
+
+/* Dynamic version */
+try {
+  var _ver = 'v' + chrome.runtime.getManifest().version;
+  document.querySelectorAll('.header-brand-ver, .stg-about-ver').forEach(function(el) {
+    el.textContent = _ver;
+  });
+} catch(e) {}
+
 var refreshBtn = document.getElementById('btn-refresh');
 if (refreshBtn) {
   refreshBtn.addEventListener('click', function() {
@@ -135,6 +137,17 @@ var reloadBtn = document.getElementById('btn-reload');
 if (reloadBtn) {
   reloadBtn.addEventListener('click', function() {
     try { chrome.runtime.reload(); } catch(e) { location.reload(); }
+  });
+}
+
+var popoutBtn = document.getElementById('btn-popout');
+if (popoutBtn) {
+  popoutBtn.addEventListener('click', function() {
+    try {
+      chrome.tabs.create({ url: chrome.runtime.getURL('tab.html') });
+    } catch(e) {
+      window.open(chrome.runtime.getURL('tab.html'), '_blank');
+    }
   });
 }
 
@@ -3934,7 +3947,7 @@ var ACTIVITY_LOG = [
   { severity: 'warning', desc: 'Siemens AG: Invoice 810 missing TXI tax segment', time: '2026-04-23T09:45:00Z', category: 'Validation' },
   { severity: 'critical', desc: 'CIG connection timeout — Ariba Network maintenance window', time: '2026-04-22T03:00:00Z', category: 'System' },
   { severity: 'success', desc: 'SAP SE integration go-live completed successfully', time: '2026-04-21T10:30:00Z', category: 'Go-Live' },
-  { severity: 'info', desc: 'AIA extension updated to v3.2.0', time: '2026-04-20T08:00:00Z', category: 'System' }
+  { severity: 'info', desc: 'AIA extension updated to v4.1.1', time: '2026-04-20T08:00:00Z', category: 'System' }
 ];
 
 function addActivityEntry(severity, desc) {
@@ -3997,7 +4010,7 @@ var actDateFilter = document.getElementById('activity-date-filter');
 if (actSevFilter) actSevFilter.addEventListener('change', renderActivityLog);
 if (actDateFilter) actDateFilter.addEventListener('change', renderActivityLog);
 
-console.log('[AIA] Panel controller loaded — v3.2.0 AI Automated Integration');
+console.log('[AIA] Panel controller loaded — v4.1.1 AI Automated Integration');
 
 /* ===== Mapping Knowledge Base (MKB) Editor ===== */
 (function() {
@@ -4265,7 +4278,7 @@ console.log('[AIA] Panel controller loaded — v3.2.0 AI Automated Integration')
   }
 })();
 
-/* ===== AIE — Augmented Integration Experience ===== */
+/* ===== Test Central (formerly AIE) ===== */
 (function() {
   var AIE_BACKEND = 'http://localhost:8100';
 
@@ -5270,4 +5283,895 @@ console.log('[AIA] Panel controller loaded — v3.2.0 AI Automated Integration')
     a.click();
     URL.revokeObjectURL(url);
   });
+})();
+
+/* ===== Atlas · Field Updater ===== */
+(function() {
+  var siList = [];   // populated from excel upload
+
+  // mode toggle
+  document.querySelectorAll('.atlas-mode-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.atlas-mode-btn').forEach(function(b) {
+        b.style.background = 'none';
+        b.style.boxShadow  = 'none';
+        b.style.color      = 'var(--text2)';
+        b.style.fontWeight = '500';
+      });
+      btn.style.background  = 'var(--bg)';
+      btn.style.boxShadow   = '0 1px 4px rgba(0,0,0,.12)';
+      btn.style.color       = 'var(--accent)';
+      btn.style.fontWeight  = '600';
+
+      var mode = btn.dataset.atlasMode;
+      document.querySelectorAll('.atlas-mode-view').forEach(function(v) { v.style.display = 'none'; });
+      document.getElementById('atlas-mode-' + mode).style.display = 'block';
+
+      var hint = document.getElementById('atlas-excel-tcis-hint');
+      if (hint) hint.style.display = mode === 'excel' ? 'block' : 'none';
+
+      siList = [];
+      updateRunBtn();
+    });
+  });
+
+  // record type tab (SI / BRP) — removed; all fields always visible
+
+  // Assign Records textarea
+  var siInput = document.getElementById('atlas-si-input');
+  if (siInput) {
+    siInput.addEventListener('input', updateRunBtn);
+  }
+
+  // TCIS + TCE dropdowns
+  var tcisSelect       = document.getElementById('atlas-tcis-value');
+  var tceSelect        = document.getElementById('atlas-tce-value');
+  var tceEnabledSelect = document.getElementById('atlas-tce-enabled-value');
+  if (tcisSelect)       tcisSelect.addEventListener('change', updateRunBtn);
+  if (tceSelect)        tceSelect.addEventListener('change', updateRunBtn);
+  if (tceEnabledSelect) tceEnabledSelect.addEventListener('change', updateRunBtn);
+
+  // drop zone → file picker
+  var dropZone  = document.getElementById('atlas-drop-zone');
+  var fileInput = document.getElementById('atlas-file-input');
+  if (dropZone && fileInput) {
+    dropZone.addEventListener('click', function() { fileInput.click(); });
+    dropZone.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      dropZone.style.borderColor = 'var(--accent)';
+      dropZone.style.background  = 'var(--accent-bg)';
+    });
+    dropZone.addEventListener('dragleave', function() {
+      dropZone.style.borderColor = 'var(--border)';
+      dropZone.style.background  = '';
+    });
+    dropZone.addEventListener('drop', function(e) {
+      e.preventDefault();
+      dropZone.style.borderColor = 'var(--border)';
+      dropZone.style.background  = '';
+      var file = e.dataTransfer.files[0];
+      if (file) parseExcelFile(file);
+    });
+    fileInput.addEventListener('change', function() {
+      if (fileInput.files[0]) parseExcelFile(fileInput.files[0]);
+    });
+  }
+
+  function parseExcelFile(file) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        var wb  = XLSX.read(e.target.result, { type: 'array' });
+        var ws  = wb.Sheets[wb.SheetNames[0]];
+        var rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
+
+        // validate headers
+        var h = rows[0] || [];
+        if (!h[0] || h[0].toString().trim() !== 'Assign Records') {
+          alert('Invalid template: Column A must be "Assign Records". Download the template and try again.');
+          return;
+        }
+
+        siList = [];
+        for (var i = 1; i < rows.length; i++) {
+          var si = (rows[i][0] || '').toString().trim();
+          if (/^(SI|BRP)-\d+$/.test(si)) siList.push(si);
+        }
+
+        var info  = document.getElementById('atlas-parsed-info');
+        var count = document.getElementById('atlas-parsed-count');
+        if (info && count) {
+          count.textContent = siList.length + ' record' + (siList.length !== 1 ? 's' : '') + ' loaded';
+          info.style.display = 'flex';
+        }
+
+        dropZone.style.borderColor = 'var(--success,#1e8e3e)';
+        dropZone.querySelector('div').textContent = file.name + ' loaded';
+
+        updateRunBtn();
+      } catch(err) {
+        alert('Could not parse file: ' + err.message);
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  // template download
+  var dlBtn = document.getElementById('atlas-download-template');
+  if (dlBtn) {
+    dlBtn.addEventListener('click', function() {
+      var wb = XLSX.utils.book_new();
+      var ws = XLSX.utils.aoa_to_sheet([
+        ['Assign Records', 'Test Central In-Scope', 'Test Central Enabled', 'Notes'],
+        ['SI-000070551',   'Yes',                   'Yes',                  'Example — delete before upload'],
+        ['BRP-000003972',  'No',                    '',                     '']
+      ]);
+      ws['!cols'] = [{ wch: 18 }, { wch: 24 }, { wch: 22 }, { wch: 40 }];
+      XLSX.utils.book_append_sheet(wb, ws, 'Atlas Updates');
+      XLSX.writeFile(wb, 'Atlas_Records_Template.xlsx');
+    });
+  }
+
+  // run button
+  var runBtn = document.getElementById('atlas-run-btn');
+  if (runBtn) runBtn.addEventListener('click', onRun);
+
+  function parseTextareaRecords() {
+    if (!siInput) return [];
+    return siInput.value.split('\n')
+      .map(function(l) { return l.trim(); })
+      .filter(function(l) { return /^(SI|BRP)-\d+$/i.test(l); });
+  }
+
+  function updateRunBtn() {
+    if (!runBtn) return;
+    var mode   = getActiveMode();
+    var records = mode === 'single' ? parseTextareaRecords() : siList;
+    var hasSI  = records.some(function(r) { return /^SI-/i.test(r); });
+    var hasBRP = records.some(function(r) { return /^BRP-/i.test(r); });
+    var tcisOk        = tcisSelect       && tcisSelect.value       !== '';
+    var tceOk         = tceSelect        && tceSelect.value        !== '';
+    var tceEnabledOk  = tceEnabledSelect && tceEnabledSelect.value !== '';
+    var siReady  = !hasSI  || tcisOk;
+    var brpReady = !hasBRP || (tceOk || tceEnabledOk);
+    var inputOk  = records.length > 0;
+    var ready    = inputOk && siReady && brpReady;
+    runBtn.disabled         = !ready;
+    runBtn.style.background = ready ? 'var(--accent)' : 'var(--bg3)';
+    runBtn.style.color      = ready ? '#fff'           : 'var(--text2)';
+    runBtn.style.cursor     = ready ? 'pointer'        : 'not-allowed';
+  }
+
+  function getActiveMode() {
+    var mode = 'single';
+    document.querySelectorAll('.atlas-mode-btn').forEach(function(b) {
+      if (b.style.color && b.style.color.indexOf('accent') > -1) mode = b.dataset.atlasMode;
+    });
+    return mode;
+  }
+
+  function onRun() {
+    var mode          = getActiveMode();
+    var tcisVal       = tcisSelect       ? tcisSelect.value       : '';
+    var tceVal        = tceSelect        ? tceSelect.value        : '';
+    var tceEnabledVal = tceEnabledSelect ? tceEnabledSelect.value : '';
+    var list     = mode === 'single' ? parseTextareaRecords() : siList;
+
+    if (!list.length) return;
+
+    // reset results
+    var wrap   = document.getElementById('atlas-results-wrap');
+    var tbody  = document.getElementById('atlas-results-body');
+    var hdr    = document.getElementById('atlas-results-header');
+    var progW  = document.getElementById('atlas-progress-wrap');
+    var progB  = document.getElementById('atlas-progress-bar');
+    var progL  = document.getElementById('atlas-progress-label');
+    tbody.innerHTML = '';
+    if (wrap)  wrap.style.display  = 'block';
+    if (progW) progW.style.display = 'block';
+    if (progB) progB.style.width   = '0%';
+    runBtn.disabled = true;
+    runBtn.style.background = 'var(--bg3)';
+    runBtn.style.color = 'var(--text2)';
+
+    chrome.runtime.sendMessage(
+      { type: 'ATLAS_UPDATE', siList: list, tcisValue: tcisVal, tceValue: tceVal, tceEnabledValue: tceEnabledVal },
+      function(resp) {
+        if (progW) progW.style.display = 'none';
+        runBtn.disabled = false;
+        updateRunBtn();
+        if (!resp || !resp.results) return;
+        var ok = resp.results.filter(function(r) { return r.ok; }).length;
+        if (hdr) hdr.textContent = 'Results — ' + ok + '/' + resp.results.length + ' succeeded';
+        resp.results.forEach(function(r) {
+          var BRP_LABELS  = {670130000:'Material PO',670130001:'Service PO',670130002:'Blanket PO',670130003:'Other'};
+          var rb          = r.readBack || {};
+          var tcisV       = rb.tcis       !== undefined ? (rb.tcis === 670130001 ? 'Yes' : 'No') : '—';
+          var tceV        = rb.tce        !== undefined ? (BRP_LABELS[rb.tce] || rb.tce)          : '—';
+          var tceEnabledV = rb.tceEnabled !== undefined ? (rb.tceEnabled ? 'Yes' : 'No')          : '—';
+          var tr = document.createElement('tr');
+          tr.innerHTML =
+            '<td>' + r.si + '</td>' +
+            '<td style="color:' + (r.ok ? 'var(--success,#1e8e3e)' : '#d93025') + ';font-weight:600">' +
+              (r.ok ? '✓ OK' : '✗ ' + (r.error || 'Error')) + '</td>' +
+            '<td><span style="display:inline-block;padding:1px 6px;border-radius:4px;font-size:10px;font-weight:700;background:' +
+              (r.ok ? '#e6f4ea;color:#1e8e3e' : '#fce8e6;color:#d93025') + '">' + (r.code || '—') + '</span></td>' +
+            '<td>' + tcisV      + '</td>' +
+            '<td>' + tceV       + '</td>' +
+            '<td>' + tceEnabledV + '</td>';
+          tbody.appendChild(tr);
+        });
+      }
+    );
+
+    // live progress from background
+    chrome.runtime.onMessage.addListener(function atlasProgress(msg) {
+      if (msg.type !== 'ATLAS_PROGRESS') return;
+      var pct = Math.round((msg.done / msg.total) * 100);
+      if (progB) progB.style.width = pct + '%';
+      if (progL) progL.textContent = 'Updating ' + msg.done + ' / ' + msg.total + '…';
+      if (msg.done >= msg.total) chrome.runtime.onMessage.removeListener(atlasProgress);
+    });
+  }
+})();
+
+/* =====================================================================
+   DASH MANAGER — Add/load SI & BRP records, dynamic KPI counts
+   ===================================================================== */
+(function() {
+
+  var STORAGE_KEY = 'dash_records';
+  var AVATAR_COLORS = [
+    'var(--stage-1)','var(--stage-3)','var(--stage-4)',
+    'var(--stage-5)','var(--stage-6)','var(--accent)','var(--warn)'
+  ];
+  var STATUS_PILL = {
+    'Production': 'pill-prod',
+    'Testing':    'pill-test',
+    'Build':      'pill-build',
+    'Plan':       'pill-plan'
+  };
+
+  function initials(name) {
+    return (name || '?').trim().split(/\s+/).slice(0,2).map(function(w){return w[0].toUpperCase();}).join('');
+  }
+
+  function avatarColor(name) {
+    var h = 0;
+    for (var i = 0; i < (name||'').length; i++) h = (h * 31 + name.charCodeAt(i)) & 0xfff;
+    return AVATAR_COLORS[h % AVATAR_COLORS.length];
+  }
+
+  function pillClass(status) {
+    return STATUS_PILL[status] || 'pill-plan';
+  }
+
+  function recNumColor(type) {
+    return type === 'brp' ? 'var(--stage-5)' : 'var(--accent)';
+  }
+
+  function buildItem(r, type) {
+    var div = document.createElement('div');
+    div.className = 'sup-item';
+    div.dataset.recId = r.id || '';
+    div.innerHTML =
+      '<div class="sup-avatar" style="background:' + avatarColor(r.name) + '">' + initials(r.name) + '</div>' +
+      '<div class="sup-info"><div class="sup-name">' + esc(r.name) + '</div><div class="sup-anid">' + esc(r.anid) + '</div></div>' +
+      '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">' +
+        '<span style="font-size:10px;color:' + recNumColor(type) + ';font-weight:600;font-family:monospace">' + esc(r.num) + '</span>' +
+        '<div class="pill ' + pillClass(r.status) + '"><span class="pill-dot"></span>' + esc(r.status) + '</div>' +
+      '</div>';
+    return div;
+  }
+
+  function esc(s) {
+    return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function renderList(listEl, records, type) {
+    if (!listEl) return;
+    var added = listEl.querySelectorAll('[data-rec-id]');
+    added.forEach(function(el){ listEl.removeChild(el); });
+    records.forEach(function(r){ listEl.appendChild(buildItem(r, type)); });
+  }
+
+  function updateKPIs() {
+    var liveEl = document.getElementById('kpi-live-val');
+    var ipEl   = document.getElementById('kpi-inprogress-val');
+    if (!liveEl || !ipEl) return;
+    var all  = document.querySelectorAll('#dash-si-list .pill, #dash-brp-list .pill');
+    var live = 0, ip = 0;
+    all.forEach(function(p) {
+      if (p.classList.contains('pill-prod')) live++;
+      else ip++;
+    });
+    liveEl.textContent = live;
+    ipEl.textContent   = ip;
+  }
+
+  function loadAndRender() {
+    try {
+      chrome.storage.local.get(STORAGE_KEY, function(data) {
+        var stored = (data && data[STORAGE_KEY]) || { si: [], brp: [] };
+        renderList(document.getElementById('dash-si-list'),  stored.si  || [], 'si');
+        renderList(document.getElementById('dash-brp-list'), stored.brp || [], 'brp');
+        updateKPIs();
+      });
+    } catch(e) { /* storage not available in non-extension context */ }
+  }
+
+  function openModal(type) {
+    var modal = document.getElementById('add-record-modal');
+    if (!modal) return;
+    document.getElementById('add-rec-type').value  = type;
+    document.getElementById('add-rec-name').value  = '';
+    document.getElementById('add-rec-anid').value  = '';
+    document.getElementById('add-rec-num').value   = '';
+    document.getElementById('add-rec-status').value = 'Build';
+    document.getElementById('add-modal-title').textContent = type === 'si' ? 'Add Supplier Integration' : 'Add Buyer Playbook';
+    document.getElementById('add-rec-num-lbl').textContent = type === 'si' ? 'SI Record Number' : 'BRP Record Number';
+    document.getElementById('add-rec-num').placeholder = type === 'si' ? 'SI-000012345' : 'BRP-000012345';
+    var errEl = document.getElementById('add-modal-err');
+    if (errEl) { errEl.style.display = 'none'; errEl.textContent = ''; }
+    modal.style.display = 'flex';
+    setTimeout(function(){ document.getElementById('add-rec-name').focus(); }, 50);
+  }
+
+  function saveRecord() {
+    var type   = document.getElementById('add-rec-type').value;
+    var name   = document.getElementById('add-rec-name').value.trim();
+    var anid   = document.getElementById('add-rec-anid').value.trim();
+    var num    = document.getElementById('add-rec-num').value.trim();
+    var status = document.getElementById('add-rec-status').value;
+    var errEl  = document.getElementById('add-modal-err');
+
+    if (!name || !num) {
+      if (errEl) { errEl.textContent = 'Name and Record Number are required.'; errEl.style.display = 'block'; }
+      return;
+    }
+
+    var record = { id: Date.now().toString(36), name: name, anid: anid, num: num, status: status };
+
+    chrome.storage.local.get(STORAGE_KEY, function(data) {
+      var stored = (data && data[STORAGE_KEY]) || { si: [], brp: [] };
+      stored.si  = stored.si  || [];
+      stored.brp = stored.brp || [];
+      stored[type].push(record);
+      var save = {};
+      save[STORAGE_KEY] = stored;
+      chrome.storage.local.set(save, function() {
+        document.getElementById('add-record-modal').style.display = 'none';
+        loadAndRender();
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    /* Initial load */
+    loadAndRender();
+
+    /* Also update KPIs after a short delay to catch static pills */
+    setTimeout(updateKPIs, 200);
+
+    /* Add buttons */
+    ['add-si-btn','add-brp-btn'].forEach(function(id) {
+      var btn = document.getElementById(id);
+      if (btn) btn.addEventListener('click', function() {
+        openModal(btn.dataset.recType);
+      });
+    });
+
+    /* Modal close */
+    var closeBtn = document.getElementById('add-modal-close');
+    if (closeBtn) closeBtn.addEventListener('click', function() {
+      document.getElementById('add-record-modal').style.display = 'none';
+    });
+
+    /* Save */
+    var saveBtn = document.getElementById('add-modal-save');
+    if (saveBtn) saveBtn.addEventListener('click', saveRecord);
+
+    /* Enter key in inputs */
+    ['add-rec-name','add-rec-anid','add-rec-num'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') saveRecord();
+      });
+    });
+  });
+
+})();
+
+/* ================================================================
+   TC MANAGER — Test Central tab logic
+   ================================================================ */
+(function() {
+  'use strict';
+
+  var TC_KEY    = 'tc_state';
+  var DOC_TYPES = ['OC', 'ASN', 'INV', 'Credit Memo'];
+  var STAGES    = ['retrieval', 'analyzer', 'creator', 'tester'];
+
+  var state = { record: '', parsedPOs: [], selectedPO: null, scenarios: [] };
+
+  /* ── helpers ───────────────────────────────────────────────── */
+  function esc(s) {
+    return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+  function q(id) { return document.getElementById(id); }
+
+  /* ── stepper ───────────────────────────────────────────────── */
+  function switchStage(stageId) {
+    document.querySelectorAll('.aie-stage-view').forEach(function(el) { el.classList.remove('active'); });
+    var target = q('aie-' + stageId);
+    if (target) target.classList.add('active');
+    var curIdx = STAGES.indexOf(stageId);
+    document.querySelectorAll('#aie-stepper .arrow-step').forEach(function(el) {
+      var sIdx = STAGES.indexOf(el.getAttribute('data-aie-stage'));
+      el.classList.remove('active', 'done');
+      if (sIdx < curIdx) el.classList.add('done');
+      else if (sIdx === curIdx) el.classList.add('active');
+    });
+  }
+
+  /* ── storage ───────────────────────────────────────────────── */
+  function loadState(record, cb) {
+    if (typeof chrome === 'undefined' || !chrome.storage) return cb({});
+    chrome.storage.local.get([TC_KEY], function(r) { cb((r[TC_KEY] || {})[record] || {}); });
+  }
+  function saveState(record, patch) {
+    if (!record || typeof chrome === 'undefined' || !chrome.storage) return;
+    chrome.storage.local.get([TC_KEY], function(r) {
+      var all = r[TC_KEY] || {};
+      all[record] = Object.assign({}, all[record] || {}, patch);
+      chrome.storage.local.set({ [TC_KEY]: all });
+    });
+  }
+
+  /* ── stage 1: PO Samples ───────────────────────────────────── */
+  function parseCXMLInput(xml) {
+    if (!window.CXMLParser) { showParseError('cxml-parser.js not loaded'); return; }
+    /* sanitize first — replace real IDs/dates with test tokens */
+    var san = (typeof CXMLParser.sanitize === 'function')
+      ? CXMLParser.sanitize(xml.trim())
+      : { ok: true, xml: xml.trim(), changes: [], count: 0 };
+    var cleanXml = (san.ok && san.xml) ? san.xml : xml.trim();
+    var result = CXMLParser.parse(cleanXml);
+    if (!result.ok) { showParseError(result.error); return; }
+    hideParseError();
+    result.sanitizeChanges = san.changes || [];
+    result.sanitizeCount   = san.count   || 0;
+    result.sanitizeFiredIds = san.firedIds || [];
+    if (!state.parsedPOs.some(function(p) { return p.orderId === result.orderId; })) {
+      state.parsedPOs.push(result);
+    }
+    renderPOTable();
+    var btn = q('aie-to-analyzer'); if (btn) btn.style.display = '';
+  }
+
+  function showParseError(msg) {
+    var el = q('aie-parse-error'); if (el) el.style.display = '';
+    var t  = q('aie-parse-error-text'); if (t) t.textContent = msg;
+  }
+  function hideParseError() { var el = q('aie-parse-error'); if (el) el.style.display = 'none'; }
+
+  function renderPOTable() {
+    var tbody  = q('aie-po-tbody');
+    var badge  = q('aie-po-count');
+    var wrap   = q('aie-parse-result');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    state.parsedPOs.forEach(function(po, idx) {
+      var tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td><input type="radio" name="aie-po-sel" value="' + idx + '"' + (idx === 0 ? ' checked' : '') + '></td>' +
+        '<td><b>' + esc(po.orderId) + '</b></td>' +
+        '<td>' + esc(po.orderDate) + '</td>' +
+        '<td style="font-family:monospace;font-size:10px">' + esc(po.buyerAnid) + '</td>' +
+        '<td>' + po.lineCount + '</td>' +
+        '<td>' + esc(po.currency) + ' ' + esc(po.totalAmount) + '</td>';
+      tbody.appendChild(tr);
+    });
+    if (badge) badge.textContent = state.parsedPOs.length;
+    if (wrap)  wrap.style.display = state.parsedPOs.length ? '' : 'none';
+    if (state.parsedPOs.length) state.selectedPO = state.parsedPOs[0];
+  }
+
+  /* ── stage 2: test case ────────────────────────────────────── */
+  function updateScenarioCount() {
+    var count = document.querySelectorAll('#aie-analyzer .aie-scenario-row input:checked').length;
+    var lbl = q('aie-sc-count-lbl'); if (lbl) lbl.textContent = count + ' selected';
+  }
+
+  function buildTestCase() {
+    var radioSel = document.querySelector('input[name="aie-po-sel"]:checked');
+    if (radioSel) state.selectedPO = state.parsedPOs[parseInt(radioSel.value)] || state.parsedPOs[0];
+    if (!state.selectedPO || !state.selectedPO.rawXml) {
+      alert('No PO loaded. Go back to step 1 and paste or upload a cXML PO.'); return;
+    }
+    /* base test case — always the sanitized cXML */
+    state.scenarios = [{
+      id: 'tc1',
+      name: 'Sanitized Test Case',
+      description: (state.selectedPO.sanitizeCount || 0) + ' test tokens applied',
+      cxml: state.selectedPO.rawXml,
+      ok: true
+    }];
+    /* optional scenario variants */
+    var checkedIds = ['sc1','sc2','sc3'].filter(function(id) {
+      var el = q('aie-' + id); return el && el.checked;
+    });
+    if (checkedIds.length && window.TCScenarioEngine) {
+      var variants = TCScenarioEngine.build(state.selectedPO.rawXml, checkedIds);
+      state.scenarios = state.scenarios.concat(variants);
+    }
+    renderTestCaseResult();
+    renderProgressMatrix();
+    var rec = state.record;
+    if (rec) saveState(rec, { scenarios: state.scenarios.map(function(s) {
+      return { id: s.id, name: s.name, description: s.description, ok: s.ok };
+    })});
+  }
+
+  function renderTestCaseResult() {
+    var tbody  = q('aie-scenarios-tbody');
+    var badge  = q('aie-gen-count');
+    var wrap   = q('aie-scenarios-result');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    state.scenarios.forEach(function(sc, idx) {
+      var tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td>' + (idx + 1) + '</td>' +
+        '<td><b>' + esc(sc.name) + '</b><div style="font-size:10px;color:var(--text2)">' + esc(sc.description || '') + '</div></td>' +
+        '<td><span class="badge ' + (sc.ok ? 'badge-success' : 'badge-error') + '">' + (sc.ok ? 'Ready' : 'Error') + '</span></td>' +
+        '<td style="white-space:nowrap">' +
+          '<button class="aie-btn-sm aie-preview-sc" data-idx="' + idx + '" style="margin-right:4px"><span class="material-symbols-rounded" style="font-size:12px;vertical-align:-2px">preview</span> Preview</button>' +
+          '<button class="aie-btn-sm aie-dl-tc-row" data-idx="' + idx + '"><span class="material-symbols-rounded" style="font-size:12px;vertical-align:-2px">download</span> Download</button>' +
+        '</td>';
+      tbody.appendChild(tr);
+    });
+    if (badge) badge.textContent = state.scenarios.length;
+    if (wrap)  wrap.style.display = state.scenarios.length ? '' : 'none';
+  }
+
+  /* ── stage 3: creator ──────────────────────────────────────── */
+  function downloadTestCaseCXML() {
+    var cxml = state.scenarios.length ? state.scenarios[0].cxml : (state.selectedPO && state.selectedPO.rawXml);
+    if (!cxml) { alert('Build the test case first.'); return; }
+    var orderId = (state.selectedPO && state.selectedPO.orderId) || 'TC';
+    var blob = new Blob([cxml], { type: 'text/xml;charset=utf-8' });
+    var url  = URL.createObjectURL(blob);
+    var a    = document.createElement('a');
+    a.href   = url;
+    a.download = 'TestCase_' + orderId + '.xml';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function uploadToCIG() {
+    var cxml = state.scenarios.length ? state.scenarios[0].cxml : (state.selectedPO && state.selectedPO.rawXml);
+    if (!cxml) { alert('Build the test case first.'); return; }
+    var endpoint  = (q('aie-cig-endpoint') || {}).value || 'https://service.ariba.com/service/transaction/cxml.asp';
+    var secret    = (q('aie-cig-secret') || {}).value || '';
+    var statusEl  = q('aie-cig-status');
+    var uploadBtn = q('aie-upload-cig-btn');
+    if (statusEl) { statusEl.style.display = ''; statusEl.innerHTML = '<span style="color:var(--text2);font-size:11px">Uploading…</span>'; }
+    if (uploadBtn) uploadBtn.disabled = true;
+    var headers = { 'Content-Type': 'text/xml; charset=UTF-8' };
+    if (secret) headers['Authorization'] = 'SharedSecret ' + secret;
+    fetch(endpoint, { method: 'POST', headers: headers, body: cxml })
+      .then(function(res) {
+        return res.text().then(function(body) { return { status: res.status, body: body }; });
+      })
+      .then(function(r) {
+        var ok = r.status >= 200 && r.status < 300;
+        var preview = esc(r.body.slice(0, 600));
+        if (statusEl) statusEl.innerHTML =
+          '<div class="banner banner-' + (ok ? 'ok' : 'warn') + '" style="flex-direction:column;align-items:flex-start;gap:4px">' +
+          '<span style="font-weight:600">HTTP ' + r.status + '</span>' +
+          '<pre style="font-size:9px;white-space:pre-wrap;overflow:auto;max-height:100px;margin:0;width:100%">' + preview + '</pre></div>';
+      })
+      .catch(function(e) {
+        if (statusEl) statusEl.innerHTML = '<div class="banner banner-warn"><span class="material-symbols-rounded" style="font-size:14px">error</span>' + esc(e.message) + '</div>';
+      })
+      .finally(function() {
+        if (uploadBtn) uploadBtn.disabled = false;
+      });
+  }
+
+  function copyEmail(tplId) {
+    var subj = q('aie-subj-' + tplId);
+    var body = q('aie-body-' + tplId);
+    if (!subj || !body) return;
+    var text = subj.textContent + '\n\n' + body.textContent;
+    var btn  = document.querySelector('.aie-copy-email[data-tpl="' + tplId + '"]');
+    navigator.clipboard.writeText(text).then(function() {
+      if (btn) { var o = btn.innerHTML; btn.innerHTML = '<span class="material-symbols-rounded" style="font-size:12px;vertical-align:-2px">check</span> Copied'; setTimeout(function() { btn.innerHTML = o; }, 1800); }
+    }).catch(function() {
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+      document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+      document.body.removeChild(ta);
+    });
+  }
+
+  /* ── stage 4: progress tracker ─────────────────────────────── */
+  function renderProgressMatrix() {
+    var tbody  = q('aie-tracker-tbody');
+    var empty  = q('aie-progress-empty');
+    var matrix = q('aie-progress-matrix');
+    if (!tbody) return;
+    if (!state.scenarios.length) {
+      if (empty) empty.style.display = '';
+      if (matrix) matrix.style.display = 'none';
+      return;
+    }
+    if (empty) empty.style.display = 'none';
+    if (matrix) matrix.style.display = '';
+    var record = state.record;
+
+    function render(saved) {
+      tbody.innerHTML = '';
+      state.scenarios.forEach(function(sc) {
+        var tr    = document.createElement('tr');
+        var cells = '<td style="font-size:11px;font-weight:600">' + esc(sc.name) + '</td>';
+        DOC_TYPES.forEach(function(dt) {
+          var key = sc.id + '_' + dt.replace(/\s+/g,'_');
+          var cur = saved[key] || 'Pending';
+          var selHtml = '<select class="aie-tracker-sel" data-key="' + esc(key) + '" style="font-size:10px;padding:2px 4px;border:1px solid var(--border);border-radius:4px;background:var(--bg);color:var(--text);cursor:pointer">'
+            + ['Pending','In Progress','Passed','Failed'].map(function(s) {
+                return '<option value="' + s + '"' + (s === cur ? ' selected' : '') + '>' + s + '</option>';
+              }).join('')
+            + '</select>';
+          cells += '<td>' + selHtml + '</td>';
+        });
+        tr.innerHTML = cells;
+        tbody.appendChild(tr);
+      });
+      updateProgressPct(saved);
+    }
+
+    if (record) { loadState(record, function(s) { render(s.progress || {}); }); }
+    else render({});
+  }
+
+  function updateProgressPct(saved) {
+    var total  = state.scenarios.length * DOC_TYPES.length;
+    if (!total) return;
+    var passed = Object.values(saved || {}).filter(function(v) { return v === 'Passed'; }).length;
+    var pct    = Math.round(passed / total * 100);
+    var bar    = q('aie-progress-bar'); if (bar) bar.style.width = pct + '%';
+    var badge  = q('aie-progress-pct'); if (badge) badge.textContent = pct + '%';
+  }
+
+  function onTrackerChange(key, value) {
+    var record = state.record;
+    if (!record) return;
+    loadState(record, function(s) {
+      var progress = Object.assign({}, s.progress || {});
+      progress[key] = value;
+      saveState(record, { progress: progress });
+      updateProgressPct(progress);
+    });
+  }
+
+  /* ── stage 5: resources ────────────────────────────────────── */
+  function openLink(url) {
+    if (typeof chrome !== 'undefined' && chrome.tabs) chrome.tabs.create({ url: url });
+    else window.open(url, '_blank');
+  }
+  function copyLink(url) {
+    navigator.clipboard.writeText(url).catch(function() {
+      var ta = document.createElement('textarea');
+      ta.value = url; ta.style.cssText = 'position:fixed;opacity:0';
+      document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+      document.body.removeChild(ta);
+    });
+  }
+
+  /* ── cXML preview overlay ──────────────────────────────────── */
+  function previewScenario(idx) {
+    var sc = state.scenarios[idx];
+    if (!sc || !sc.cxml) return;
+    var overlay = q('aie-cxml-preview-overlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'aie-cxml-preview-overlay';
+      overlay.className = 'overlay-panel';
+      overlay.innerHTML =
+        '<div class="overlay-header">' +
+          '<span class="material-symbols-rounded" style="font-size:20px">code</span>' +
+          '<span class="overlay-title" id="aie-preview-title">cXML Preview</span>' +
+          '<button class="overlay-close" id="aie-preview-close"><span class="material-symbols-rounded">close</span></button>' +
+        '</div>' +
+        '<div class="overlay-body" style="padding:0;overflow:auto;display:flex;flex-direction:column">' +
+          '<div style="display:flex;justify-content:flex-end;padding:8px;flex-shrink:0">' +
+            '<button class="aie-btn-sm" id="aie-preview-copy">Copy cXML</button>' +
+          '</div>' +
+          '<pre id="aie-preview-body" style="font-size:9px;padding:0 12px 12px;margin:0;white-space:pre-wrap;word-break:break-all;line-height:1.4;font-family:monospace;flex:1;overflow:auto"></pre>' +
+        '</div>';
+      document.body.appendChild(overlay);
+      q('aie-preview-close').addEventListener('click', function() { overlay.style.display = 'none'; });
+      q('aie-preview-copy').addEventListener('click', function() {
+        var pre = q('aie-preview-body');
+        navigator.clipboard.writeText(pre.textContent).catch(function() {
+          var ta = document.createElement('textarea'); ta.value = pre.textContent;
+          ta.style.cssText = 'position:fixed;opacity:0'; document.body.appendChild(ta);
+          ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+        });
+        var btn = q('aie-preview-copy'); btn.textContent = 'Copied!';
+        setTimeout(function() { btn.textContent = 'Copy cXML'; }, 1600);
+      });
+    }
+    var titleEl = q('aie-preview-title'); if (titleEl) titleEl.textContent = sc.name;
+    var bodyEl  = q('aie-preview-body');  if (bodyEl)  bodyEl.textContent  = sc.cxml;
+    overlay.style.display = '';
+  }
+
+  /* ── sanitization card (Stage 2) ──────────────────────────── */
+  function renderSanitizeCard() {
+    var card  = q('aie-sanitize-card');
+    var badge = q('aie-sanitize-count');
+    var list  = q('aie-sanitize-rules');
+    if (!card || !list) return;
+    var po       = state.selectedPO;
+    var firedIds = (po && po.sanitizeFiredIds) ? po.sanitizeFiredIds : [];
+    var rules    = (window.CXMLParser && CXMLParser.SANITIZE_RULES) ? CXMLParser.SANITIZE_RULES : [];
+    if (!rules.length) { card.style.display = 'none'; return; }
+    card.style.display = '';
+    if (badge) badge.textContent = firedIds.length + ' of ' + rules.length + ' applied';
+    list.innerHTML = rules.map(function(r) {
+      var hit = firedIds.indexOf(r.id) !== -1;
+      return '<div style="display:flex;align-items:center;gap:5px;font-size:10px' + (hit ? '' : ';opacity:.55') + '">' +
+        '<span class="material-symbols-rounded" style="font-size:12px;flex-shrink:0;color:' +
+        (hit ? 'var(--ok,#22c55e)' : 'var(--text2)') + '">' +
+        (hit ? 'check_circle' : 'radio_button_unchecked') + '</span>' +
+        '<span>' + esc(r.label) +
+        (hit ? '' : ' <span style="font-style:italic;font-size:9px;color:var(--text2)">— ' + esc(r.skipReason) + '</span>') +
+        '</span></div>';
+    }).join('');
+  }
+
+  function renderBasePOCard() {
+    var bInfo  = q('aie-base-po-info');
+    var bBadge = q('aie-base-po-badge');
+    var po     = state.selectedPO;
+    if (!po) return;
+    if (bInfo)  bInfo.textContent  = 'PO ' + po.orderId + ' — ' + po.lineCount + ' line(s) | Buyer: ' + po.buyerAnid;
+    if (bBadge) bBadge.textContent = po.orderId;
+  }
+
+  /* ── init ──────────────────────────────────────────────────── */
+  document.addEventListener('DOMContentLoaded', function() {
+
+    /* stepper clicks */
+    document.querySelectorAll('#aie-stepper .arrow-step').forEach(function(step) {
+      step.addEventListener('click', function() { switchStage(step.getAttribute('data-aie-stage')); });
+    });
+
+    /* next buttons */
+    var nav = { 'aie-to-analyzer': 'analyzer', 'aie-to-creator': 'creator', 'aie-to-tester': 'tester' };
+    Object.keys(nav).forEach(function(id) {
+      var btn = q(id);
+      if (btn) btn.addEventListener('click', function() {
+        if (id === 'aie-to-analyzer') {
+          var r = document.querySelector('input[name="aie-po-sel"]:checked');
+          if (r) state.selectedPO = state.parsedPOs[parseInt(r.value)] || state.selectedPO;
+          renderBasePOCard();
+          renderSanitizeCard();
+        }
+        switchStage(nav[id]);
+      });
+    });
+
+    /* paste + parse */
+    var parseBtn   = q('aie-parse-btn');
+    var pasteArea  = q('aie-cxml-paste');
+    if (parseBtn && pasteArea) {
+      parseBtn.addEventListener('click', function() {
+        var xml = pasteArea.value.trim();
+        if (xml) parseCXMLInput(xml); else showParseError('Paste a cXML document first.');
+      });
+    }
+
+    /* file upload */
+    var zone   = q('aie-upload-zone');
+    var fInput = q('aie-file-input');
+    if (zone && fInput) {
+      zone.addEventListener('click', function() { fInput.click(); });
+      zone.addEventListener('dragover', function(e) { e.preventDefault(); zone.style.borderColor = 'var(--accent)'; });
+      zone.addEventListener('dragleave', function() { zone.style.borderColor = ''; });
+      zone.addEventListener('drop', function(e) {
+        e.preventDefault(); zone.style.borderColor = '';
+        readFiles(e.dataTransfer && e.dataTransfer.files);
+      });
+      fInput.addEventListener('change', function() { readFiles(fInput.files); });
+    }
+    function readFiles(files) {
+      if (!files) return;
+      Array.from(files).forEach(function(f) {
+        var rdr = new FileReader();
+        rdr.onload = function(e) { parseCXMLInput(e.target.result); };
+        rdr.readAsText(f);
+      });
+    }
+
+    /* scenario checkboxes (optional) */
+    ['sc1','sc2','sc3'].forEach(function(id) {
+      var el = q('aie-' + id); if (el) el.addEventListener('change', updateScenarioCount);
+    });
+
+    /* build test case */
+    var buildBtn = q('aie-build-scenarios-btn');
+    if (buildBtn) buildBtn.addEventListener('click', buildTestCase);
+
+    /* per-row download in generated table */
+    var scTbody = q('aie-scenarios-tbody');
+    if (scTbody) scTbody.addEventListener('click', function(e) {
+      var dlBtn = e.target.closest('.aie-dl-tc-row');
+      if (dlBtn) {
+        var idx = parseInt(dlBtn.getAttribute('data-idx'));
+        var sc  = state.scenarios[idx];
+        if (sc && sc.cxml) {
+          var blob = new Blob([sc.cxml], { type: 'text/xml;charset=utf-8' });
+          var url  = URL.createObjectURL(blob);
+          var a    = document.createElement('a'); a.href = url;
+          a.download = 'TestCase_' + (state.selectedPO && state.selectedPO.orderId || 'TC') +
+            (idx > 0 ? '_' + sc.name.replace(/\s+/g,'_') : '') + '.xml';
+          a.click(); URL.revokeObjectURL(url);
+        }
+      }
+      var previewBtn = e.target.closest('.aie-preview-sc');
+      if (previewBtn) previewScenario(parseInt(previewBtn.getAttribute('data-idx')));
+    });
+
+    /* downloads */
+    var dlPlan = q('aie-download-testplan'); if (dlPlan) dlPlan.addEventListener('click', downloadTestCaseCXML);
+    var dlHere = q('aie-download-tc-here');  if (dlHere) dlHere.addEventListener('click', downloadTestCaseCXML);
+
+    /* CIG upload */
+    var cigBtn = q('aie-upload-cig-btn'); if (cigBtn) cigBtn.addEventListener('click', uploadToCIG);
+
+    /* email tabs */
+    document.querySelectorAll('.aie-email-tab').forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.aie-email-tab').forEach(function(t) { t.classList.remove('active'); });
+        tab.classList.add('active');
+        var tpl = tab.getAttribute('data-tpl');
+        document.querySelectorAll('.aie-email-tpl').forEach(function(el) { el.style.display = 'none'; });
+        var target = q('aie-tpl-' + tpl); if (target) target.style.display = '';
+      });
+    });
+
+    /* copy email (delegated on tab-aie) */
+    var tabAie = q('tab-aie');
+    if (tabAie) {
+      tabAie.addEventListener('click', function(e) {
+        var copyBtn = e.target.closest('.aie-copy-email');
+        if (copyBtn) copyEmail(copyBtn.getAttribute('data-tpl'));
+        var openBtn = e.target.closest('.aie-res-open');
+        if (openBtn) openLink(openBtn.getAttribute('data-url'));
+        var linkBtn = e.target.closest('.aie-res-copy');
+        if (linkBtn) copyLink(linkBtn.getAttribute('data-url'));
+      });
+    }
+
+    /* tracker (delegated) */
+    var trackerTbody = q('aie-tracker-tbody');
+    if (trackerTbody) trackerTbody.addEventListener('change', function(e) {
+      var sel = e.target.closest('.aie-tracker-sel');
+      if (sel) onTrackerChange(sel.getAttribute('data-key'), sel.value);
+    });
+
+    /* reset progress */
+    var resetBtn = q('aie-reset-progress');
+    if (resetBtn) resetBtn.addEventListener('click', function() {
+      var rec = state.record;
+      if (rec) saveState(rec, { progress: {} });
+      renderProgressMatrix();
+    });
+
+  });
+
 })();

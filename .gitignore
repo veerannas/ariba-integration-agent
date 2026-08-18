@@ -2,3 +2,5 @@ __pycache__/
 .DS_Store
 *.pyc
 node_modules/
+.last-build-hash
+*.docx
