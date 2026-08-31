@@ -4,3 +4,15 @@ __pycache__/
 node_modules/
 .last-build-hash
 *.docx
+
+# Python backend — contains test environment config
+aie-backend/__pycache__/
+aie-backend/*.pyc
+
+# OpenCode agent plans (local only)
+.opencode/
+
+# Vercel build artifacts (also excluded in web/.gitignore)
+web/.vercel/
+web/.next/
+

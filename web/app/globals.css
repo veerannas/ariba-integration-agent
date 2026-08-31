@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+/* ── SAP Horizon Design System ──────────────────────────────────────────── */
+:root {
+  /* Brand */
+  --sap-blue:          #0070F2;
+  --sap-blue-dark:     #0040B0;
+  --sap-blue-light:    #EBF4FF;
+  --sap-teal:          #0FAAAA;
+  --sap-teal-light:    #E0F5F5;
+
+  /* Semantic */
+  --sap-success:       #107E3E;
+  --sap-success-bg:    #F1FAF5;
+  --sap-warning:       #E9730C;
+  --sap-warning-bg:    #FEF7F1;
+  --sap-error:         #BB0000;
+  --sap-error-bg:      #FFF0F0;
+  --sap-info:          #0070F2;
+  --sap-info-bg:       #EBF4FF;
+
+  /* Neutral */
+  --sap-shell:         #354A5E;
+  --sap-shell-dark:    #223548;
+  --sap-bg:            #F2F2F2;
+  --sap-surface:       #FFFFFF;
+  --sap-border:        #D9D9D9;
+  --sap-border-strong: #8C8C8C;
+  --sap-text-1:        #32363A;
+  --sap-text-2:        #6A6D70;
+  --sap-text-3:        #89919A;
+
+  /* Mapped for Tailwind @theme */
+  --background: var(--sap-bg);
+  --foreground: var(--sap-text-1);
+}
+
+@theme inline {
+  --color-background:    var(--background);
+  --color-foreground:    var(--foreground);
+  --color-sap-blue:      var(--sap-blue);
+  --color-sap-teal:      var(--sap-teal);
+  --color-sap-shell:     var(--sap-shell);
+  --color-sap-border:    var(--sap-border);
+  --color-sap-surface:   var(--sap-surface);
+  --color-sap-text-1:    var(--sap-text-1);
+  --color-sap-text-2:    var(--sap-text-2);
+  --font-sans:           var(--font-geist-sans);
+  --font-mono:           var(--font-geist-mono);
+}
+
+body {
+  background: var(--sap-bg);
+  color: var(--sap-text-1);
+  font-family: "72", "72full", Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── SAP Shell header ───────────────────────────────────────────────────── */
+.sap-shell {
+  background: var(--sap-shell);
+  color: #fff;
+}
+
+/* ── Utility: Horizon card ──────────────────────────────────────────────── */
+.horizon-card {
+  background: var(--sap-surface);
+  border: 1px solid var(--sap-border);
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.08);
+}
+
+/* ── cXML syntax highlighting ───────────────────────────────────────────── */
+.cxml-tag     { color: #0040B0; font-weight: 600; }
+.cxml-attr    { color: #6E3F99; }
+.cxml-value   { color: #107E3E; }
+.cxml-comment { color: #8C8C8C; font-style: italic; }
+.cxml-text    { color: #32363A; }
+
+/* ── Diff highlighting ───────────────────────────────────────────────────── */
+.diff-add { background: #F1FAF5; border-left: 3px solid #107E3E; }
+.diff-del { background: #FFF0F0; border-left: 3px solid #BB0000; }
+.diff-ctx { background: transparent; }
+
+/* ── Status badge helpers ────────────────────────────────────────────────── */
+.status-active  { background: var(--sap-success-bg); color: var(--sap-success); }
+.status-testing { background: var(--sap-info-bg);    color: var(--sap-blue);    }
+.status-pending { background: #F5F5F5;               color: var(--sap-text-2);  }
+.status-error   { background: var(--sap-error-bg);   color: var(--sap-error);   }
