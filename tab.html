@@ -49,12 +49,12 @@
 <nav class="nav nav-inline">
   <div class="nav-track">
     <div class="nav-slider" id="nav-slider"></div>
-    <button class="nav-tab active" data-tab="dashboard"><span class="material-symbols-rounded">space_dashboard</span><span class="nav-text">Dashboard</span></button>
+    <button class="nav-tab" data-tab="dashboard"><span class="material-symbols-rounded">space_dashboard</span><span class="nav-text">Dashboard</span></button>
     <button class="nav-tab" data-tab="integration"><span class="material-symbols-rounded">sync_alt</span><span class="nav-text">Integration</span></button>
     <button class="nav-tab" data-tab="troubleshoot"><span class="material-symbols-rounded">build</span><span class="nav-text">Troubleshoot</span></button>
     <button class="nav-tab" data-tab="guides"><span class="material-symbols-rounded">menu_book</span><span class="nav-text">Guides</span></button>
     <button class="nav-tab" data-tab="cig"><span class="material-symbols-rounded">settings_suggest</span><span class="nav-text">CIG</span></button>
-    <button class="nav-tab" data-tab="aie" title="Test Central"><span class="material-symbols-rounded">rocket_launch</span><span class="nav-text">Test Central</span></button>
+    <button class="nav-tab active" data-tab="aie" title="Test Central"><span class="material-symbols-rounded">rocket_launch</span><span class="nav-text">Test Central</span></button>
     <button class="nav-tab" data-tab="atlas"><span class="material-symbols-rounded">cloud_sync</span><span class="nav-text">Atlas</span></button>
   </div>
 </nav>
@@ -83,7 +83,7 @@
 <div class="main-content">
 
 <!-- ==================== DASHBOARD ==================== -->
-<div id="tab-dashboard" class="panel active"><div class="pscroll">
+<div id="tab-dashboard" class="panel"><div class="pscroll">
 
   <!-- Welcome Banner -->
   <div class="dash-welcome" id="dash-welcome">
@@ -380,20 +380,26 @@
 </div>
 
 <!-- ==================== TEST CENTRAL ==================== -->
-<div id="tab-aie" class="panel">
+<div id="tab-aie" class="panel active">
 
   <!-- 4-step stepper -->
   <div class="stepper-arrow" id="aie-stepper">
-    <div class="arrow-step active" data-aie-stage="retrieval"><div class="arrow-inner"><span class="arrow-num">1</span><span class="arrow-label">PO SAMPLE</span></div></div>
-    <div class="arrow-step" data-aie-stage="analyzer"><div class="arrow-inner"><span class="arrow-num">2</span><span class="arrow-label">Test Case</span></div></div>
-    <div class="arrow-step" data-aie-stage="creator"><div class="arrow-inner"><span class="arrow-num">3</span><span class="arrow-label">Uploader</span></div></div>
+    <div class="arrow-step active" data-aie-stage="creator"><div class="arrow-inner"><span class="arrow-num">1</span><span class="arrow-label">Value Prop</span></div></div>
+    <div class="arrow-step" data-aie-stage="retrieval"><div class="arrow-inner"><span class="arrow-num">2</span><span class="arrow-label">PO SAMPLE</span></div></div>
+    <div class="arrow-step" data-aie-stage="analyzer"><div class="arrow-inner"><span class="arrow-num">3</span><span class="arrow-label">Test Case</span></div></div>
     <div class="arrow-step last" data-aie-stage="tester"><div class="arrow-inner"><span class="arrow-num">4</span><span class="arrow-label">Tracker</span></div></div>
   </div>
 
   <div class="pscroll" style="padding-top:0">
 
-    <!-- ===== STAGE 1: PO SAMPLES ===== -->
-    <div id="aie-retrieval" class="aie-stage-view active">
+    <!-- ===== STAGE 1: VALUE PROP ===== -->
+    <div id="aie-creator" class="aie-stage-view active">
+      <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">campaign</span> Value Prop</div>
+      <button class="btn btn-primary" id="aie-to-tester" style="margin-top:12px"><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">arrow_forward</span> Go to Tracker</button>
+    </div>
+
+    <!-- ===== STAGE 2: PO SAMPLES ===== -->
+    <div id="aie-retrieval" class="aie-stage-view">
       <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">upload_file</span> PO Sample Input</div>
       <div class="banner banner-info"><span class="material-symbols-rounded" style="font-size:16px">info</span><div>Upload or paste a buyer's cXML Purchase Order. Metadata is extracted automatically.</div></div>
 
@@ -452,16 +458,6 @@
       </div>
 
 
-      <div class="card" style="margin-top:8px" id="aie-sc-optional-card">
-        <div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">checklist</span> Optional Scenarios</span><span style="font-size:10px;color:var(--text2)" id="aie-sc-count-lbl">0 selected</span></div>
-        <div class="card-body" style="display:block">
-          <div style="font-size:10px;color:var(--text2);margin-bottom:6px">Check any to generate additional cXML variants alongside the base test case.</div>
-          <label class="aie-scenario-row"><input type="checkbox" id="aie-sc1"><div class="aie-scenario-info"><span class="aie-scenario-name">1. Multi-Line Split</span><span class="aie-scenario-desc">Single-item PO expanded to 3 equal lines</span></div></label>
-          <label class="aie-scenario-row"><input type="checkbox" id="aie-sc2"><div class="aie-scenario-info"><span class="aie-scenario-name">2. No SupplierPartID</span><span class="aie-scenario-desc">All SupplierPartID elements removed</span></div></label>
-          <label class="aie-scenario-row"><input type="checkbox" id="aie-sc3"><div class="aie-scenario-info"><span class="aie-scenario-name">3. Ad-hoc Ship-To</span><span class="aie-scenario-desc">ADBUYER- prefixed non-standard delivery address</span></div></label>
-        </div>
-      </div>
-
       <button class="btn btn-primary btn-block" id="aie-build-scenarios-btn" style="margin-top:10px"><span class="material-symbols-rounded" style="font-size:15px;vertical-align:-3px">science</span> Build Test Case</button>
 
       <div id="aie-scenarios-result" style="display:none;margin-top:12px">
@@ -474,31 +470,7 @@
         </div></div>
       </div>
 
-      <button class="btn btn-primary" id="aie-to-creator" style="margin-top:8px"><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">arrow_forward</span> Go to Uploader</button>
-    </div>
-
-    <!-- ===== STAGE 3: UPLOADER ===== -->
-    <div id="aie-creator" class="aie-stage-view">
-      <div class="section-title"><span class="material-symbols-rounded" style="font-size:16px">note_add</span> Uploader</div>
-      <div class="banner banner-info"><span class="material-symbols-rounded" style="font-size:16px">table_view</span><div>Upload the sanitized cXML test case to CIG Test Central.</div></div>
-
-      <div class="card" style="margin-top:8px">
-        <div class="card-hdr"><span><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">upload</span> Upload to CIG Test Central</span></div>
-        <div class="card-body" style="display:block">
-          <div class="form-group" style="margin-bottom:6px">
-            <label class="form-label">POST Endpoint</label>
-            <input class="form-input" id="aie-cig-endpoint" value="https://service.ariba.com/service/transaction/cxml.asp">
-          </div>
-          <div class="form-group" style="margin-bottom:6px">
-            <label class="form-label">Shared Secret / Auth Token <span style="color:var(--text2);font-weight:400">(optional)</span></label>
-            <input class="form-input" id="aie-cig-secret" type="password" placeholder="Leave blank if not required">
-          </div>
-          <button class="btn btn-secondary btn-block" id="aie-upload-cig-btn"><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">cloud_upload</span> Upload to CIG</button>
-          <div id="aie-cig-status" style="display:none;margin-top:8px"></div>
-        </div>
-      </div>
-
-      <button class="btn btn-primary" id="aie-to-tester" style="margin-top:12px"><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">arrow_forward</span> Go to Tracker</button>
+      <button class="btn btn-primary" id="aie-to-creator" style="margin-top:8px"><span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">arrow_forward</span> Go to Value Prop</button>
     </div>
 
     <!-- ===== STAGE 4: TRACKER ===== -->

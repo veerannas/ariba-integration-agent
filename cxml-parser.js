@@ -84,6 +84,7 @@
   }
 
   var SANITIZE_RULES = [
+    { id: 'r00', label: 'timestamp → #TIMESTAMP#',                  skipReason: 'no timestamp attribute' },
     { id: 'r01', label: 'payloadID → #PAYLOADID#',                skipReason: 'no payloadID attribute' },
     { id: 'r02', label: 'deploymentMode → test',                  skipReason: 'not set to production' },
     { id: 'r03', label: 'From/Identity → #SENDERID#',             skipReason: 'no From/Identity element' },
@@ -120,6 +121,9 @@
     function bumpYear(s) { return s ? s.replace(/^\d{4}/, String(futureY)) : s; }
 
     var root = doc.documentElement;
+
+    /* r00 — timestamp */
+    if (root.hasAttribute('timestamp')) { root.setAttribute('timestamp', '#TIMESTAMP#'); fire('r00', 'timestamp → #TIMESTAMP#'); }
 
     /* r01 — payloadID */
     if (root.hasAttribute('payloadID')) { root.setAttribute('payloadID', '#PAYLOADID#'); fire('r01', 'payloadID → #PAYLOADID#'); }

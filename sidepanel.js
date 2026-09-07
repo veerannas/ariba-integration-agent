@@ -4699,11 +4699,7 @@ console.log('[AIA] Panel controller loaded — v4.1.1 AI Automated Integration')
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         basePO: basePO,
-        scenarios: [
-          document.getElementById('aie-sc1').checked ? 'multi-line-split' : null,
-          document.getElementById('aie-sc2').checked ? 'no-supplier-part' : null,
-          document.getElementById('aie-sc3').checked ? 'adhoc-shipto' : null
-        ].filter(Boolean)
+        scenarios: []
       })
     }).then(function(r) { return r.json(); })
     .then(function(data) {
@@ -5778,11 +5774,6 @@ console.log('[AIA] Panel controller loaded — v4.1.1 AI Automated Integration')
   }
 
   /* ── stage 2: test case ────────────────────────────────────── */
-  function updateScenarioCount() {
-    var count = document.querySelectorAll('#aie-analyzer .aie-scenario-row input:checked').length;
-    var lbl = q('aie-sc-count-lbl'); if (lbl) lbl.textContent = count + ' selected';
-  }
-
   function buildTestCase() {
     var radioSel = document.querySelector('input[name="aie-po-sel"]:checked');
     if (radioSel) state.selectedPO = state.parsedPOs[parseInt(radioSel.value)] || state.parsedPOs[0];
@@ -5797,14 +5788,6 @@ console.log('[AIA] Panel controller loaded — v4.1.1 AI Automated Integration')
       cxml: state.selectedPO.rawXml,
       ok: true
     }];
-    /* optional scenario variants */
-    var checkedIds = ['sc1','sc2','sc3'].filter(function(id) {
-      var el = q('aie-' + id); return el && el.checked;
-    });
-    if (checkedIds.length && window.TCScenarioEngine) {
-      var variants = TCScenarioEngine.build(state.selectedPO.rawXml, checkedIds);
-      state.scenarios = state.scenarios.concat(variants);
-    }
     renderTestCaseResult();
     renderProgressMatrix();
     var rec = state.record;
@@ -5847,37 +5830,6 @@ console.log('[AIA] Panel controller loaded — v4.1.1 AI Automated Integration')
     a.download = 'TestCase_' + orderId + '.xml';
     a.click();
     URL.revokeObjectURL(url);
-  }
-
-  function uploadToCIG() {
-    var cxml = state.scenarios.length ? state.scenarios[0].cxml : (state.selectedPO && state.selectedPO.rawXml);
-    if (!cxml) { alert('Build the test case first.'); return; }
-    var endpoint  = (q('aie-cig-endpoint') || {}).value || 'https://service.ariba.com/service/transaction/cxml.asp';
-    var secret    = (q('aie-cig-secret') || {}).value || '';
-    var statusEl  = q('aie-cig-status');
-    var uploadBtn = q('aie-upload-cig-btn');
-    if (statusEl) { statusEl.style.display = ''; statusEl.innerHTML = '<span style="color:var(--text2);font-size:11px">Uploading…</span>'; }
-    if (uploadBtn) uploadBtn.disabled = true;
-    var headers = { 'Content-Type': 'text/xml; charset=UTF-8' };
-    if (secret) headers['Authorization'] = 'SharedSecret ' + secret;
-    fetch(endpoint, { method: 'POST', headers: headers, body: cxml })
-      .then(function(res) {
-        return res.text().then(function(body) { return { status: res.status, body: body }; });
-      })
-      .then(function(r) {
-        var ok = r.status >= 200 && r.status < 300;
-        var preview = esc(r.body.slice(0, 600));
-        if (statusEl) statusEl.innerHTML =
-          '<div class="banner banner-' + (ok ? 'ok' : 'warn') + '" style="flex-direction:column;align-items:flex-start;gap:4px">' +
-          '<span style="font-weight:600">HTTP ' + r.status + '</span>' +
-          '<pre style="font-size:9px;white-space:pre-wrap;overflow:auto;max-height:100px;margin:0;width:100%">' + preview + '</pre></div>';
-      })
-      .catch(function(e) {
-        if (statusEl) statusEl.innerHTML = '<div class="banner banner-warn"><span class="material-symbols-rounded" style="font-size:14px">error</span>' + esc(e.message) + '</div>';
-      })
-      .finally(function() {
-        if (uploadBtn) uploadBtn.disabled = false;
-      });
   }
 
   function copyEmail(tplId) {
@@ -6097,11 +6049,6 @@ console.log('[AIA] Panel controller loaded — v4.1.1 AI Automated Integration')
       });
     }
 
-    /* scenario checkboxes (optional) */
-    ['sc1','sc2','sc3'].forEach(function(id) {
-      var el = q('aie-' + id); if (el) el.addEventListener('change', updateScenarioCount);
-    });
-
     /* build test case */
     var buildBtn = q('aie-build-scenarios-btn');
     if (buildBtn) buildBtn.addEventListener('click', buildTestCase);
@@ -6131,7 +6078,6 @@ console.log('[AIA] Panel controller loaded — v4.1.1 AI Automated Integration')
     var dlHere = q('aie-download-tc-here');  if (dlHere) dlHere.addEventListener('click', downloadTestCaseCXML);
 
     /* CIG upload */
-    var cigBtn = q('aie-upload-cig-btn'); if (cigBtn) cigBtn.addEventListener('click', uploadToCIG);
 
     /* email tabs */
     document.querySelectorAll('.aie-email-tab').forEach(function(tab) {
